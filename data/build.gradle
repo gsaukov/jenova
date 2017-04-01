@@ -3,9 +3,7 @@ version '1.0-SNAPSHOT'
 
 dependencies {
     compile 'org.springframework.data:spring-data-jpa:1.11.1.RELEASE'
-    compile("com.h2database:h2:1.4.194")
+    compile 'com.h2database:h2:1.4.194'
 
-    compile("com.pro.jenova:util")
-
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile project(":util")
 }
