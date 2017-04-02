@@ -2,4 +2,5 @@ rootProject.name = 'jenova'
 include 'rest'
 include 'data'
 include 'util'
+include 'core'
 

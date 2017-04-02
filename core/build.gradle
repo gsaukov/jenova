@@ -1,0 +1,6 @@
+group 'com.pro.jenova'
+version '1.0-SNAPSHOT'
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter:1.5.2.RELEASE'
+}

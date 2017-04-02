@@ -1,7 +1,5 @@
 package com.pro.jenova.util.generator;
 
-import java.util.UUID;
-
 import static java.lang.Character.MIN_VALUE;
 import static java.util.UUID.randomUUID;
 
