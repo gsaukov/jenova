@@ -11,7 +11,10 @@ node {
 	bat "java -version"
 
 	stage "Build"
-	bat 'gradlew clean build'
+	bat 'gradlew clean build -x test'
+
+	stage "Test"
+	bat 'gradlew test'
 	
 	// stage "Question"
 	// input message: 'Are you sure?'

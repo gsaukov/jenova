@@ -18,4 +18,8 @@ subprojects {
         testCompile 'org.springframework.boot:spring-boot-starter-test:1.5.2.RELEASE'
     }
 
+    test {
+        testLogging.showStandardStreams = true
+    }
+
 }
