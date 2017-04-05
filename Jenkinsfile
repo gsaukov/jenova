@@ -13,15 +13,16 @@ node {
 	stage "Build"
 	bat 'gradlew clean build -x test'
 
+	stage "Parallel"
 	parallel (
-		"Stream 01" : {
+		test01: {
 			stage ("Test 01") {
-				bat 'gradlew test'
+				sleep 1000
 			}
 		},
-		"Stream 02" : {
+		test02: {
 			stage ("Test 02") {
-				sleep 5000
+				sleep 1000
 			}
 		}
 
