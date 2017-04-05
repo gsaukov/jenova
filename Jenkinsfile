@@ -16,7 +16,7 @@ node {
 	stage "Parallel"
 	parallel (
 		"Tests - Data": {
-			bat 'gradlew test --tests "com.pro.jenova.data.*"'
+			input "Are u ok!?"
 		},
 		"Tests - Rest": {
 			bat 'gradlew test --tests "com.pro.jenova.data.*"'
