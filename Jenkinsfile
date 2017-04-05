@@ -15,12 +15,14 @@ node {
 
 	parallel (
 		"Stream 01" : {
-			stage "Test 01"
-			bat 'gradlew test'
+			stage ("Test 01") {
+				bat 'gradlew test'
+			}
 		},
 		"Stream 02" : {
-			stage "Test 02"
-			bat 'gradlew test'
+			stage ("Test 02") {
+				bat 'gradlew test'
+			}
 		}
 
 	)
