@@ -21,7 +21,7 @@ node {
 		},
 		"Stream 02" : {
 			stage ("Test 02") {
-				bat 'gradlew test'
+				sleep 5000
 			}
 		}
 
