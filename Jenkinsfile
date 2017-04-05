@@ -17,12 +17,12 @@ node {
 	parallel (
 		test01: {
 			stage ("Test 01") {
-				sleep 1000
+				sleep 50
 			}
 		},
 		test02: {
 			stage ("Test 02") {
-				sleep 1000
+				sleep 50
 			}
 		}
 
