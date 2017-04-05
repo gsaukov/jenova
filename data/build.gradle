@@ -2,8 +2,8 @@ group 'com.pro.jenova'
 version '1.0-SNAPSHOT'
 
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.5.2.RELEASE'
-    compile 'com.h2database:h2:1.4.194'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: springVersion
+    compile group: 'com.h2database', name: 'h2', version: h2Version
 
     compile project(':core')
     compile project(':util')

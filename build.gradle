@@ -13,13 +13,8 @@ subprojects {
     }
 
     dependencies {
-        testCompile 'junit:junit:4.12'
-
-        testCompile 'org.springframework.boot:spring-boot-starter-test:1.5.2.RELEASE'
-    }
-
-    test {
-        testLogging.showStandardStreams = true
+        testCompile group: 'junit', name: 'junit', version: junitVersion
+        testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springVersion
     }
 
 }
