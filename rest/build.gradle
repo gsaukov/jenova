@@ -1,7 +1,7 @@
 group 'com.pro.jenova'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 
 springBoot {
     mainClass = 'com.pro.jenova.Application'

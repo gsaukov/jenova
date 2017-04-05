@@ -16,10 +16,10 @@ node {
 	stage "Parallel"
 	parallel (
 		"Tests - Data": {
-			bat 'gradlew test --tests "core.pro.jenova.data.*"'
+			bat 'gradlew test --tests "com.pro.jenova.data.*"'
 		},
 		"Tests - Rest": {
-			bat 'gradlew test --tests "core.pro.jenova.data.*"'
+			bat 'gradlew test --tests "com.pro.jenova.data.*"'
 		}
 
 	)
