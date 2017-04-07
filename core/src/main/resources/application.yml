@@ -1,8 +1,16 @@
 server:
-  port: 8443
+  port: 8080
 
-  ssl:
-    key-store: classpath:keystore.p12
-    key-store-password: tomcat
-    keyStoreType: PKCS12
-    keyAlias: tomcat
+  #ssl:
+    #key-store: classpath:keystore.p12
+    #key-store-password: tomcat
+    #keyStoreType: PKCS12
+    #keyAlias: tomcat
+
+management:
+  security:
+    enabled: false
+
+endpoints:
+  shutdown:
+    enabled: true

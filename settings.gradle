@@ -3,4 +3,6 @@ include 'rest'
 include 'data'
 include 'util'
 include 'core'
+include 'consumer'
+include 'batch'
 

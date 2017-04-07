@@ -17,10 +17,7 @@ buildscript {
 }
 
 dependencies {
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springVersion
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springVersion
-    compile group: 'io.springfox', name: 'springfox-swagger2', version: swaggerVersion
-    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: swaggerVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-batch', version: springVersion
 
     compile project(':core')
     compile project(':util')

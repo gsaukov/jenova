@@ -13,15 +13,11 @@ node {
 	stage "Build"
 	bat 'gradlew clean build -x test'
 
-	stage "Parallel"
-	parallel (
-		"Tests - Data": {
-			input "Are u ok!?"
-		},
-		"Tests - Rest": {
-			bat 'gradlew test --tests "com.pro.jenova.data.*"'
-		}
+	stage "Test"
+	bat 'gradlew test'
 
-	)
+	stage "Stop Server"
+	env.GRADLE_OPTS = '-Dspring.batch.job.names=test'
+	bat 'gradlew :batch:bootRun'
 	
 }
