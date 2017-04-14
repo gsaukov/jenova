@@ -21,3 +21,4 @@ node {
 	bat 'gradlew :batch:bootRun'
 	
 }
+
