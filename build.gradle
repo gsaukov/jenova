@@ -1,20 +1,40 @@
 group 'com.pro.jenova'
-version '1.0-SNAPSHOT'
+
+def vers = '3.0'
+allprojects {
+    version vers
+}
 
 subprojects {
 
     apply plugin: 'java'
+    apply plugin: 'maven'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
     repositories {
-        mavenCentral()
+        maven {
+            url "${nexusUrl}/repository/maven-public/"
+        }
     }
 
     dependencies {
         testCompile group: 'junit', name: 'junit', version: junitVersion
         testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springVersion
+    }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: "${nexusUrl}/repository/maven-releases/") {
+                    authentication(userName: nexusUsername, password: nexusPassword)
+                }
+                snapshotRepository(url: "${nexusUrl}/repository/maven-snapshots/") {
+                    authentication(userName: nexusUsername, password: nexusPassword)
+                }
+            }
+        }
     }
 
 }
