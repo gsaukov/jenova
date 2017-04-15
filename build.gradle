@@ -1,27 +1,19 @@
-group 'com.pro.jenova'
-
-def vers = '3.0'
-allprojects {
-    version vers
-}
+group "com.pro.jenova"
 
 subprojects {
 
-    apply plugin: 'java'
-    apply plugin: 'maven'
-
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
+
+    dependencies {
+        testCompile "junit:junit:${junitVersion}"
+        testCompile "org.springframework.boot:spring-boot-starter-test:${springVersion}"
+    }
 
     repositories {
         maven {
             url "${nexusUrl}/repository/maven-public/"
         }
-    }
-
-    dependencies {
-        testCompile group: 'junit', name: 'junit', version: junitVersion
-        testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springVersion
     }
 
     uploadArchives {
@@ -37,4 +29,22 @@ subprojects {
         }
     }
 
+}
+
+task showVersion {
+    doLast {
+        println getVersion()
+    }
+}
+
+def getVersion() {
+    def branchName = "git rev-parse --abbrev-ref HEAD".execute().getText().trim()
+    def commitHash = "git rev-parse --short HEAD".execute().getText().trim()
+    def dateAndTime = new Date().format("yyyyMMddHHmmss");
+
+    if (branchName.startsWith("release/")) {
+        return branchName.substring("release/".length())
+    }
+
+    return branchName.concat("-").concat(dateAndTime).concat("-").concat(commitHash).concat("-SNAPSHOT")
 }
