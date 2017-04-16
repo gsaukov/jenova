@@ -16,7 +16,11 @@ node {
 	stage "Run Tests"
 	bat "gradlew -q test"
 
-	if (env.BRANCH_NAME.startsWith("/release")) {
+	if (env.BRANCH_NAME.startsWith("release/")) {
+
+	    def releaseVersion = env.BRANCH_NAME.substring("release/".length())
+
+	    stage "Releasing ".concat(releaseVersion)
 
         stage "Build Debian"
         bat "gradlew -q buildDeb"
