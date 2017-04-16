@@ -16,6 +16,10 @@ node {
 	stage "Run Tests"
 	bat "gradlew test"
 
+	stage  "${env.BRANCH_NAME}"
+
+	stage  "${env.GIT_BRANCH}"
+
 	if ("${env.BRANCH_NAME}".startsWith("release/")) {
 
         stage "Build Debian"
