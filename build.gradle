@@ -1,18 +1,5 @@
 group "com.pro.jenova"
 
-buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-    dependencies {
-        classpath "gradle.plugin.com.palantir.gradle.gitversion:gradle-git-version:0.7.1"
-    }
-}
-
-apply plugin: "com.palantir.git-version"
-
 def resolvedVersion = resolveVersion()
 
 subprojects {
@@ -49,12 +36,16 @@ subprojects {
     }
 }
 
-def resolveVersion() {
-    def dateAndTime = new Date().format("yyyyMMddHHmmss");
+task printVersion {
+    doLast {
+        println resolveVersion()
+    }
+}
 
-    def details = versionDetails()
-    def branchName = details.branchName
-    def commitHash = details.gitHash
+def resolveVersion() {
+    def branchName = "git rev-parse --abbrev-ref HEAD".execute().getText().trim()
+    def commitHash = "git rev-parse --short HEAD".execute().getText().trim()
+    def dateAndTime = new Date().format("yyyyMMddHHmmss");
 
     if (branchName.startsWith("release/")) {
         return branchName.substring("release/".length())
