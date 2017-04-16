@@ -1,0 +1,34 @@
+group 'com.pro.jenova'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.netflix.nebula:gradle-ospackage-plugin:${ospackageVersion}"
+    }
+}
+
+apply plugin: "nebula.ospackage"
+
+ospackage {
+    packageName = project.name
+    version = project.version
+
+    into "/opt/earthrise"
+
+    from("../earthrise/build/") {
+        into "lib"
+        include "**/*.jar"
+    }
+}
+
+task buildEarthrise(type: Deb) {
+    // apply defaults from ospackage
+}
+
+artifacts {
+    fileTree("build/distributions").include("**/*.deb").each {
+        archives file: it
+    }
+}

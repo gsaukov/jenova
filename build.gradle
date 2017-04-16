@@ -1,13 +1,19 @@
 group "com.pro.jenova"
 
+def determinedVersion = getVersion()
+
 subprojects {
+    version determinedVersion
+
+    apply plugin: "java"
+    apply plugin: "maven"
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
     dependencies {
         testCompile "junit:junit:${junitVersion}"
-        testCompile "org.springframework.boot:spring-boot-starter-test:${springVersion}"
+        testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
     }
 
     repositories {
@@ -28,7 +34,6 @@ subprojects {
             }
         }
     }
-
 }
 
 task showVersion {
