@@ -17,8 +17,8 @@ ospackage {
 
     into "/opt/earthrise"
 
-    from("../earthrise/build/") {
-        into "lib"
+    from("../earthrise/build/libs") {
+        into "libs"
         include "**/*.jar"
     }
 }
