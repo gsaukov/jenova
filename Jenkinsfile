@@ -20,7 +20,7 @@ node {
 
 	    def releaseVersion = env.BRANCH_NAME.substring("release/".length())
 
-	    stage "Releasing ".concat(releaseVersion)
+	    stage releaseVersion
 
         stage "Build Debian"
         bat "gradlew -q buildDeb"
