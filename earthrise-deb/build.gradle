@@ -2,7 +2,7 @@ group 'com.pro.jenova'
 
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath "com.netflix.nebula:gradle-ospackage-plugin:${ospackageVersion}"
