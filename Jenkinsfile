@@ -11,18 +11,18 @@ node {
 	bat "java -version"
 
 	stage "Clean And Build"
-	bat "gradlew clean build -x test"
+	bat "gradlew -q clean build -x test"
 
 	stage "Run Tests"
-	bat "gradlew test"
+	bat "gradlew -q test"
 
 	if (env.BRANCH_NAME.startsWith("/release")) {
 
         stage "Build Debian"
-        bat "gradlew buildDeb"
+        bat "gradlew -q buildDeb"
 
         stage "Upload Archives"
-        bat "gradlew uploadArchives"
+        bat "gradlew -q uploadArchives"
 
 	}
 
