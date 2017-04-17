@@ -15,7 +15,6 @@ ospackage {
     packageName = project.name
     version = project.version
     os = LINUX
-    arch = NOARCH
 
     into "/opt/earthrise"
 
