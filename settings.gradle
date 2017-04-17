@@ -1,4 +1,6 @@
 rootProject.name = 'jenova'
 include 'earthrise'
 include 'earthrise-deb'
+include 'omnidrive'
+include 'omnidrive-deb'
 

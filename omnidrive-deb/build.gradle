@@ -17,15 +17,15 @@ ospackage {
     os = LINUX
     arch = NOARCH
 
-    into "/opt/earthrise"
+    into "/opt/omnidrive"
 
-    from("${rootDir}/earthrise/build/libs") {
+    from("${rootDir}/omnidrive/build/libs") {
         into "libs"
         include "**/*.jar"
     }
 }
 
-task buildEarthrise(type: Deb) {
+task buildOmnidrive(type: Deb) {
     // apply defaults from ospackage
 }
 

@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: omnidrive
+
+server:
+  port: 8091
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://raspberrypi:8761/eureka/
