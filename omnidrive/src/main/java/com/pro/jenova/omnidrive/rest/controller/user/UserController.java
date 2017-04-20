@@ -1,4 +1,4 @@
-package com.pro.jenova.omnidrive.rest.user;
+package com.pro.jenova.omnidrive.rest.controller.user;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public void register(@RequestBody RestUser restUser) {
-
+    public RestUser register(@RequestBody RestUser restUser) {
+        return new RestUser.Builder().withUsername("username").withPassword("password").withEmail("email").build();
     }
 
 }
