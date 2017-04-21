@@ -45,7 +45,7 @@ task printVersion {
 def resolveVersion() {
     def branchName = "git rev-parse --abbrev-ref HEAD".execute().getText().trim()
     def commitHash = "git rev-parse --short HEAD".execute().getText().trim()
-    def dateAndTime = new Date().format("yyyyMMddHHmmss");
+    def dateAndTime = new Date().format("yyyyMMddHHmmss")
 
     if (branchName.startsWith("release/")) {
         return branchName.substring("release/".length())

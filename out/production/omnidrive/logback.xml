@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                %blue([%mdc{logCorrelationId}]) %gray(%date{ISO8601} %-5level) %green(%logger{5}) %msg%n
+            </pattern>
+        </layout>
+    </appender>
+
+    <logger name="org.springframework.web" level="DEBUG"/>
+    <logger name="com.pro.jenova.omnidrive.rest.filter.RequestAndResponseLogger" level="DEBUG"/>
+</configuration>
