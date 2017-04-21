@@ -15,7 +15,7 @@ public class RequestAndResponseLogger extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        logger.debug(methodAndUrl(request));
+        logger.debug("Method and URL - " + methodAndUrl(request));
 
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
@@ -28,7 +28,7 @@ public class RequestAndResponseLogger extends OncePerRequestFilter {
             logger.debug(requestBody);
         }
 
-        logger.debug(responseStatus(response));
+        logger.debug("Response Status - " + responseStatus(response));
 
         String responseBody = getContentAsString(responseWrapper.getContentAsByteArray(), response.getCharacterEncoding());
 
