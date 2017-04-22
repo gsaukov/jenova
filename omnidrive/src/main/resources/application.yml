@@ -5,6 +5,11 @@ spring:
 server:
   port: 8091
 
+endpoints:
+  shutdown:
+    enabled: true
+    sensitive: false
+
 eureka:
   client:
     serviceUrl:

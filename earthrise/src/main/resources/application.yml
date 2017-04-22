@@ -1,5 +1,14 @@
+spring:
+  application:
+    name: earthrise
+
 server:
   port: 8761
+
+endpoints:
+  shutdown:
+    enabled: true
+    sensitive: false
 
 eureka:
   instance:
