@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: blackstone
+
+server:
+  port: 8092
+
+endpoints:
+  shutdown:
+    enabled: true
+    sensitive: false
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://raspberrypi:8761/eureka/
