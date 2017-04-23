@@ -1,19 +1,19 @@
 package com.pro.jenova.omnidrive.rest.controller.user;
 
-public class RestUser {
+import com.pro.jenova.omnidrive.rest.controller.common.RestResponse;
+
+public class RestUser implements RestResponse {
 
     private String username;
     private String password;
-    private String email;
 
     private RestUser() {
-        // For Frameworks
+        // REST
     }
 
     private RestUser(Builder builder) {
         username = builder.username;
         password = builder.password;
-        email = builder.email;
     }
 
     public String getUsername() {
@@ -32,19 +32,10 @@ public class RestUser {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public static final class Builder {
 
         private String username;
         private String password;
-        private String email;
 
         public Builder withUsername(String username) {
             this.username = username;
@@ -53,11 +44,6 @@ public class RestUser {
 
         public Builder withPassword(String password) {
             this.password = password;
-            return this;
-        }
-
-        public Builder withEmail(String email) {
-            this.email = email;
             return this;
         }
 
