@@ -11,7 +11,9 @@ node {
 	bat "java -version"
 
 	stage "Prepare Version"
-    bat "gradlew :printVersion"
+    buildVer = bat (script: "gradlew :printVersion", returnStdout: true).trim()
+
+    stage "Prepare Version" + buildVer
 
 	stage "Clean And Build"
 	bat "gradlew clean build -x test"
