@@ -10,6 +10,9 @@ node {
     env.PATH = "${env.JAVA_HOME}/bin;${env.PATH}"
 	bat "java -version"
 
+	stage "Prepare Version"
+    bat "gradlew :printVersion"
+
 	stage "Clean And Build"
 	bat "gradlew clean build -x test"
 

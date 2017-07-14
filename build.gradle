@@ -38,7 +38,7 @@ subprojects {
 
 task printVersion {
     doLast {
-        println resolveVersion()
+        println resolvedVersion
     }
 }
 
