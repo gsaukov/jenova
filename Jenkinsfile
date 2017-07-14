@@ -10,16 +10,13 @@ node {
     env.PATH = "${env.JAVA_HOME}/bin;${env.PATH}"
 	bat "java -version"
 
-	stage "Prepare Version"
-    buildVer = bat (script: "gradlew :printVersion", returnStdout: true).trim()
+    buildVersion = bat(script: "gradlew :printVersion -q", returnStdout: true).trim()
 
-    stage "Prepare Version" + buildVer
-
-	stage "Clean And Build"
+    stage "Build".concat(buildVer)
 	bat "gradlew clean build -x test"
 
 	stage "Run Tests"
-	bat "gradlew test"
+	bat "gradlew test -q"
 
 	if ("${env.BRANCH_NAME}".startsWith("release/")) {
 
