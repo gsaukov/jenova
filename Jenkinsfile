@@ -12,7 +12,7 @@ node {
 
     buildVersion = bat(script: "gradlew :printVersion -q", returnStdout: true).trim()
 
-    stage "Build".concat(buildVer)
+    stage "Build".concat(buildVersion)
 	bat "gradlew clean build -x test"
 
 	stage "Run Tests"
