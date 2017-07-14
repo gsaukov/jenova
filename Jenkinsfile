@@ -13,11 +13,11 @@ node {
     buildVersion = bat(script: "gradlew :printVersion -q", returnStdout: true).trim()
     buildVersion = buildVersion.substring(buildVersion.lastIndexOf("-q") + 2).trim()
 
-    stage "Build " + buildVersion
+    stage buildVersion
 	bat "gradlew clean build -x test"
 
 	stage "Run Tests"
-	bat "gradlew test -q"
+	bat "gradlew test"
 
 	if ("${env.BRANCH_NAME}".startsWith("release/")) {
 
