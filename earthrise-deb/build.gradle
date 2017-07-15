@@ -24,10 +24,6 @@ ospackage {
     }
 }
 
-task buildEarthrise(type: Deb) {
-    // apply defaults from ospackage
-}
-
 artifacts {
     fileTree("build/distributions").include("**/*.deb").each {
         archives file: it

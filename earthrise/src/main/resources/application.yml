@@ -4,11 +4,11 @@ spring:
 
 # Eureka Server Configuration
 server:
-  port: 8761
+  port: 8000
 
 eureka:
   instance:
-    hostname: localhost
+    hostname: lnv-pc
   server:
     enableSelfPreservation: false
   client:
