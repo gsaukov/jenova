@@ -11,6 +11,6 @@
         <appender-ref ref="STDOUT" />
     </root>
 
-    <logger name="com.pro.jenova.omnidrive.rest.filter.RequestAndResponseLogger" level="DEBUG"/>
+    <logger name="com.pro.jenova.omnidrive.rest.filter.RequestAndResponseFilter" level="DEBUG"/>
 
 </configuration>

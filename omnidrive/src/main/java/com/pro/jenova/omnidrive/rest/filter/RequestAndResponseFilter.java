@@ -11,32 +11,32 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-public class RequestAndResponseLogger extends OncePerRequestFilter {
+public class RequestAndResponseFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        logger.debug("Method and URL - " + methodAndUrl(request));
-
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
 
+        logRequest(request, requestWrapper);
+
         filterChain.doFilter(requestWrapper, responseWrapper);
 
-        String requestBody = getContentAsString(requestWrapper.getContentAsByteArray(), request.getCharacterEncoding());
-
-        if (!requestBody.isEmpty()) {
-            logger.debug(requestBody);
-        }
-
-        logger.debug("Response Status - " + responseStatus(response));
-
-        String responseBody = getContentAsString(responseWrapper.getContentAsByteArray(), response.getCharacterEncoding());
-
-        if (!responseBody.isEmpty()) {
-            logger.debug(responseBody);
-        }
+        logResponse(response, responseWrapper);
 
         responseWrapper.copyBodyToResponse();
+    }
+
+    private void logRequest(HttpServletRequest request, ContentCachingRequestWrapper requestWrapper) {
+        logger.debug("Method and URL - " + methodAndUrl(request));
+
+        logContent(requestWrapper.getContentAsByteArray(), request.getCharacterEncoding());
+    }
+
+    private void logResponse(HttpServletResponse response, ContentCachingResponseWrapper responseWrapper) {
+        logger.debug("Response Status - " + responseStatus(response));
+
+        logContent(responseWrapper.getContentAsByteArray(), response.getCharacterEncoding());
     }
 
     private String methodAndUrl(HttpServletRequest request) {
@@ -45,6 +45,14 @@ public class RequestAndResponseLogger extends OncePerRequestFilter {
 
     private String responseStatus(HttpServletResponse response) {
         return Integer.toString(response.getStatus());
+    }
+
+    private void logContent(byte[] content, String enconding) {
+        String requestBody = getContentAsString(content, enconding);
+
+        if (!requestBody.isEmpty()) {
+            logger.debug(requestBody);
+        }
     }
 
     private String getContentAsString(byte[] buffer, String charsetName) {

@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import static com.pro.jenova.omnidrive.data.audit.AuditContext.username;
 import static com.pro.jenova.omnidrive.util.IdUtils.uuid;
 import static java.time.LocalDateTime.now;
 
@@ -76,10 +77,6 @@ public abstract class BaseEntity implements Serializable {
         updatedBy = username();
 
         lastUpdated = now();
-    }
-
-    private String username() {
-        return "System";
     }
 
 }

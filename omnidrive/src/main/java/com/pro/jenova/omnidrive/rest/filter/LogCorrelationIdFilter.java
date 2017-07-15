@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import static com.pro.jenova.omnidrive.util.IdUtils.uuid;
 
-public class CorrelationLogger extends OncePerRequestFilter {
+public class LogCorrelationIdFilter extends OncePerRequestFilter {
 
     private static final String LOG_CORRELATION_ID = "logCorrelationId";
 
@@ -22,12 +22,12 @@ public class CorrelationLogger extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String correlationId = request.getHeader(LOG_CORRELATION_ID);
 
-        MDC.put(LOG_CORRELATION_ID, verifyOrCreate(correlationId));
+        MDC.put(LOG_CORRELATION_ID, useExistingOrCreate(correlationId));
 
         filterChain.doFilter(request, response);
     }
 
-    public String verifyOrCreate(String correlationId) {
+    public String useExistingOrCreate(String correlationId) {
         if (correlationId == null) {
             return uuid();
         }

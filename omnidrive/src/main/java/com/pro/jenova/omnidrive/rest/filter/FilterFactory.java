@@ -23,7 +23,7 @@ public class FilterFactory {
 
     @Bean
     public Filter requestAndResponseLoggerFilter() {
-        return new RequestAndResponseLogger();
+        return new RequestAndResponseFilter();
     }
 
     @Bean
@@ -39,7 +39,7 @@ public class FilterFactory {
 
     @Bean
     public Filter correlationLoggerFilter() {
-        return new CorrelationLogger();
+        return new LogCorrelationIdFilter();
     }
 
 }

@@ -2,15 +2,30 @@ spring:
   application:
     name: omnidrive
 
-server:
-  port: 8091
+  datasource:
+    url: jdbc:h2:~/omnidrive.db;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
 
-endpoints:
-  shutdown:
-    enabled: true
-    sensitive: false
+    tomcat:
+      max-wait: 5000
+      max-active: 5
+      test-on-borrow: true
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+server:
+  port: 8010
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://raspberrypi:8761/eureka/
+      defaultZone: http://lnv-pc:8000/eureka/
+
+# Actuator Configuration
+endpoints:
+  shutdown:
+    enabled: true
+    sensitive: false
