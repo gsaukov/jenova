@@ -1,21 +1,15 @@
 spring:
   application:
-    name: earthrise
+    name: earthrise-eureka
 
 # Eureka Server Configuration
 server:
   port: 8000
 
 eureka:
-  instance:
-    hostname: lnv-pc
-  server:
-    enableSelfPreservation: false
   client:
     registerWithEureka: false
     fetchRegistry: false
-    serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
 # Actuator Configuration
 endpoints:
