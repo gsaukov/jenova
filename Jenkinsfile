@@ -5,28 +5,28 @@ node {
 	stage "Checkout"
 	checkout scm
 	
-	stage "Prepare"
+	stage "Prepare Environment"
 	env.JAVA_HOME = "${tool 'jdk8'}"
     env.PATH = "${env.JAVA_HOME}/bin;${env.PATH}"
 
-    scriptOuput = bat(script: "gradlew :printVersion -q", returnStdout: true).trim()
+    scriptOuput = sh(script: "gradlew :printVersion -q", returnStdout: true).trim()
     buildVersion = scriptOuput.substring(scriptOuput.lastIndexOf("-q") + 2).trim()
 
     stage buildVersion
 
-    stage "Clean and Build"
-	bat "gradlew clean build -x test"
+    stage "Perform Clean Build"
+	sh "gradlew clean build -x test"
 
 	stage "Execute Tests"
-	bat "gradlew test"
+	sh "gradlew test"
 
 	if ("${env.BRANCH_NAME}".startsWith("release/")) {
 
         stage "Build Debian"
-        bat "gradlew buildDeb"
+        sh "gradlew buildDeb"
 
         stage "Upload Archives"
-        bat "gradlew uploadArchives"
+        sh "gradlew uploadArchives"
 
 	}
 
