@@ -8,8 +8,8 @@ node {
 
 	stage("Prepare") {
 		scriptOuput = sh(script: "ls ./earthrise/build/libs/", returnStdout: true).trim()
-		scriptOuput = scriptOuput.substring(scriptOuput.firstIndexOf("-") + 1).trim()
-		scriptOuput = scriptOuput.substring(scriptOuput.firstIndexOf(".jar")).trim()
+		scriptOuput = scriptOuput.substring(scriptOuput.indexOf("-") + 1).trim()
+		scriptOuput = scriptOuput.substring(scriptOuput.indexOf(".jar")).trim()
 		currentBuild.description = scriptOuput
 	}
 
