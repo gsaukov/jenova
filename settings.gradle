@@ -1,3 +1,5 @@
 rootProject.name = 'jenova'
 include 'earthrise'
 include 'earthrise-deb'
+include 'ansible'
+
