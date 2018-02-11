@@ -14,13 +14,8 @@ node {
 
 	stage("Gather Info") {
 		scriptOuput = sh(script: "ls ./earthrise/build/libs/", returnStdout: true).trim()
-		echo scriptOuput
-		echo scriptOuput.indexOf("-") + ""
 		scriptOuput = scriptOuput.substring(scriptOuput.indexOf("-") + 1).trim()
-		echo scriptOuput
-		echo scriptOuput.indexOf(".jar") + ""
-		scriptOuput = scriptOuput.substring(scriptOuput.indexOf(".jar")).trim()
-		echo scriptOuput
+		scriptOuput = scriptOuput.substring(0, scriptOuput.indexOf(".jar")).trim()
 		currentBuild.description = scriptOuput
 	}
 
