@@ -23,6 +23,10 @@ node {
 		sh "./gradlew test"
 	}
 
+	stage("Build Packages") {
+		sh "./gradlew buildDeb"
+	}
+
 	if ("${env.BRANCH_NAME}".startsWith("release/")) {
 
         stage("Deploy") {
