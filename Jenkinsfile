@@ -8,15 +8,15 @@ node {
 		checkout scm
 	}
 
-	stage("Prepare") {
+	stage("Clean and Build") {
+		sh "./gradlew clean build -x test"
+	}
+
+	stage("Gather Info") {
 		scriptOuput = sh(script: "ls ./earthrise/build/libs/", returnStdout: true).trim()
 		scriptOuput = scriptOuput.substring(scriptOuput.indexOf("-") + 1).trim()
 		scriptOuput = scriptOuput.substring(scriptOuput.indexOf(".jar")).trim()
 		currentBuild.description = scriptOuput
-	}
-
-	stage("Clean and Build") {
-		sh "./gradlew clean build -x test"
 	}
 
 	stage("Execute Tests") {
