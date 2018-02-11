@@ -27,6 +27,10 @@ node {
 		sh "./gradlew buildDeb"
 	}
 
+	stage("Check Availability") {
+		sh "./ansible all -i ./ansible/inventories/inventory.ini -m ping"
+	}
+
 	if ("${env.BRANCH_NAME}".startsWith("release/")) {
 
         stage("Deploy") {
