@@ -8,7 +8,7 @@ node {
 	stage "Prepare"
     scriptOuput = sh(script: "./gradlew :printVersion -q", returnStdout: true).trim()
     buildVersion = scriptOuput.substring(scriptOuput.lastIndexOf("-q") + 2).trim()
-	currentBuild.description = "Branch-Name: ".concat(env.BRANCH_NAME)
+	currentBuild.description = "Branch-Name: " + env.BRANCH_NAME
 
     stage "Perform Clean Build"
 	sh "./gradlew clean build -x test"
