@@ -8,11 +8,11 @@ node {
 		checkout scm
 	}
 
-	stage("Clean and Build") {
-		sh "./gradlew clean build -x test"
+	stage("Build and Package") {
+		sh "./gradlew clean build buildDeb"
 	}
 
-	stage("Gather Info") {
+	stage("Collect Version Info") {
 		scriptOuput = sh(script: "ls ./earthrise/build/libs/", returnStdout: true).trim()
 		scriptOuput = scriptOuput.substring(scriptOuput.indexOf("-") + 1).trim()
 		env.version = scriptOuput.substring(0, scriptOuput.indexOf(".jar")).trim()
@@ -20,29 +20,13 @@ node {
 		currentBuild.description = "Version: " + env.version
 	}
 
-	stage("Execute Tests") {
-		sh "./gradlew test"
-	}
-
-	stage("Build Packages") {
-		sh "./gradlew buildDeb"
-	}
-
-	stage("Check Availability") {
+	stage("Check Server Availability") {
 		sh "ansible all -i ./ansible/inventories/inventory.ini -m ping"
 	}
 
-	stage("Distribute Artifacts") {
+	stage("Deploy Packages") {
 		sh "ansible-playbook ./ansible/playbooks/distribute.yml -i ./ansible/inventories/inventory.ini " +
 				"--extra-vars \"version=" + env.version + "\""
-	}
-
-	if ("${env.BRANCH_NAME}".startsWith("release/")) {
-
-        stage("Deploy") {
-			echo "to be implemented"
-		}
-
 	}
 
 }
