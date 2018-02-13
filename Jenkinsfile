@@ -31,6 +31,10 @@ node {
 		sh "ansible all -i ./ansible/inventories/inventory.ini -m ping"
 	}
 
+	stage("Distribute Artifacts") {
+		sh "ansible-playbook ./ansible/playbooks/distribute.yml -i ./ansible/inventories/inventory.ini"
+	}
+
 	if ("${env.BRANCH_NAME}".startsWith("release/")) {
 
         stage("Deploy") {
