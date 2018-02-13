@@ -1,6 +1,6 @@
 - hosts: earthrise
   tasks:
-  - name: create directory for artifacts
+  - name: create directory for artifact
     become: true
     file:
       path: /opt/artifacts/earthrise"
@@ -9,4 +9,4 @@
     become: true
     copy:
       src: ./earthrise-deb/build/distributions/earthrise-deb_{{version}}_all.deb
-      dest: /opt/artifacts/earthrise
+      dest: /opt/artifacts/earthrise/earthrise-deb_{{version}}_all.deb
