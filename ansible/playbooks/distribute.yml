@@ -1,6 +1,7 @@
 - hosts: earthrise
   tasks:
   - name: create directory for artifacts
+    become: true
     file:
       path: /opt/artifacts/earthrise
       state: directory
