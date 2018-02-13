@@ -32,5 +32,5 @@ def resolveVersion() {
         return branchName.substring("release/".length())
     }
 
-    return dateAndTime.concat("-").concat(branchName).concat("-").concat(commitHash)
+    return dateAndTime.concat(".").concat(branchName).concat(".").concat(commitHash)
 }

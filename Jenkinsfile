@@ -15,8 +15,9 @@ node {
 	stage("Gather Info") {
 		scriptOuput = sh(script: "ls ./earthrise/build/libs/", returnStdout: true).trim()
 		scriptOuput = scriptOuput.substring(scriptOuput.indexOf("-") + 1).trim()
-		scriptOuput = scriptOuput.substring(0, scriptOuput.indexOf(".jar")).trim()
-		currentBuild.description = scriptOuput
+		env.version = scriptOuput.substring(0, scriptOuput.indexOf(".jar")).trim()
+
+		currentBuild.description = "Version: " + env.version
 	}
 
 	stage("Execute Tests") {
@@ -32,7 +33,8 @@ node {
 	}
 
 	stage("Distribute Artifacts") {
-		sh "ansible-playbook ./ansible/playbooks/distribute.yml -i ./ansible/inventories/inventory.ini"
+		sh "ansible-playbook ./ansible/playbooks/distribute.yml -i ./ansible/inventories/inventory.ini " +
+				"--extra-vars \"version=" + env.version + "\""
 	}
 
 	if ("${env.BRANCH_NAME}".startsWith("release/")) {
