@@ -17,7 +17,7 @@ node {
 		scriptOuput = scriptOuput.substring(scriptOuput.indexOf("-") + 1).trim()
 		env.version = scriptOuput.substring(0, scriptOuput.indexOf(".jar")).trim()
 
-		currentBuild.description = "Version: " + env.version
+		currentBuild.description = env.version
 	}
 
 	stage("Check Server Availability") {
