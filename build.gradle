@@ -1,6 +1,6 @@
 group "com.pro.jenova"
 
-def resolvedVersion = resolveVersion()
+def resolvedVersion = project.hasProperty("versionToUse") ? project.versionToUse : "0.0.0"
 
 subprojects {
     version resolvedVersion
@@ -19,11 +19,11 @@ subprojects {
 
 task printVersion {
     doLast {
-        println resolvedVersion
+        println createVersion()
     }
 }
 
-def resolveVersion() {
+def createVersion() {
     def branchName = "git rev-parse --abbrev-ref HEAD".execute().getText().trim()
     def commitHash = "git rev-parse --short HEAD".execute().getText().trim()
     def dateAndTime = new Date().format("yyyyMMddHHmmss")

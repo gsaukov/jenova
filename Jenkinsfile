@@ -8,19 +8,20 @@ node {
 		checkout scm
 	}
 
-	stage("Build and Package") {
-		sh "./gradlew clean build buildDeb"
-	}
-
 	stage("Collect Version Info") {
-		scriptOuput = sh(script: "ls ./earthrise/build/libs/", returnStdout: true).trim()
-		scriptOuput = scriptOuput.substring(scriptOuput.indexOf("-") + 1).trim()
-		env.version = scriptOuput.substring(0, scriptOuput.indexOf(".jar")).trim()
-
+		env.version = sh(script: "./gradlew printVersion", returnStdout: true).trim()
 		currentBuild.description = env.version
 	}
 
-	stage("Check Server Availability") {
+	stage("Clean and Build") {
+		sh "./gradlew -PversionToUse=" + env.version + " clean build"
+	}
+
+	stage("Create Packages") {
+		sh "./gradlew -PversionToUse=" + env.version + " buildDeb"
+	}
+
+	stage("Check Availability") {
 		sh "ansible all -i ./ansible/inventories/inventory.ini -m ping"
 	}
 
