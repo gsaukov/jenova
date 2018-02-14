@@ -8,5 +8,5 @@
   - name: copy artifact to directory
     become: true
     copy:
-      src: earthrise-deb/build/distributions/earthrise-deb_{{version}}_all.deb
+      src: ./earthrise-deb/build/distributions/earthrise-deb_{{version}}_all.deb
       dest: /opt/artifacts/earthrise/earthrise-deb_{{version}}_all.deb
