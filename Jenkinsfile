@@ -9,7 +9,7 @@ node {
 	}
 
 	stage("Collect Version Info") {
-		env.version = sh(script: "./gradlew printVersion", returnStdout: true).trim()
+		env.version = sh(script: "./gradlew printVersion -q", returnStdout: true).trim()
 		currentBuild.description = env.version
 	}
 
