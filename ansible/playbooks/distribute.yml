@@ -3,10 +3,10 @@
   - name: create directory for artifact
     become: true
     file:
-      path: /opt/artifacts/earthrise
+      path: "/opt/artifacts/earthrise"
       state: directory
   - name: copy artifact to directory
     become: true
     copy:
-      src: {{playbook_dir}}/../../earthrise-deb/build/distributions/earthrise-deb_{{version}}_all.deb
-      dest: /opt/artifacts/earthrise/earthrise-deb_{{version}}_all.deb
+      src: "{{playbook_dir}}/../../earthrise-deb/build/distributions/earthrise-deb_{{version}}_all.deb"
+      dest: "/opt/artifacts/earthrise/earthrise-deb_{{version}}_all.deb"
