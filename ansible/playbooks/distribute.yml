@@ -10,6 +10,11 @@
     copy:
       src: "{{playbook_dir}}/../../earthrise-deb/build/distributions/earthrise-deb_{{version}}_all.deb"
       dest: "/opt/artifacts/earthrise/earthrise-deb_{{version}}_all.deb"
+  - name: remove existing package
+    become: true
+    apt:
+      name: earthrise-deb
+      state: absent
   - name: install uploaded package
     become: true
     apt:
