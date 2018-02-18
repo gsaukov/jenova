@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static java.lang.String.format;
 
-@RestController()
+@RestController
 @RequestMapping("/user")
 public class UserController {
 

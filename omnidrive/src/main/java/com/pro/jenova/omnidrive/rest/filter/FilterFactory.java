@@ -11,7 +11,7 @@ import javax.servlet.Filter;
 public class FilterFactory {
 
     @Bean
-    public FilterRegistrationBean requestAndResponseLoggerRegistration() {
+    public FilterRegistrationBean requestAndResponseLoggerFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
 
         registration.setFilter(requestAndResponseLoggerFilter());
@@ -27,10 +27,10 @@ public class FilterFactory {
     }
 
     @Bean
-    public FilterRegistrationBean correlationLoggerRegistration() {
+    public FilterRegistrationBean logCorrelationIdFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
 
-        registration.setFilter(correlationLoggerFilter());
+        registration.setFilter(logCorrelationIdFilter());
         registration.addUrlPatterns("/*");
         registration.setOrder(1);
 
@@ -38,7 +38,7 @@ public class FilterFactory {
     }
 
     @Bean
-    public Filter correlationLoggerFilter() {
+    public Filter logCorrelationIdFilter() {
         return new LogCorrelationIdFilter();
     }
 

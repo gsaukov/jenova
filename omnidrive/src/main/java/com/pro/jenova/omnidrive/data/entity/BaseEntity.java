@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import static com.pro.jenova.omnidrive.data.audit.AuditContext.username;
+import static com.pro.jenova.omnidrive.util.AuditContext.username;
 import static com.pro.jenova.omnidrive.util.IdUtils.uuid;
 import static java.time.LocalDateTime.now;
 
