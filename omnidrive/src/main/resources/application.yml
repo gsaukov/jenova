@@ -23,7 +23,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://cloverfield:8000/eureka/
+      defaultZone: http://skyline:8000/eureka/
 
 # Actuator Configuration
 endpoints:
