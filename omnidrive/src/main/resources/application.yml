@@ -10,8 +10,11 @@ spring:
     driver-class-name: org.h2.Driver
 
     tomcat:
-      max-wait: 5000
-      max-active: 10
+      max-wait: 50000
+      max-active: 40
+      max-idle: 40
+      min-idle: 20
+      initial-size: 20
       test-on-borrow: true
 
   jpa:
