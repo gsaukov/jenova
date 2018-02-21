@@ -16,6 +16,11 @@ spring:
 
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+
+liquibase:
+  change-log: classpath:liquibase/changelog-master.xml
 
 server:
   port: 8001
