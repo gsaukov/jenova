@@ -1,5 +1,4 @@
 rootProject.name = 'jenova'
-include 'ansible'
 include 'earthrise'
 include 'earthrise-deb'
 include 'omnidrive'
