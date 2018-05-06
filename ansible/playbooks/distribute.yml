@@ -15,11 +15,17 @@
     apt:
       name: earthrise
       state: absent
+  - name: check if the service associated with the package being installed exists from before
+    become: true
+    stat:
+      path: "/etc/init.d/earthrise"
+    register: service_status
   - name: stop any previous service execution of the package being installed
     become: true
     service:
       name: earthrise
       state: stopped
+    when: service_status.stat.exists
   - name: install uploaded package
     become: true
     apt:
