@@ -15,10 +15,20 @@
     apt:
       name: earthrise
       state: absent
+  - name: stop any previous service execution of the package being installed
+    become: true
+    service:
+      name: earthrise
+      state: stopped
   - name: install uploaded package
     become: true
     apt:
       deb: "/opt/artifacts/earthrise_{{version}}.deb"
+  - name: start service execution of the package that was installed
+    become: true
+    service:
+      name: earthrise
+      state: started
   - name: clean up artifacts directory once installation is complete
     become: true
     file:
