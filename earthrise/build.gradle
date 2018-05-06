@@ -41,7 +41,6 @@ ospackage {
     version = project.version
     os = LINUX
     type = BINARY
-    arch = ARMHF
 
     into "/opt/earthrise"
     user "earthrise"

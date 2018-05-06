@@ -8,7 +8,7 @@
   - name: upload package to be installed into artifacts directory
     become: true
     copy:
-      src: "{{playbook_dir}}/../../earthrise/build/distributions/earthrise_{{version}}_armhf.deb"
+      src: "{{playbook_dir}}/../../earthrise/build/distributions/earthrise_{{version}}_all.deb"
       dest: "/opt/artifacts/earthrise_{{version}}.deb"
   - name: remove any existing installation of uploaded package
     become: true
