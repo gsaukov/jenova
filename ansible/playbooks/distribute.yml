@@ -1,27 +1,27 @@
 - hosts: earthrise
   tasks:
-  - name: create artifacts directory where the packages to be installed will be copied into
+  - name: create artifacts directory where the package will be copied into
     become: true
     file:
       path: "/opt/artifacts"
       state: directory
-  - name: upload package to be installed into artifacts directory
+  - name: upload package binary into artifacts directory
     become: true
     copy:
       src: "{{playbook_dir}}/../../earthrise/build/distributions/earthrise_{{version}}_all.deb"
       dest: "/opt/artifacts/earthrise_{{version}}.deb"
-  - name: check if the service associated with the package being installed exists from before
+  - name: check if service being installed exists from before
     become: true
     stat:
       path: "/etc/init.d/earthrise"
     register: service_status
-  - name: stop any previous service execution of the package being installed
+  - name: if service being installed exists, then make sure it is stopped
     become: true
     service:
       name: earthrise
       state: stopped
     when: service_status.stat.exists
-  - name: remove any existing installation of uploaded package
+  - name: uninstall package of interest if already installed from before
     become: true
     apt:
       name: earthrise
@@ -30,12 +30,12 @@
     become: true
     apt:
       deb: "/opt/artifacts/earthrise_{{version}}.deb"
-  - name: start service execution of the package that was installed
+  - name: start service that was installed
     become: true
     service:
       name: earthrise
       state: started
-  - name: clean up artifacts directory once installation is complete
+  - name: clean up artifacts directory
     become: true
     file:
       path: "/opt/artifacts"
