@@ -1,43 +1,21 @@
 - hosts: earthrise
   tasks:
-  - name: create artifacts directory
+  - name: create artifacts directory where the packages to be installed will be copied into
     become: true
     file:
-      path: "/opt/artifacts/earthrise"
+      path: "/opt/artifacts"
       state: directory
-  - name: upload to artifacts directory
+  - name: upload package to be installed into artifacts directory
     become: true
     copy:
-      src: "{{playbook_dir}}/../../earthrise-deb/build/distributions/earthrise-deb_{{version}}_all.deb"
-      dest: "/opt/artifacts/earthrise/earthrise-deb_{{version}}_all.deb"
-  - name: remove existing package
+      src: "{{playbook_dir}}/../../earthrise/build/distributions/earthrise_{{version}}_noarch.deb"
+      dest: "/opt/artifacts/earthrise_{{version}}_noarch.deb"
+  - name: remove any existing installation of uploaded package
     become: true
     apt:
-      name: earthrise-deb
+      name: earthrise
       state: absent
   - name: install uploaded package
     become: true
     apt:
-      deb: "/opt/artifacts/earthrise/earthrise-deb_{{version}}_all.deb"
-
-- hosts: omnidrive
-  tasks:
-  - name: create artifacts directory
-    become: true
-    file:
-      path: "/opt/artifacts/omnidrive"
-      state: directory
-  - name: upload to artifacts directory
-    become: true
-    copy:
-      src: "{{playbook_dir}}/../../omnidrive-deb/build/distributions/omnidrive-deb_{{version}}_all.deb"
-      dest: "/opt/artifacts/omnidrive/omnidrive-deb_{{version}}_all.deb"
-  - name: remove existing package
-    become: true
-    apt:
-      name: omnidrive-deb
-      state: absent
-  - name: install uploaded package
-    become: true
-    apt:
-      deb: "/opt/artifacts/omnidrive/omnidrive-deb_{{version}}_all.deb"
+      deb: "/opt/artifacts/earthrise_{{version}}_noarch.deb"

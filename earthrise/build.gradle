@@ -1,15 +1,23 @@
-group 'com.pro.jenova'
+group "com.pro.jenova"
 
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "com.netflix.nebula:gradle-ospackage-plugin:${osPackageVersion}"
     }
 }
 
 apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+apply plugin: "nebula.ospackage"
+
+bootJar {
+    launchScript()
+}
 
 dependencyManagement {
     imports {
@@ -24,6 +32,26 @@ dependencies {
 
 repositories {
     maven {
-        url 'https://repo.spring.io/libs-milestone'
+        url "https://repo.spring.io/libs-milestone"
     }
 }
+
+ospackage {
+    packageName = project.name
+    version = project.version
+    os = LINUX
+    type = BINARY
+    arch = NOARCH
+
+    into "/opt/earthrise"
+    user "earthrise"
+    permissionGroup "earthrise"
+
+    from("${rootDir}/earthrise/build/libs") {
+        into "application"
+        include "**/*.jar"
+    }
+
+    link("/etc/init.d/earthrise", "/opt/earthrise/application/earthrise-${project.version}.jar")
+}
+
