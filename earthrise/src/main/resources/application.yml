@@ -3,11 +3,9 @@ spring:
     name: earthrise
 
 server:
-  port: 8000
+  port: ${SERVER_PORT}
 
 eureka:
   client:
-    registerWithEureka: false
-    fetchRegistry: false
     serviceUrl:
-      defaultZone: http://localhost:8000/eureka/
+      defaultZone: ${EUREKA_URL}
