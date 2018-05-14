@@ -3,9 +3,9 @@ spring:
     name: earthrise
 
 server:
-  port: ${SERVER_PORT}
+  port: 8761
 
 eureka:
   client:
-    serviceUrl:
-      defaultZone: ${EUREKA_URL}
+    register-with-eureka: false
+    fetch-registry: false
