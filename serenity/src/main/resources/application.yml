@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: serenity
+
+  cloud:
+    config:
+      server:
+        git.uri: C:\\Java\\projects\\config
+
+server:
+  port: 8888
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+
+management:
+  security:
+    enabled: false

@@ -10,11 +10,11 @@ spring:
     driver-class-name: org.h2.Driver
 
     tomcat:
-      max-wait: 50000
-      max-active: 40
-      max-idle: 40
-      min-idle: 20
-      initial-size: 20
+      max-wait: 30000
+      max-active: 20
+      max-idle: 20
+      min-idle: 10
+      initial-size: 10
       test-on-borrow: true
 
   jpa:
@@ -30,11 +30,5 @@ server:
 
 eureka:
   client:
-    serviceUrl:
-      defaultZone: http://skyline:8000/eureka/
-
-# Actuator Configuration
-endpoints:
-  shutdown:
-    enabled: true
-    sensitive: false
+    service-url:
+      default-zone: http://localhost:8761/eureka/

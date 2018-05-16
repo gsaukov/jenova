@@ -1,8 +1,6 @@
 package com.pro.jenova.omnidrive.rest.controller.error;
 
-import com.pro.jenova.omnidrive.rest.controller.common.RestResponse;
-
-public class RestError implements RestResponse {
+public class RestError {
 
     private String errorCode;
     private String message;

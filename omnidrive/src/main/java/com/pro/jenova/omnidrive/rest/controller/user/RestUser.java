@@ -1,8 +1,6 @@
 package com.pro.jenova.omnidrive.rest.controller.user;
 
-import com.pro.jenova.omnidrive.rest.controller.common.RestResponse;
-
-public class RestUser implements RestResponse {
+public class RestUser {
 
     private String username;
     private String password;

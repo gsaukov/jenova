@@ -1,2 +1,4 @@
 rootProject.name = 'jenova'
 include 'earthrise'
+include 'serenity'
+include 'omnidrive'

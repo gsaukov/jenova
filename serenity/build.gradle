@@ -16,7 +16,7 @@ apply plugin: "io.spring.dependency-management"
 apply plugin: "nebula.ospackage"
 
 bootRepackage {
-    mainClass = "com.pro.jenova.omnidrive.Application"
+    mainClass = "com.pro.jenova.serenity.Application"
     executable = true
 }
 
@@ -28,11 +28,8 @@ dependencyManagement {
 
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-actuator"
+    compile "org.springframework.cloud:spring-cloud-config-server"
     compile "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
-    compile "org.springframework.boot:spring-boot-starter-data-jpa"
-
-    runtime "org.liquibase:liquibase-core:${liquibaseVersion}"
-    runtime "com.h2database:h2:${h2Version}"
 }
 
 repositories {
@@ -47,15 +44,16 @@ ospackage {
     os = LINUX
     type = BINARY
 
-    into "/opt/omnidrive"
-    user "omnidrive"
-    permissionGroup "omnidrive"
+    into "/opt/serenity"
+    user "serenity"
+    permissionGroup "serenity"
 
-    from("${rootDir}/omnidrive/build/libs") {
+    from("${rootDir}/serenity/build/libs") {
         into "application"
         include "**/*.jar"
         fileMode 0755
     }
 
-    link("/etc/init.d/omnidrive", "/opt/omnidrive/application/omnidrive-${project.version}.jar")
+    link("/etc/init.d/serenity", "/opt/serenity/application/serenity-${project.version}.jar")
 }
+
