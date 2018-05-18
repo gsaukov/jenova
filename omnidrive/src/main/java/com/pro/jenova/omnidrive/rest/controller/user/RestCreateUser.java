@@ -1,15 +1,25 @@
 package com.pro.jenova.omnidrive.rest.controller.user;
 
-public class RestUser {
+import com.pro.jenova.omnidrive.rest.controller.RestRequest;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+public class RestCreateUser implements RestRequest {
+
+    @NotNull(message = "USERNAME_REQUIRED")
+    @Size(min = 8, max = 64, message = "USERNAME_INVALID_SIZE")
     private String username;
+
+    @NotNull(message = "PASSWORD_REQUIRED")
+    @Size(min = 8, max = 64, message = "PASSWORD_INVALID_SIZE")
     private String password;
 
-    private RestUser() {
+    private RestCreateUser() {
         // REST
     }
 
-    private RestUser(Builder builder) {
+    private RestCreateUser(Builder builder) {
         username = builder.username;
         password = builder.password;
     }
@@ -45,8 +55,8 @@ public class RestUser {
             return this;
         }
 
-        public RestUser build() {
-            return new RestUser(this);
+        public RestCreateUser build() {
+            return new RestCreateUser(this);
         }
 
     }

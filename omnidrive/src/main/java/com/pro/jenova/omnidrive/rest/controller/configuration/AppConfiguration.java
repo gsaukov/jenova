@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "technical-user")
+@ConfigurationProperties(prefix = "app-configuration")
 public class AppConfiguration {
 
     private String username;
