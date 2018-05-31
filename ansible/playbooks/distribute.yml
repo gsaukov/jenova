@@ -32,10 +32,10 @@
       deb: "/opt/earthrise_tmp/earthrise_{{version}}.deb"
   - name: start service that was installed
     become: true
-    enabled: true
     service:
       name: earthrise
       state: started
+      enabled: true
   - name: clean up artifacts directory
     become: true
     file:
