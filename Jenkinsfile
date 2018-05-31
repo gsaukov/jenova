@@ -4,6 +4,12 @@ properties([[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', 
 
 node {
 
+	jdk = tool name: 'JDK8'
+	env.JAVA_HOME = "${jdk}"
+	echo "jdk installation path is: ${jdk}"
+	sh "${jdk}/bin/java -version"
+	sh '$JAVA_HOME/bin/java -version'
+
 	stage("Checkout") {
 		checkout scm
 	}
