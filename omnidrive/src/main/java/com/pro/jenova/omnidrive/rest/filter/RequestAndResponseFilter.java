@@ -27,22 +27,22 @@ public class RequestAndResponseFilter extends OncePerRequestFilter {
     }
 
     private void logRequest(HttpServletRequest request, ContentCachingRequestWrapper requestWrapper) {
-        logger.debug("Method and URL - " + methodAndUrl(request));
+        logger.debug("Incoming Request - " + formattedForLogging(request));
 
         logContent(requestWrapper.getContentAsByteArray(), request.getCharacterEncoding());
     }
 
+    private String formattedForLogging(HttpServletRequest request) {
+        return request.getMethod().concat(" ").concat(request.getRequestURL().toString());
+    }
+
     private void logResponse(HttpServletResponse response, ContentCachingResponseWrapper responseWrapper) {
-        logger.debug("Response Status - " + responseStatus(response));
+        logger.debug("Outgoing Response - " + formattedForLogging(response));
 
         logContent(responseWrapper.getContentAsByteArray(), response.getCharacterEncoding());
     }
 
-    private String methodAndUrl(HttpServletRequest request) {
-        return request.getMethod().concat(" ").concat(request.getRequestURL().toString());
-    }
-
-    private String responseStatus(HttpServletResponse response) {
+    private String formattedForLogging(HttpServletResponse response) {
         return Integer.toString(response.getStatus());
     }
 
@@ -54,13 +54,17 @@ public class RequestAndResponseFilter extends OncePerRequestFilter {
         }
     }
 
-    private String getContentAsString(byte[] buffer, String charsetName) {
+    private String getContentAsString(byte[] buffer, String encoding) {
         if (buffer == null || buffer.length == 0) {
             return "";
         }
 
+        if (encoding == null) {
+            return "Unspecified Encoding";
+        }
+
         try {
-            return new String(buffer, 0, buffer.length, charsetName);
+            return new String(buffer, 0, buffer.length, encoding);
         } catch (final UnsupportedEncodingException exc) {
             return "Unsupported Encoding";
         }
