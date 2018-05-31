@@ -13,7 +13,7 @@ server:
 eureka:
   client:
     service-url:
-      default-zone: http://cloverfield:8761/eureka/
+      default-zone: http://andromeda:8761/eureka/
 
 management:
   security:
