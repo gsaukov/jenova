@@ -1,5 +1,11 @@
 - hosts: earthrise
   tasks:
+  - name: ensure base packages are installed
+    become: true
+    apt: name={{ item }}
+      state: installed
+    with_items:
+      - openjdk-8-jdk
   - name: create artifacts directory where the package will be copied into
     become: true
     file:
