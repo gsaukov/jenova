@@ -14,6 +14,7 @@
     become: true
     user:
       name: earthrise
+      password: '$6$i37xBhfw$sovtpYT/XfbjezSU1wxKUWo/WwICusd47S.vMoArqK/RkXZzxWxynMsKA9YqjBmt/T88ACgPzrgx18WRP0zBD0'
       group: earthrise
   - name: create artifacts directory where the package will be copied into
     become: true
