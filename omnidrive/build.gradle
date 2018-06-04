@@ -29,10 +29,8 @@ dependencyManagement {
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
-    compile "org.springframework.cloud:spring-cloud-starter-config"
+    // compile "org.springframework.cloud:spring-cloud-starter-config"
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
-
-    compile "org.joda:joda-money:${jodaMoneyVersion}"
 
     runtime "org.liquibase:liquibase-core:${liquibaseVersion}"
     runtime "com.h2database:h2:${h2Version}"
@@ -57,7 +55,7 @@ ospackage {
     from("${rootDir}/omnidrive/build/libs") {
         into "application"
         include "**/*.jar"
-        fileMode 0755
+        fileMode 0775
     }
 
     link("/etc/init.d/omnidrive", "/opt/omnidrive/application/omnidrive-${project.version}.jar")

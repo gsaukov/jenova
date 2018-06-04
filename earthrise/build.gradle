@@ -50,7 +50,7 @@ ospackage {
     from("${rootDir}/earthrise/build/libs") {
         into "application"
         include "**/*.jar"
-        fileMode 0755
+        fileMode 0775
     }
 
     link("/etc/init.d/earthrise", "/opt/earthrise/application/earthrise-${project.version}.jar")
