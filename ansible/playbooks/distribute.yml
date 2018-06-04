@@ -5,6 +5,11 @@
     apt: name={{ item }} state=installed
     with_items:
       - openjdk-8-jdk
+  - name: ensure appropriate group exists
+    become: true
+    user:
+      name: earthrise
+      group: earthrise
   - name: create artifacts directory where the package will be copied into
     become: true
     file:
