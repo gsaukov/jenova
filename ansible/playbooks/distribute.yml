@@ -5,6 +5,8 @@
     apt: name={{ item }} state=installed
     with_items:
       - openjdk-8-jdk
+      - whois
+      - curl
   - name: ensure appropriate group exists
     become: true
     group:
