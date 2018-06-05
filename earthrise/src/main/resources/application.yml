@@ -12,7 +12,7 @@ eureka:
     register-with-eureka: false
     fetch-registry: false
     serviceUrl:
-      defaultZone: http://netrunner-01:${server.port}/eureka/
+      defaultZone: http://192.168.178.59:${server.port}/eureka/
 
 
 management:

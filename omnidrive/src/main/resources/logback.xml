@@ -3,7 +3,7 @@
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%white([%mdc{logCorrelationId:-undefined}]) %date{ISO8601} %highlight(%-5level) %logger{5} - %msg%n</pattern>
+            <pattern>%magenta([%mdc{logCorrelationId:-undefined}]) %date{ISO8601} %highlight(%-5level) %logger{5} - %msg%n</pattern>
         </encoder>
     </appender>
 
