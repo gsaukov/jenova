@@ -11,6 +11,12 @@
     become: true
     apt:
       deb: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.2.4-amd64.deb
+  - name: start log shipper that was installed
+    become: true
+    service:
+      name: filebeat
+      state: started
+      enabled: true
   - name: ensure appropriate group exists
     become: true
     group:
