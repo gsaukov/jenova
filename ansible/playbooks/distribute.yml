@@ -7,6 +7,9 @@
       - openjdk-8-jdk
       - whois
       - curl
+  - name: ensure filebeat is installed
+    apt:
+      deb: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.2.4-amd64.deb
   - name: ensure appropriate group exists
     become: true
     group:
@@ -59,9 +62,6 @@
     file:
       path: "/opt/earthrise_tmp"
       state: absent
-
-
-
 
 - hosts: omnidrive
   tasks:
