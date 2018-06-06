@@ -11,6 +11,16 @@
     become: true
     apt:
       deb: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.2.4-amd64.deb
+  - name: stop log shipper if it is running
+    become: true
+    service:
+      name: filebeat
+      state: stopped
+  - name: copy filebeat configuration file
+    become: true
+    copy:
+      src: "{{playbook_dir}}/../files/filebeat.yml"
+      dest: "/etc/filebeat/filebeat.yml"
   - name: start log shipper that was installed
     become: true
     service:
