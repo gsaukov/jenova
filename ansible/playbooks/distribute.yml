@@ -7,7 +7,8 @@
       - openjdk-8-jdk
       - whois
       - curl
-  - name: ensure filebeat is installed
+  - name: ensure log shipper is installed
+    become: true
     apt:
       deb: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.2.4-amd64.deb
   - name: ensure appropriate group exists
