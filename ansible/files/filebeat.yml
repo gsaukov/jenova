@@ -3,6 +3,9 @@ filebeat.prospectors:
   enabled: true
   paths:
     - /var/log/earthrise.log
+  multiline.pattern: '^\['
+  multiline.negate: true
+  multiline.match: after
 
 output.logstash:
   hosts: ["cronos:5044"]
