@@ -1,1 +1,8 @@
-tst
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /var/log/earthrise.log
+
+output.logstash:
+  hosts: ["cronos:5044"]
