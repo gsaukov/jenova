@@ -5,14 +5,19 @@ spring:
 server:
   port: 8761
 
+  cloud:
+    inetutils:
+      preferredNetworks:
+        - 192.168
+
 eureka:
   server:
     enable-self-preservation: false
   client:
     register-with-eureka: false
     fetch-registry: false
-    serviceUrl:
-      defaultZone: http://netrunner-01:${server.port}/eureka/
+    service-url:
+      default-zone: http://netrunner-01:${server.port}/eureka/
 
 
 management:

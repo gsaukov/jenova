@@ -28,6 +28,11 @@ liquibase:
 server:
   port: 8001
 
+  cloud:
+    inetutils:
+      preferredNetworks:
+        - 192.168
+
 eureka:
   client:
     service-url:
