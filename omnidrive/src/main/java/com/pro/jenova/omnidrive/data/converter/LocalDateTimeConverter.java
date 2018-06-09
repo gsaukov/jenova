@@ -9,13 +9,13 @@ import java.time.LocalDateTime;
 public class LocalDateTimeConverter implements AttributeConverter<LocalDateTime, Timestamp> {
 
     @Override
-    public Timestamp convertToDatabaseColumn(LocalDateTime localDateTime) {
-        return localDateTime == null ? null : Timestamp.valueOf(localDateTime);
+    public Timestamp convertToDatabaseColumn(LocalDateTime attribute) {
+        return attribute == null ? null : Timestamp.valueOf(attribute);
     }
 
     @Override
-    public LocalDateTime convertToEntityAttribute(Timestamp timestamp) {
-        return timestamp == null ? null : timestamp.toLocalDateTime();
+    public LocalDateTime convertToEntityAttribute(Timestamp column) {
+        return column == null ? null : column.toLocalDateTime();
     }
 
 }

@@ -5,16 +5,11 @@ spring:
 server:
   port: 8761
 
-  cloud:
-    inetutils:
-      preferredNetworks:
-        - 192.168
-
 eureka:
   server:
     enable-self-preservation: false
   instance:
-    hostname: netrunner-01
+    hostname: 192.168.178.56
   client:
     register-with-eureka: false
     fetch-registry: false
