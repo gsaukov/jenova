@@ -7,13 +7,11 @@ server:
 
 eureka:
   instance:
+    hostname: 192.168.178.56
     prefer-ip-address: true
-    ip-address: 192.168.178.56
   client:
     register-with-eureka: false
     fetch-registry: false
-    service-url:
-      default-zone: http://${eureka.instance.ip-address}:${server.port}/eureka
 
 management:
   security:

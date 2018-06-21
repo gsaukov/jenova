@@ -31,7 +31,7 @@ server:
 eureka:
   client:
     service-url:
-      default-zone: http://192.168.178.56:8761/eureka
+      default-zone: http://192.168.178.56:8761/eureka/
 
 management:
   security:
