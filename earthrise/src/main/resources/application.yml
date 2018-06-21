@@ -5,9 +5,14 @@ spring:
 server:
   port: 8761
 
+spring:
+  cloud:
+    inetutils:
+      ignoredInterfaces:
+        - lo
+
 eureka:
   instance:
-    hostname: 192.168.178.56
     prefer-ip-address: true
   client:
     register-with-eureka: false
