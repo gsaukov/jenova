@@ -1,20 +1,18 @@
 spring:
   application:
     name: earthrise
-  cloud:
-    inetutils:
-      ignoredInterfaces:
-        - lo
 
 server:
   port: 8761
 
 eureka:
   instance:
-    prefer-ip-address: true
+    preferIpAddress: true
   client:
-    register-with-eureka: false
-    fetch-registry: false
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://192.168.178.56:8761/eureka/
 
 management:
   security:
