@@ -1,15 +1,13 @@
 spring:
   application:
     name: earthrise
-
-server:
-  port: 8761
-
-spring:
   cloud:
     inetutils:
       ignoredInterfaces:
         - lo
+
+server:
+  port: 8761
 
 eureka:
   instance:
