@@ -9,4 +9,4 @@ filebeat.prospectors:
   multiline.match: after
 
 output.logstash:
-  hosts: ["cronos:5044"]
+  hosts: ["192.168.178.54:5044"]
