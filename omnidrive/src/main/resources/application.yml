@@ -31,7 +31,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://192.168.178.56:8761/eureka/
+      defaultZone: http://netrunner-01:8761/eureka/
 
 management:
   security:

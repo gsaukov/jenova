@@ -7,12 +7,12 @@ server:
 
 eureka:
   instance:
-    preferIpAddress: true
+    hostname: netrunner-01
   client:
     registerWithEureka: false
     fetchRegistry: false
     serviceUrl:
-      defaultZone: http://192.168.178.56:8761/eureka/
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
 management:
   security:
