@@ -80,10 +80,6 @@
       path: "/opt/earthrise_tmp"
       state: absent
 
-
-
-
-
 - hosts: omnidrive
   tasks:
   - name: ensure base packages are installed
