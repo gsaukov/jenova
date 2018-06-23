@@ -58,5 +58,12 @@ ospackage {
         fileMode 0775
     }
 
+    from("${rootDir}/omnidrive/build/resources/main") {
+        into "configuration"
+        include "**/*.conf"
+        fileMode 0775
+    }
+
     link("/etc/init.d/omnidrive", "/opt/omnidrive/application/omnidrive-${project.version}.jar")
+    link("/opt/omnidrive/application/omnidrive-${project.version}.conf", "/opt/omnidrive/configuration/startup.conf")
 }

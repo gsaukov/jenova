@@ -53,6 +53,13 @@ ospackage {
         fileMode 0775
     }
 
+    from("${rootDir}/earthrise/build/resources/main") {
+        into "configuration"
+        include "**/*.conf"
+        fileMode 0775
+    }
+
     link("/etc/init.d/earthrise", "/opt/earthrise/application/earthrise-${project.version}.jar")
+    link("/opt/earthrise/application/earthrise-${project.version}.conf", "/opt/earthrise/configuration/startup.conf")
 }
 
