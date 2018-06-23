@@ -161,3 +161,85 @@
     file:
       path: "/opt/omnidrive_tmp"
       state: absent
+
+- hosts: gatekeeper
+  tasks:
+  - name: ensure base packages are installed
+    become: true
+    apt: name={{ item }} state=installed
+    with_items:
+      - openjdk-8-jdk
+      - whois
+      - curl
+  - name: ensure log shipper is installed
+    become: true
+    apt:
+      deb: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.2.4-amd64.deb
+  - name: stop log shipper if it is running
+    become: true
+    service:
+      name: filebeat
+      state: stopped
+  - name: copy filebeat configuration file
+    become: true
+    copy:
+      src: "{{playbook_dir}}/../files/filebeat.yml"
+      dest: "/etc/filebeat/filebeat.yml"
+  - name: start log shipper that was installed
+    become: true
+    service:
+      name: filebeat
+      state: started
+      enabled: true
+  - name: ensure appropriate group exists
+    become: true
+    group:
+      name: gatekeeper
+      state: present
+  - name: ensure appropriate user exists
+    become: true
+    user:
+      name: gatekeeper
+      password: '$6$OTx6q0i.Vkcs$n/P46yuW.GBC5U4NA8Meb2kSzYzT859XPvr6.FR0gcN/h2fVGACcIyP2Wfi9KaO4yVqvpamuUMWI8TBmKGBR2.'
+      group: gatekeeper
+  - name: create artifacts directory where the package will be copied into
+    become: true
+    file:
+      path: "/opt/gatekeeper_tmp"
+      state: directory
+  - name: upload package binary into artifacts directory
+    become: true
+    copy:
+      src: "{{playbook_dir}}/../../gatekeeper/build/distributions/gatekeeper_{{version}}_all.deb"
+      dest: "/opt/gatekeeper_tmp/gatekeeper_{{version}}.deb"
+  - name: check if service being installed exists from before
+    become: true
+    stat:
+      path: "/etc/init.d/gatekeeper"
+    register: service_status
+  - name: if service being installed exists, then make sure it is stopped
+    become: true
+    service:
+      name: gatekeeper
+      state: stopped
+    when: service_status.stat.exists
+  - name: uninstall package of interest if already installed from before
+    become: true
+    apt:
+      name: gatekeeper
+      state: absent
+  - name: install uploaded package
+    become: true
+    apt:
+      deb: "/opt/gatekeeper_tmp/gatekeeper_{{version}}.deb"
+  - name: start service that was installed
+    become: true
+    service:
+      name: gatekeeper
+      state: started
+      enabled: true
+  - name: clean up artifacts directory
+    become: true
+    file:
+      path: "/opt/gatekeeper_tmp"
+      state: absent

@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: gatekeeper
+
+zuul:
+  prefix: /jenova
+  routes:
+    user:
+      path: /user/**
+      serviceId: omnidrive
+
+server:
+  port: 80
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://netrunner-01:8761/eureka/
+
+management:
+  security:
+    enabled: false

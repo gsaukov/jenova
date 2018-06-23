@@ -1,3 +1,4 @@
 rootProject.name = 'jenova'
 include 'earthrise'
 include 'omnidrive'
+include 'gatekeeper'

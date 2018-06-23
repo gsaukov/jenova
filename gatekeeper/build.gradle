@@ -1,0 +1,66 @@
+group "com.pro.jenova"
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "com.netflix.nebula:gradle-ospackage-plugin:${osPackageVersion}"
+    }
+}
+
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+apply plugin: "nebula.ospackage"
+
+bootRepackage {
+    mainClass = "com.pro.jenova.gatekeeper.Application"
+    executable = true
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-actuator"
+    compile "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
+    compile "org.springframework.cloud:spring-cloud-starter-zuul"
+}
+
+repositories {
+    maven {
+        url "https://repo.spring.io/libs-milestone"
+    }
+}
+
+ospackage {
+    packageName = project.name
+    version = project.version
+    os = LINUX
+    type = BINARY
+
+    into "/opt/gatekeeper"
+    user "gatekeeper"
+    permissionGroup "gatekeeper"
+
+    from("${rootDir}/gatekeeper/build/libs") {
+        into "application"
+        include "**/*.jar"
+        fileMode 0775
+    }
+
+    from("${rootDir}/gatekeeper/build/resources/main") {
+        into "configuration"
+        include "**/*.conf"
+        fileMode 0775
+    }
+
+    link("/etc/init.d/gatekeeper", "/opt/gatekeeper/application/gatekeeper-${project.version}.jar")
+    link("/opt/gatekeeper/application/gatekeeper-${project.version}.conf", "/opt/gatekeeper/configuration/startup.conf")
+}
+
