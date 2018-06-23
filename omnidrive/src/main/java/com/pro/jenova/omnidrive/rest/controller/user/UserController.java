@@ -4,7 +4,7 @@ import com.pro.jenova.omnidrive.data.entity.User;
 import com.pro.jenova.omnidrive.data.repository.UserRepository;
 import com.pro.jenova.omnidrive.rest.controller.RestResponse;
 import com.pro.jenova.omnidrive.rest.controller.VoidResponse;
-import com.pro.jenova.omnidrive.rest.controller.error.RestErrors;
+import com.pro.jenova.omnidrive.rest.controller.error.BadRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +24,7 @@ public class UserController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public RestResponse create(@Valid @RequestBody RestCreateUser restCreateUser, BindingResult violations) {
         if (violations.hasErrors()) {
-            return RestErrors.from(violations);
+            return BadRequest.dueTo(violations);
         }
 
         userRepository.save(new User.Builder()
