@@ -4,6 +4,9 @@ spring:
 
 zuul:
   ignoredServices: '*'
+  ribbon:
+    eager-load:
+      enabled: true
   prefix: /jenova
   routes:
     user:
@@ -12,8 +15,6 @@ zuul:
       strip-prefix: false
 
 ribbon:
-  eager-load:
-    enabled: true
   ReadTimeout: 3000
   ConnectTimeout: 1000
 
