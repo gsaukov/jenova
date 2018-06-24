@@ -3,7 +3,13 @@ spring:
     name: gatekeeper
 
 zuul:
+  ignoredServices: '*'
   prefix: /jenova
+  routes:
+    user:
+      path: /user/**
+      serviceId: omnidrive
+      strip-prefix: false
 
 server:
   port: 8090
