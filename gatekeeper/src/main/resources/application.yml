@@ -11,6 +11,14 @@ zuul:
       serviceId: omnidrive
       strip-prefix: false
 
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10
+
 server:
   port: 8090
 eureka:
