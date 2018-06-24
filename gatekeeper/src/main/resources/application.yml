@@ -4,10 +4,6 @@ spring:
 
 zuul:
   prefix: /jenova
-  routes:
-    user:
-      path: /user/**
-      serviceId: omnidrive
 
 server:
   port: 8090
