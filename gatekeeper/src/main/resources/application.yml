@@ -11,6 +11,10 @@ zuul:
       serviceId: omnidrive
       strip-prefix: false
 
+ribbon:
+  ReadTimeout: 10
+  ConnectTimeout: 10
+
 hystrix:
   command:
     default:
