@@ -12,6 +12,8 @@ zuul:
       strip-prefix: false
 
 ribbon:
+  eager-load:
+    enabled: true
   ReadTimeout: 3000
   ConnectTimeout: 1000
 
@@ -21,7 +23,7 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 6000
+            timeoutInMilliseconds: 10000
 
 server:
   port: 8090
