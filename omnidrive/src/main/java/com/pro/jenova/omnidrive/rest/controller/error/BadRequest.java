@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,6 +32,10 @@ public class BadRequest extends ResponseEntity<BadRequest> implements RestRespon
         return builder.build();
     }
 
+    public static BadRequest dueTo(String errorCode) {
+        return new Builder().withErrorCode(errorCode).build();
+    }
+
     public Set<String> getErrorCodes() {
         return errorCodes;
     }
@@ -41,6 +46,11 @@ public class BadRequest extends ResponseEntity<BadRequest> implements RestRespon
 
         public Builder withErrorCode(String errorCode) {
             this.errorCodes.add(errorCode);
+            return this;
+        }
+
+        public Builder withErrorCodes(Collection<String> errorCodes) {
+            this.errorCodes.addAll(errorCodes);
             return this;
         }
 

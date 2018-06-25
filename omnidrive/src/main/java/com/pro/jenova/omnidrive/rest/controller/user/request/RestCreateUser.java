@@ -1,4 +1,4 @@
-package com.pro.jenova.omnidrive.rest.controller.user;
+package com.pro.jenova.omnidrive.rest.controller.user.request;
 
 import com.pro.jenova.omnidrive.rest.controller.RestRequest;
 
