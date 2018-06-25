@@ -1,11 +1,9 @@
 package com.pro.jenova.omnidrive.rest.controller.user.request;
 
-import com.pro.jenova.omnidrive.rest.controller.RestRequest;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class RestCreateUser implements RestRequest {
+public class RestCreateUser {
 
     @NotNull(message = "USERNAME_REQUIRED")
     @Size(min = 8, max = 64, message = "USERNAME_INVALID_SIZE")

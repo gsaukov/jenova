@@ -12,8 +12,8 @@ zuul:
       strip-prefix: false
 
 ribbon:
-  ReadTimeout: 3000
-  ConnectTimeout: 1000
+  ReadTimeout: 30000
+  ConnectTimeout: 10000
 
 hystrix:
   command:
@@ -21,7 +21,7 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 10000
+            timeoutInMilliseconds: 90000
 
 server:
   port: 8090

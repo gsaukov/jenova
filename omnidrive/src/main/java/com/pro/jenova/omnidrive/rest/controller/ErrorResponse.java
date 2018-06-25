@@ -1,6 +1,5 @@
-package com.pro.jenova.omnidrive.rest.controller.error;
+package com.pro.jenova.omnidrive.rest.controller;
 
-import com.pro.jenova.omnidrive.rest.controller.RestResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -12,32 +11,38 @@ import java.util.Set;
 import static java.util.Collections.unmodifiableSet;
 import static org.springframework.util.Assert.isTrue;
 
-public class BadRequest extends ResponseEntity<BadRequest> implements RestResponse {
+public class ErrorResponse implements RestResponse {
 
-    private final Set<String> errorCodes;
+    private Set<String> errorCodes;
 
-    private BadRequest(Builder builder) {
-        super(HttpStatus.BAD_REQUEST);
+    private ErrorResponse() {
+        // REST
+    }
 
+    private ErrorResponse(Builder builder) {
         errorCodes = unmodifiableSet(builder.errorCodes);
     }
 
-    public static BadRequest dueTo(BindingResult violations) {
+    public static ResponseEntity<RestResponse> badRequest(BindingResult violations) {
         isTrue(violations.hasErrors(), "illegal argument");
 
         Builder builder = new Builder();
 
         violations.getAllErrors().forEach(error -> builder.withErrorCode(error.getDefaultMessage()));
 
-        return builder.build();
+        return new ResponseEntity<>(builder.build(), HttpStatus.BAD_REQUEST);
     }
 
-    public static BadRequest dueTo(String errorCode) {
-        return new Builder().withErrorCode(errorCode).build();
+    public static ResponseEntity<RestResponse> badRequest(String errorCode) {
+        return new ResponseEntity<>(new Builder().withErrorCode(errorCode).build(), HttpStatus.BAD_REQUEST);
     }
 
     public Set<String> getErrorCodes() {
         return errorCodes;
+    }
+
+    public void setErrorCodes(Set<String> errorCodes) {
+        this.errorCodes = errorCodes;
     }
 
     public static final class Builder {
@@ -54,8 +59,8 @@ public class BadRequest extends ResponseEntity<BadRequest> implements RestRespon
             return this;
         }
 
-        public BadRequest build() {
-            return new BadRequest(this);
+        public ErrorResponse build() {
+            return new ErrorResponse(this);
         }
 
     }

@@ -2,12 +2,13 @@ package com.pro.jenova.omnidrive.rest.controller.user;
 
 import com.pro.jenova.omnidrive.data.entity.User;
 import com.pro.jenova.omnidrive.data.repository.UserRepository;
+import com.pro.jenova.omnidrive.rest.controller.ErrorResponse;
 import com.pro.jenova.omnidrive.rest.controller.RestResponse;
 import com.pro.jenova.omnidrive.rest.controller.VoidResponse;
-import com.pro.jenova.omnidrive.rest.controller.error.BadRequest;
 import com.pro.jenova.omnidrive.rest.controller.user.request.RestCreateUser;
 import com.pro.jenova.omnidrive.rest.controller.user.response.RestListUsers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,13 +28,13 @@ public class UserController {
     private UserRepository userRepository;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public RestResponse create(@Valid @RequestBody RestCreateUser restCreateUser, BindingResult violations) {
+    public ResponseEntity<RestResponse> create(@Valid @RequestBody RestCreateUser restCreateUser, BindingResult violations) {
         if (violations.hasErrors()) {
-            return BadRequest.dueTo(violations);
+            return ErrorResponse.badRequest(violations);
         }
 
         if (userRepository.existsByUsername(restCreateUser.getUsername())) {
-            return BadRequest.dueTo("USERNAME_ALREADY_EXISTS");
+            return ErrorResponse.badRequest("USERNAME_ALREADY_EXISTS");
         }
 
         userRepository.save(new User.Builder()
@@ -41,7 +42,7 @@ public class UserController {
                 .withPassword(restCreateUser.getPassword())
                 .build());
 
-        return VoidResponse.CREATED;
+        return VoidResponse.created();
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)

@@ -1,8 +1,6 @@
 package com.pro.jenova.omnidrive.rest.controller.user.response;
 
 import com.pro.jenova.omnidrive.rest.controller.RestResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,17 +8,15 @@ import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
 
-public class RestListUsers extends ResponseEntity<RestListUsers> implements RestResponse {
+public class RestListUsers implements RestResponse {
 
     private List<String> usernames;
 
     private RestListUsers() {
         // REST
-        super(HttpStatus.OK);
     }
 
     private RestListUsers(Builder builder) {
-        this();
         usernames = unmodifiableList(builder.usernames);
     }
 
