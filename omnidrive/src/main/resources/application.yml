@@ -3,11 +3,11 @@ spring:
     name: omnidrive
 
   datasource:
-    url: jdbc:mysql://cronos:3306/jenova_db
+    url: jdbc:mysql://cronos:3306/jenova_db?useUnicode=true&serverTimezone=UTC
     username: dimitrios
     password: password
     type: org.apache.tomcat.jdbc.pool.DataSource
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
     tomcat:
       max-wait: 30000
