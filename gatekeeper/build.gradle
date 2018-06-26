@@ -15,9 +15,9 @@ apply plugin: "org.springframework.boot"
 apply plugin: "io.spring.dependency-management"
 apply plugin: "nebula.ospackage"
 
-bootRepackage {
-    mainClass = "com.pro.jenova.gatekeeper.Application"
-    executable = true
+bootJar {
+    mainClassName = "com.pro.jenova.gatekeeper.Application"
+    launchScript()
 }
 
 dependencyManagement {
@@ -29,7 +29,7 @@ dependencyManagement {
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
-    compile "org.springframework.cloud:spring-cloud-starter-zuul"
+    compile "org.springframework.cloud:spring-cloud-starter-netflix-zuul"
 }
 
 repositories {

@@ -4,15 +4,13 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.servlet.Filter;
-
 
 @Configuration
 public class FilterFactory {
 
     @Bean
-    public FilterRegistrationBean requestAndResponseLoggerFilterRegistration() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
+    public FilterRegistrationBean<RequestAndResponseFilter> requestAndResponseLoggerFilterRegistration() {
+        FilterRegistrationBean<RequestAndResponseFilter> registration = new FilterRegistrationBean<>();
 
         registration.setFilter(requestAndResponseLoggerFilter());
         registration.addUrlPatterns("/*");
@@ -22,13 +20,13 @@ public class FilterFactory {
     }
 
     @Bean
-    public Filter requestAndResponseLoggerFilter() {
+    public RequestAndResponseFilter requestAndResponseLoggerFilter() {
         return new RequestAndResponseFilter();
     }
 
     @Bean
-    public FilterRegistrationBean logCorrelationIdFilterRegistration() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
+    public FilterRegistrationBean<LogCorrelationIdFilter> logCorrelationIdFilterRegistration() {
+        FilterRegistrationBean<LogCorrelationIdFilter> registration = new FilterRegistrationBean<>();
 
         registration.setFilter(logCorrelationIdFilter());
         registration.addUrlPatterns("/*");
@@ -38,7 +36,7 @@ public class FilterFactory {
     }
 
     @Bean
-    public Filter logCorrelationIdFilter() {
+    public LogCorrelationIdFilter logCorrelationIdFilter() {
         return new LogCorrelationIdFilter();
     }
 
