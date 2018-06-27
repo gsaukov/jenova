@@ -30,6 +30,3 @@ eureka:
     serviceUrl:
       defaultZone: http://netrunner-01:8761/eureka/
 
-management:
-  security:
-    enabled: false
