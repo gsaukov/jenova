@@ -7,7 +7,7 @@ server:
 
 eureka:
   instance:
-    hostname: netrunner-01
+    hostname: deepwater
   client:
     registerWithEureka: false
     fetchRegistry: false

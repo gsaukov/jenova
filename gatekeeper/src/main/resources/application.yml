@@ -28,5 +28,5 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://netrunner-01:8761/eureka/
+      defaultZone: http://deepwater:8761/eureka/
 
