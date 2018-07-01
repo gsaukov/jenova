@@ -6,6 +6,7 @@ server:
   port: 8761
 
 eureka:
+  numberRegistrySyncRetries: 1
   instance:
     hostname: deepwater
   client:
@@ -13,3 +14,5 @@ eureka:
     fetchRegistry: false
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    enableSelfPreservation: true
