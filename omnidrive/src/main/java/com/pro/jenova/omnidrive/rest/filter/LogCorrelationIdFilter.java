@@ -1,6 +1,5 @@
 package com.pro.jenova.omnidrive.rest.filter;
 
-
 import org.slf4j.MDC;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -11,12 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static com.pro.jenova.omnidrive.util.IdUtils.uuid;
+import static com.pro.jenova.omnidrive.util.LogCorrelation.LOG_CORRELATION_ID;
+import static com.pro.jenova.omnidrive.util.LogCorrelation.MAX_ID_SIZE;
 
 public class LogCorrelationIdFilter extends OncePerRequestFilter {
-
-    private static final String LOG_CORRELATION_ID = "logCorrelationId";
-
-    private static final int MAX_ID_SIZE = 50;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

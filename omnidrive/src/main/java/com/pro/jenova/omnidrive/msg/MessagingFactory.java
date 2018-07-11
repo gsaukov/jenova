@@ -13,20 +13,18 @@ import static org.springframework.amqp.core.BindingBuilder.bind;
 public class MessagingFactory {
 
     @Bean
-    @JenovaTopicExchange
     public Exchange jenovaTopicExchange() {
         return new TopicExchange("jenova");
     }
 
     @Bean
-    @UserEventsQueue
     public Queue userEventsQueue() {
         return new Queue("userEventsQueue");
     }
 
     @Bean
-    public Binding userEventsBinding(@UserEventsQueue Queue queue, @JenovaTopicExchange Exchange exchange) {
-        return bind(queue).to(exchange).with("user.*").noargs();
+    public Binding userEventsBinding() {
+        return bind(userEventsQueue()).to(jenovaTopicExchange()).with("user.*").noargs();
     }
 
 }

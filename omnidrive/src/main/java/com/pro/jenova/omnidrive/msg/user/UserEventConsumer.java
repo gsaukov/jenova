@@ -1,19 +1,26 @@
 package com.pro.jenova.omnidrive.msg.user;
 
+import com.pro.jenova.omnidrive.msg.BaseEventConsumer;
 import org.slf4j.Logger;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @Component
-public class UserEventConsumer {
+public class UserEventConsumer extends BaseEventConsumer {
 
     private static final Logger logger = getLogger(UserEventConsumer.class);
 
     @RabbitListener(queues = "userEventsQueue")
-    public void receive(String message) {
-        logger.info("Message Received: {}", message);
+    public void onMessage(Message message) {
+        prepare(message);
+
+        String content = new String(message.getBody(), UTF_8);
+
+        logger.info("Message Content: {}", content);
     }
 
 }
