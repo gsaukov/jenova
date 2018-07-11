@@ -2,6 +2,7 @@ package com.pro.jenova.omnidrive.rest.controller.user;
 
 import com.pro.jenova.omnidrive.data.entity.User;
 import com.pro.jenova.omnidrive.data.repository.UserRepository;
+import com.pro.jenova.omnidrive.msg.user.UserEventProducer;
 import com.pro.jenova.omnidrive.rest.controller.ErrorResponse;
 import com.pro.jenova.omnidrive.rest.controller.RestResponse;
 import com.pro.jenova.omnidrive.rest.controller.VoidResponse;
@@ -27,6 +28,9 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserEventProducer userEventProducer;
+
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<RestResponse> create(@Valid @RequestBody RestCreateUser restCreateUser, BindingResult violations) {
         if (violations.hasErrors()) {
@@ -37,10 +41,12 @@ public class UserController {
             return ErrorResponse.badRequest("USERNAME_ALREADY_EXISTS");
         }
 
-        userRepository.save(new User.Builder()
+        User user = userRepository.save(new User.Builder()
                 .withUsername(restCreateUser.getUsername())
                 .withPassword(restCreateUser.getPassword())
                 .build());
+
+        userEventProducer.onUserCreated(user);
 
         return VoidResponse.created();
     }
