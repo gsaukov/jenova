@@ -23,6 +23,12 @@ spring:
   liquibase:
     change-log: classpath:liquibase/changelog-master.xml
 
+  rabbitmq:
+    host: cronos
+    port: 5672
+    username: admin
+    password: admin
+
   cloud:
     refresh:
       enabled: false # FIXME: This needs to be removed once issue is fixed (bug with circular dependency).
