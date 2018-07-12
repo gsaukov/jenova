@@ -11,4 +11,3 @@ filebeat.prospectors:
 
 output.elasticsearch:
   hosts: ["http://cronos:9200"]
-  index: "filebeat-%{+yyyy.MM.dd}"
