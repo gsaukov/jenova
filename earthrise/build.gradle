@@ -29,6 +29,8 @@ dependencyManagement {
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.cloud:spring-cloud-starter-netflix-eureka-server"
+
+    runtime "net.logstash.logback:logstash-logback-encoder:${logstashEncoderVersion}"
 }
 
 repositories {

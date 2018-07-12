@@ -33,6 +33,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
     compile "org.springframework.boot:spring-boot-starter-amqp"
 
+    runtime "net.logstash.logback:logstash-logback-encoder:${logstashEncoderVersion}"
     runtime "org.liquibase:liquibase-core:${liquibaseVersion}"
     runtime "mysql:mysql-connector-java:${mysqlVersion}"
     runtime "com.h2database:h2:${h2Version}"
