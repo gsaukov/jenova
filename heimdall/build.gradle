@@ -1,0 +1,70 @@
+group "com.pro.jenova"
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "com.netflix.nebula:gradle-ospackage-plugin:${osPackageVersion}"
+    }
+}
+
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+apply plugin: "nebula.ospackage"
+
+bootJar {
+    mainClassName = "com.pro.jenova.heimdall.Application"
+    launchScript()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-actuator"
+    compile "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
+    compile "org.springframework.boot:spring-boot-starter-web"
+
+    compile "org.springframework.security.oauth:spring-security-oauth2:${springSecurityOath2Version}"
+
+    runtime "net.logstash.logback:logstash-logback-encoder:${logstashEncoderVersion}"
+}
+
+repositories {
+    maven {
+        url "https://repo.spring.io/libs-milestone"
+    }
+}
+
+ospackage {
+    packageName = project.name
+    version = project.version
+    os = LINUX
+    type = BINARY
+
+    into "/opt/heimdall"
+    user "heimdall"
+    permissionGroup "heimdall"
+
+    from("${rootDir}/heimdall/build/libs") {
+        into "application"
+        include "**/*.jar"
+        fileMode 0775
+    }
+
+    from("${rootDir}/heimdall/build/resources/main") {
+        into "configuration"
+        include "**/*.conf"
+        fileMode 0775
+    }
+
+    link("/etc/init.d/heimdall", "/opt/heimdall/application/heimdall-${project.version}.jar")
+    link("/opt/heimdall/application/heimdall-${project.version}.conf", "/opt/heimdall/configuration/startup.conf")
+}
+
