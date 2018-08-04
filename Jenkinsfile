@@ -1,6 +1,6 @@
 #!groovy
 
-properties([[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '5', artifactNumToKeepStr: '3', daysToKeepStr: '5', numToKeepStr: '3']]])
+properties([disableConcurrentBuilds(), [$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '5', artifactNumToKeepStr: '3', daysToKeepStr: '5', numToKeepStr: '3']]])
 
 node {
 
