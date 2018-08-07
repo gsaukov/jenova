@@ -1,6 +1,6 @@
-package com.pro.jenova.omnidrive.msg.user;
+package com.pro.jenova.omnidrive.messaging.user;
 
-import com.pro.jenova.omnidrive.msg.BaseEventConsumer;
+import com.pro.jenova.omnidrive.messaging.BaseEventConsumer;
 import org.slf4j.Logger;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

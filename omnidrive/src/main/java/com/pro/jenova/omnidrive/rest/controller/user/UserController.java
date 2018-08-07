@@ -2,13 +2,14 @@ package com.pro.jenova.omnidrive.rest.controller.user;
 
 import com.pro.jenova.omnidrive.data.entity.User;
 import com.pro.jenova.omnidrive.data.repository.UserRepository;
-import com.pro.jenova.omnidrive.msg.user.UserEventProducer;
+import com.pro.jenova.omnidrive.messaging.user.UserEventProducer;
 import com.pro.jenova.omnidrive.rest.controller.ErrorResponse;
 import com.pro.jenova.omnidrive.rest.controller.RestResponse;
 import com.pro.jenova.omnidrive.rest.controller.VoidResponse;
 import com.pro.jenova.omnidrive.rest.controller.user.request.RestCreateUser;
 import com.pro.jenova.omnidrive.rest.controller.user.response.RestListUsers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,9 +53,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public RestListUsers list() {
+    public ResponseEntity<RestResponse> list() {
         List<String> usernames = userRepository.findAll().stream().map(User::getUsername).collect(toList());
-        return new RestListUsers.Builder().withUsernames(usernames).build();
+
+        return new ResponseEntity<>(new RestListUsers.Builder().withUsernames(usernames).build(), HttpStatus.OK);
     }
 
 }

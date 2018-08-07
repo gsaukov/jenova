@@ -1,4 +1,4 @@
-package com.pro.jenova.omnidrive.msg;
+package com.pro.jenova.omnidrive.messaging;
 
 import org.slf4j.MDC;
 import org.springframework.amqp.core.Exchange;

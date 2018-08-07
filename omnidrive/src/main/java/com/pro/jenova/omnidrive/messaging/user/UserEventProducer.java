@@ -1,7 +1,7 @@
-package com.pro.jenova.omnidrive.msg.user;
+package com.pro.jenova.omnidrive.messaging.user;
 
 import com.pro.jenova.omnidrive.data.entity.User;
-import com.pro.jenova.omnidrive.msg.BaseEventProducer;
+import com.pro.jenova.omnidrive.messaging.BaseEventProducer;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;

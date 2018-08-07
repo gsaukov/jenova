@@ -1,4 +1,4 @@
-package com.pro.jenova.omnidrive.msg;
+package com.pro.jenova.omnidrive.messaging;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
