@@ -19,7 +19,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
 
         http.cors().and().csrf().disable().authorizeRequests()
-            .antMatchers("/user/**").hasRole("MANAGE_USER");
+            .antMatchers("/user/**").hasRole("MANAGE_USER")
+            .and().httpBasic();
     }
 
 }
