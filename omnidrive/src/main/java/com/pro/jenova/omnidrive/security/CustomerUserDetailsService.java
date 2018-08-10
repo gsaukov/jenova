@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +18,11 @@ public class CustomerUserDetailsService implements UserDetailsService {
 
     private static final Logger logger = getLogger(CustomerUserDetailsService.class);
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         logger.info("Attempting to load user by username [{}].", username);
 
-        return new User("dimitrios", passwordEncoder.encode("password"), createAuthorityList("MANAGE_USER"));
+        return new User("dimitrios", new BCryptPasswordEncoder().encode("password"), createAuthorityList("MANAGE_USER"));
     }
 
 }
