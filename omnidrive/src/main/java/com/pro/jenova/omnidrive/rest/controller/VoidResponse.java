@@ -9,4 +9,8 @@ public class VoidResponse implements RestResponse {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    public static ResponseEntity<RestResponse> ok() {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

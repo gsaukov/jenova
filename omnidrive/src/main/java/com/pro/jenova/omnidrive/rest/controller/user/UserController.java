@@ -7,6 +7,7 @@ import com.pro.jenova.omnidrive.rest.controller.ErrorResponse;
 import com.pro.jenova.omnidrive.rest.controller.RestResponse;
 import com.pro.jenova.omnidrive.rest.controller.VoidResponse;
 import com.pro.jenova.omnidrive.rest.controller.user.request.RestCreateUser;
+import com.pro.jenova.omnidrive.rest.controller.user.request.RestRemoveUser;
 import com.pro.jenova.omnidrive.rest.controller.user.response.RestListUsers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,20 @@ public class UserController {
 
         return VoidResponse.created();
     }
+
+    @RequestMapping(value = "/remove", method = RequestMethod.PUT)
+    public ResponseEntity<RestResponse> create(@Valid @RequestBody RestRemoveUser restRemoveUser, BindingResult violations) {
+        if (violations.hasErrors()) {
+            return ErrorResponse.badRequest(violations);
+        }
+
+        if (userRepository.removeByUsername(restRemoveUser.getUsername()) > 0L) {
+            return VoidResponse.ok();
+        } else {
+            return ErrorResponse.badRequest("USERNAME_NOT_FOUND");
+        }
+    }
+
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity<RestResponse> list() {
