@@ -3,6 +3,7 @@ package com.pro.jenova.omnidrive.data.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Table(name = "USER")
@@ -44,16 +45,17 @@ public class User extends BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+
         if (o == null || getClass() != o.getClass()) return false;
 
         User user = (User) o;
 
-        return username != null ? username.equals(user.username) : user.username == null;
+        return Objects.equals(username, user.username);
     }
 
     @Override
     public int hashCode() {
-        return username != null ? username.hashCode() : 0;
+        return Objects.hash(username);
     }
 
     public static final class Builder {

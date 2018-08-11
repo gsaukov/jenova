@@ -8,15 +8,15 @@ import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
 
-public class RestListUsers implements RestResponse {
+public class RestListUsersResponse implements RestResponse {
 
     private List<String> usernames;
 
-    private RestListUsers() {
+    private RestListUsersResponse() {
         // REST
     }
 
-    private RestListUsers(Builder builder) {
+    private RestListUsersResponse(Builder builder) {
         usernames = unmodifiableList(builder.usernames);
     }
 
@@ -42,8 +42,8 @@ public class RestListUsers implements RestResponse {
             return this;
         }
 
-        public RestListUsers build() {
-            return new RestListUsers(this);
+        public RestListUsersResponse build() {
+            return new RestListUsersResponse(this);
         }
 
     }

@@ -3,23 +3,18 @@ package com.pro.jenova.omnidrive.rest.controller.user.request;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class RestCreateUser {
+public class RestRemoveUserRequest {
 
     @NotNull(message = "USERNAME_REQUIRED")
     @Size(min = 8, max = 64, message = "USERNAME_INVALID_SIZE")
     private String username;
 
-    @NotNull(message = "PASSWORD_REQUIRED")
-    @Size(min = 8, max = 64, message = "PASSWORD_INVALID_SIZE")
-    private String password;
-
-    private RestCreateUser() {
+    private RestRemoveUserRequest() {
         // REST
     }
 
-    private RestCreateUser(Builder builder) {
+    private RestRemoveUserRequest(Builder builder) {
         username = builder.username;
-        password = builder.password;
     }
 
     public String getUsername() {
@@ -30,31 +25,17 @@ public class RestCreateUser {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public static final class Builder {
 
         private String username;
-        private String password;
 
         public Builder withUsername(String username) {
             this.username = username;
             return this;
         }
 
-        public Builder withPassword(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public RestCreateUser build() {
-            return new RestCreateUser(this);
+        public RestRemoveUserRequest build() {
+            return new RestRemoveUserRequest(this);
         }
 
     }

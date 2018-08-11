@@ -18,9 +18,8 @@ public class CustomerUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        logger.info("Attempting to load user by username [{}].", username);
-
-        return new User("dimitrios", new BCryptPasswordEncoder().encode("password"), createAuthorityList("MANAGE_USER"));
+        return new User("dimitrios", new BCryptPasswordEncoder().encode("password"),
+                createAuthorityList("ADMIN"));
     }
 
 }

@@ -6,9 +6,9 @@ import com.pro.jenova.omnidrive.messaging.user.UserEventProducer;
 import com.pro.jenova.omnidrive.rest.controller.ErrorResponse;
 import com.pro.jenova.omnidrive.rest.controller.RestResponse;
 import com.pro.jenova.omnidrive.rest.controller.VoidResponse;
-import com.pro.jenova.omnidrive.rest.controller.user.request.RestCreateUser;
-import com.pro.jenova.omnidrive.rest.controller.user.request.RestRemoveUser;
-import com.pro.jenova.omnidrive.rest.controller.user.response.RestListUsers;
+import com.pro.jenova.omnidrive.rest.controller.user.request.RestCreateUserRequest;
+import com.pro.jenova.omnidrive.rest.controller.user.request.RestRemoveUserRequest;
+import com.pro.jenova.omnidrive.rest.controller.user.response.RestListUsersResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,18 +38,18 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity<RestResponse> create(@Valid @RequestBody RestCreateUser restCreateUser, BindingResult violations) {
+    public ResponseEntity<RestResponse> create(@Valid @RequestBody RestCreateUserRequest restCreateUserRequest, BindingResult violations) {
         if (violations.hasErrors()) {
             return ErrorResponse.badRequest(violations);
         }
 
-        if (userRepository.existsByUsername(restCreateUser.getUsername())) {
+        if (userRepository.existsByUsername(restCreateUserRequest.getUsername())) {
             return ErrorResponse.badRequest("USERNAME_ALREADY_EXISTS");
         }
 
         User user = userRepository.save(new User.Builder()
-                .withUsername(restCreateUser.getUsername())
-                .withPassword(passwordEncoder.encode(restCreateUser.getPassword()))
+                .withUsername(restCreateUserRequest.getUsername())
+                .withPassword(passwordEncoder.encode(restCreateUserRequest.getPassword()))
                 .build());
 
         userEventProducer.onUserCreated(user);
@@ -57,13 +57,13 @@ public class UserController {
         return VoidResponse.created();
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.PUT)
-    public ResponseEntity<RestResponse> create(@Valid @RequestBody RestRemoveUser restRemoveUser, BindingResult violations) {
+    @RequestMapping(value = "/remove", method = RequestMethod.POST)
+    public ResponseEntity<RestResponse> create(@Valid @RequestBody RestRemoveUserRequest restRemoveUserRequest, BindingResult violations) {
         if (violations.hasErrors()) {
             return ErrorResponse.badRequest(violations);
         }
 
-        if (userRepository.removeByUsername(restRemoveUser.getUsername()) > 0L) {
+        if (userRepository.removeByUsername(restRemoveUserRequest.getUsername()) > 0L) {
             return VoidResponse.ok();
         } else {
             return ErrorResponse.badRequest("USERNAME_NOT_FOUND");
@@ -75,7 +75,7 @@ public class UserController {
     public ResponseEntity<RestResponse> list() {
         List<String> usernames = userRepository.findAll().stream().map(User::getUsername).collect(toList());
 
-        return new ResponseEntity<>(new RestListUsers.Builder().withUsernames(usernames).build(), HttpStatus.OK);
+        return new ResponseEntity<>(new RestListUsersResponse.Builder().withUsernames(usernames).build(), HttpStatus.OK);
     }
 
 }
