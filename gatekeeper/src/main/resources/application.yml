@@ -11,18 +11,6 @@ zuul:
       serviceId: omnidrive
       strip-prefix: false
 
-ribbon:
-  ReadTimeout: 30000
-  ConnectTimeout: 10000
-
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 90000
-
 server:
   port: 8090
 eureka:
