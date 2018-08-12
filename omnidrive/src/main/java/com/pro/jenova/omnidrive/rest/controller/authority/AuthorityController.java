@@ -14,6 +14,7 @@ import com.pro.jenova.omnidrive.rest.controller.authority.response.RestListAutho
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,7 @@ public class AuthorityController {
     @Autowired
     private AuthorityRepository authorityRepository;
 
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<RestResponse> create(
             @Valid @RequestBody RestCreateAuthorityRequest restCreateAuthorityRequest,
@@ -64,6 +66,7 @@ public class AuthorityController {
         return VoidResponse.created();
     }
 
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
     public ResponseEntity<RestResponse> create(
             @Valid @RequestBody RestRemoveAuthorityRequest restRemoveAuthorityRequest,
