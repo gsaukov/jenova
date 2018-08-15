@@ -9,9 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.pro.jenova.omnidrive.util.IdUtils.uuid;
 import static com.pro.jenova.omnidrive.util.LogCorrelation.LOG_CORRELATION_ID;
-import static com.pro.jenova.omnidrive.util.LogCorrelation.MAX_ID_SIZE;
+import static com.pro.jenova.omnidrive.util.LogCorrelation.useExistingOrCreateNew;
 
 public class LogCorrelationIdFilter extends OncePerRequestFilter {
 
@@ -22,18 +21,6 @@ public class LogCorrelationIdFilter extends OncePerRequestFilter {
         MDC.put(LOG_CORRELATION_ID, useExistingOrCreateNew(correlationId));
 
         filterChain.doFilter(request, response);
-    }
-
-    public String useExistingOrCreateNew(String correlationId) {
-        if (correlationId == null) {
-            return uuid();
-        }
-
-        if (correlationId.length() > MAX_ID_SIZE) {
-            return correlationId.substring(0, MAX_ID_SIZE);
-        }
-
-        return correlationId;
     }
 
 }
