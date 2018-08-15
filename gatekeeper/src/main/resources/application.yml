@@ -10,6 +10,14 @@ zuul:
       path: /user/**
       serviceId: omnidrive
       strip-prefix: false
+    authority:
+      path: /authority/**
+      serviceId: omnidrive
+      strip-prefix: false
+    echo:
+      path: /echo/**
+      serviceId: omnidrive
+      strip-prefix: false
 
 server:
   port: 8090
