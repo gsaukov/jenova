@@ -12,9 +12,9 @@ public interface AuthorityRepository extends JpaRepository<Authority, String> {
 
     List<Authority> findByUser(User user);
 
-    boolean existsByUserAndRole(User user, String role);
+    boolean existsByUserAndAuthority(User user, String authority);
 
     @Transactional
-    long removeByUserAndRole(User user, String role);
+    long removeByUserAndAuthority(User user, String authority);
 
 }

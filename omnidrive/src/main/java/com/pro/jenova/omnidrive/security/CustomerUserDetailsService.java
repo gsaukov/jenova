@@ -31,6 +31,10 @@ public class CustomerUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if ("admin".equals(username)) {
+            return loadAdminUserDetails();
+        }
+
         Optional<User> user = userRepository.findByUsername(username);
 
         if (!user.isPresent()) {
@@ -43,10 +47,16 @@ public class CustomerUserDetailsService implements UserDetailsService {
     }
 
     private org.springframework.security.core.userdetails.User toUserDetails(User user, List<Authority> authorities) {
-        String[] roles = authorities.stream().map(Authority::getRole).toArray(size -> new String[size]);
+        String[] assigned = authorities.stream().map(Authority::getAuthority).toArray(size -> new String[size]);
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                createAuthorityList(roles));
+                createAuthorityList(assigned));
+    }
+
+    private org.springframework.security.core.userdetails.User loadAdminUserDetails() {
+        return new org.springframework.security.core.userdetails.User("admin",
+                "$2a$10$bKV1xuUfAxJHDECvfQGXV.5pOGkOMGfIYr1jDS4FzuGc.OlQ44V2O",
+                createAuthorityList("ADMIN"));
     }
 
 }

@@ -14,7 +14,6 @@ import com.pro.jenova.omnidrive.rest.controller.authority.response.RestListAutho
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +36,6 @@ public class AuthorityController {
     @Autowired
     private AuthorityRepository authorityRepository;
 
-    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<RestResponse> create(
             @Valid @RequestBody RestCreateAuthorityRequest restCreateAuthorityRequest,
@@ -52,7 +50,7 @@ public class AuthorityController {
             return ErrorResponse.badRequest("USERNAME_NOT_FOUND");
         }
 
-        if (authorityRepository.existsByUserAndRole(
+        if (authorityRepository.existsByUserAndAuthority(
                 user.get(), restCreateAuthorityRequest.getAuthority())) {
             return ErrorResponse.badRequest("AUTHORITY_ALREADY_EXISTS");
         }
@@ -60,13 +58,12 @@ public class AuthorityController {
         authorityRepository.save(
                 new Authority.Builder()
                         .withUser(user.get())
-                        .withRole(restCreateAuthorityRequest.getAuthority())
+                        .withAuthority(restCreateAuthorityRequest.getAuthority())
                         .build());
 
         return VoidResponse.created();
     }
 
-    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
     public ResponseEntity<RestResponse> create(
             @Valid @RequestBody RestRemoveAuthorityRequest restRemoveAuthorityRequest,
@@ -81,7 +78,7 @@ public class AuthorityController {
             return ErrorResponse.badRequest("USERNAME_NOT_FOUND");
         }
 
-        if (authorityRepository.removeByUserAndRole(
+        if (authorityRepository.removeByUserAndAuthority(
                 user.get(), restRemoveAuthorityRequest.getAuthority())
                 > 0L) {
             return VoidResponse.ok();
@@ -108,7 +105,7 @@ public class AuthorityController {
                 authorityRepository
                         .findByUser(user.get())
                         .stream()
-                        .map(Authority::getRole)
+                        .map(Authority::getAuthority)
                         .collect(toList());
 
         return new ResponseEntity<>(

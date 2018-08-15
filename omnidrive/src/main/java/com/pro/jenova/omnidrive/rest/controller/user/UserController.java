@@ -12,7 +12,6 @@ import com.pro.jenova.omnidrive.rest.controller.user.response.RestListUsersRespo
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +37,6 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<RestResponse> create(@Valid @RequestBody RestCreateUserRequest restCreateUserRequest, BindingResult violations) {
         if (violations.hasErrors()) {
@@ -59,7 +57,6 @@ public class UserController {
         return VoidResponse.created();
     }
 
-    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
     public ResponseEntity<RestResponse> create(@Valid @RequestBody RestRemoveUserRequest restRemoveUserRequest, BindingResult violations) {
         if (violations.hasErrors()) {

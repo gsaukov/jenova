@@ -13,8 +13,8 @@ public class Authority extends BaseEntity {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @Column(name = "ROLE")
-    private String role;
+    @Column(name = "AUTHORITY")
+    private String authority;
 
     private Authority() {
         // JPA
@@ -22,7 +22,7 @@ public class Authority extends BaseEntity {
 
     private Authority(Builder builder) {
         user = builder.user;
-        role = builder.role;
+        authority = builder.authority;
     }
 
     public User getUser() {
@@ -33,12 +33,12 @@ public class Authority extends BaseEntity {
         this.user = user;
     }
 
-    public String getRole() {
-        return role;
+    public String getAuthority() {
+        return authority;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setAuthority(String authority) {
+        this.authority = authority;
     }
 
     @Override
@@ -49,26 +49,26 @@ public class Authority extends BaseEntity {
 
         Authority authority = (Authority) o;
 
-        return Objects.equals(user, authority.user) && Objects.equals(role, authority.role);
+        return Objects.equals(user, authority.user) && Objects.equals(this.authority, authority.authority);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user, role);
+        return Objects.hash(user, authority);
     }
 
     public static final class Builder {
 
         private User user;
-        private String role;
+        private String authority;
 
         public Builder withUser(User user) {
             this.user = user;
             return this;
         }
 
-        public Builder withRole(String role) {
-            this.role = role;
+        public Builder withAuthority(String authority) {
+            this.authority = authority;
             return this;
         }
 

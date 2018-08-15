@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 public class RestCreateAuthorityRequest {
 
     @NotNull(message = "USERNAME_REQUIRED")
-    @Size(min = 8, max = 64, message = "USERNAME_INVALID_SIZE")
+    @Size(min = 4, max = 64, message = "USERNAME_INVALID_SIZE")
     private String username;
 
     @NotNull(message = "AUTHORITY_REQUIRED")
