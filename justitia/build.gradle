@@ -1,0 +1,67 @@
+group "com.pro.jenova"
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "com.netflix.nebula:gradle-ospackage-plugin:${osPackageVersion}"
+    }
+}
+
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+apply plugin: "nebula.ospackage"
+
+bootJar {
+    mainClassName = "com.pro.jenova.justitia.Application"
+    launchScript()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-actuator"
+    compile "org.springframework.cloud:spring-cloud-starter-netflix-eureka-server"
+
+    runtime "net.logstash.logback:logstash-logback-encoder:${logstashEncoderVersion}"
+}
+
+repositories {
+    maven {
+        url "https://repo.spring.io/libs-milestone"
+    }
+}
+
+ospackage {
+    packageName = project.name
+    version = project.version
+    os = LINUX
+    type = BINARY
+
+    into "/opt/justitia"
+    user "justitia"
+    permissionGroup "justitia"
+
+    from("${rootDir}/justitia/build/libs") {
+        into "application"
+        include "**/*.jar"
+        fileMode 0775
+    }
+
+    from("${rootDir}/justitia/build/resources/main") {
+        into "configuration"
+        include "**/*.conf"
+        fileMode 0775
+    }
+
+    link("/etc/init.d/justitia", "/opt/justitia/application/justitia-${project.version}.jar")
+    link("/opt/justitia/application/justitia-${project.version}.conf", "/opt/justitia/configuration/startup.conf")
+}
+
