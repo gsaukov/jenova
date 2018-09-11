@@ -4,8 +4,8 @@ import org.slf4j.MDC;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 
-import static com.pro.jenova.omnidrive.util.LogCorrelation.LOG_CORRELATION_ID;
-import static com.pro.jenova.omnidrive.util.LogCorrelation.useExistingOrCreateNew;
+import static com.pro.jenova.common.util.LogCorrelation.LOG_CORRELATION_ID;
+import static com.pro.jenova.common.util.LogCorrelation.useExistingOrCreateNew;
 
 public abstract class BaseEventConsumer {
 

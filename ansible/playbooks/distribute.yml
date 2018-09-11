@@ -243,3 +243,85 @@
     file:
       path: "/opt/gatekeeper_tmp"
       state: absent
+
+- hosts: justitia
+  tasks:
+  - name: ensure base packages are installed
+    become: true
+    apt: name={{ item }} state=installed
+    with_items:
+    - openjdk-8-jdk
+    - whois
+    - curl
+  - name: ensure log shipper is installed
+    become: true
+    apt:
+      deb: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.2.4-amd64.deb
+  - name: stop log shipper if it is running
+    become: true
+    service:
+      name: filebeat
+      state: stopped
+  - name: copy filebeat configuration file
+    become: true
+    copy:
+      src: "{{playbook_dir}}/../files/filebeat.yml"
+      dest: "/etc/filebeat/filebeat.yml"
+  - name: start log shipper that was installed
+    become: true
+    service:
+      name: filebeat
+      state: started
+      enabled: true
+  - name: ensure appropriate group exists
+    become: true
+    group:
+      name: justitia
+      state: present
+  - name: ensure appropriate user exists
+    become: true
+    user:
+      name: justitia
+      password: '$6$Fwa4zmAFiHD/lXF$5jh1nMBJNcB9L0X39igbGvmMOxUGRjHJjJCt0BwL4RtniWzGaLcBipgDf40QObjf1h14.SnYEHlLRy2eN/hse1'
+      group: justitia
+  - name: create artifacts directory where the package will be copied into
+    become: true
+    file:
+      path: "/opt/justitia_tmp"
+      state: directory
+  - name: upload package binary into artifacts directory
+    become: true
+    copy:
+      src: "{{playbook_dir}}/../../justitia/build/distributions/justitia_{{version}}_all.deb"
+      dest: "/opt/justitia_tmp/justitia_{{version}}.deb"
+  - name: check if service being installed exists from before
+    become: true
+    stat:
+      path: "/etc/init.d/justitia"
+    register: service_status
+  - name: if service being installed exists, then make sure it is stopped
+    become: true
+    service:
+      name: justitia
+      state: stopped
+    when: service_status.stat.exists
+  - name: uninstall package of interest if already installed from before
+    become: true
+    apt:
+      name: justitia
+      state: absent
+  - name: install uploaded package
+    become: true
+    apt:
+      deb: "/opt/justitia_tmp/justitia_{{version}}.deb"
+  - name: start service that was installed
+    become: true
+    service:
+      name: justitia
+      state: started
+      enabled: true
+  - name: clean up artifacts directory
+    become: true
+    file:
+      path: "/opt/justitia_tmp"
+      state: absent

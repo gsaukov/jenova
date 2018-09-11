@@ -1,4 +1,4 @@
-package com.pro.jenova.omnidrive.util;
+package com.pro.jenova.common.util;
 
 import static java.util.UUID.randomUUID;
 

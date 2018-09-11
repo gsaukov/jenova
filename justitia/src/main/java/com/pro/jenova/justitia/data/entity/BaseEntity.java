@@ -1,4 +1,4 @@
-package com.pro.jenova.omnidrive.data.entity;
+package com.pro.jenova.justitia.data.entity;
 
 import org.springframework.security.core.Authentication;
 

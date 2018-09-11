@@ -5,8 +5,8 @@ import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
-import static com.pro.jenova.omnidrive.util.LogCorrelation.LOG_CORRELATION_ID;
-import static com.pro.jenova.omnidrive.util.LogCorrelation.useExistingOrCreateNew;
+import static com.pro.jenova.common.util.LogCorrelation.LOG_CORRELATION_ID;
+import static com.pro.jenova.common.util.LogCorrelation.useExistingOrCreateNew;
 
 public abstract class BaseEventProducer {
 

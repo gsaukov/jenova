@@ -5,8 +5,8 @@ import feign.RequestTemplate;
 import org.slf4j.MDC;
 import org.springframework.context.annotation.Configuration;
 
-import static com.pro.jenova.omnidrive.util.LogCorrelation.LOG_CORRELATION_ID;
-import static com.pro.jenova.omnidrive.util.LogCorrelation.useExistingOrCreateNew;
+import static com.pro.jenova.common.util.LogCorrelation.LOG_CORRELATION_ID;
+import static com.pro.jenova.common.util.LogCorrelation.useExistingOrCreateNew;
 
 @Configuration
 public class LogCorrelationIdInterceptor implements RequestInterceptor {

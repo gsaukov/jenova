@@ -8,15 +8,11 @@ zuul:
   routes:
     user:
       path: /user/**
-      serviceId: omnidrive
+      serviceId: justitia
       strip-prefix: false
     authority:
       path: /authority/**
-      serviceId: omnidrive
-      strip-prefix: false
-    echo:
-      path: /echo/**
-      serviceId: omnidrive
+      serviceId: justitia
       strip-prefix: false
 
 server:

@@ -1,4 +1,4 @@
-package com.pro.jenova.omnidrive.rest.filter;
+package com.pro.jenova.justitia.rest.filter;
 
 import org.slf4j.MDC;
 import org.springframework.web.filter.OncePerRequestFilter;

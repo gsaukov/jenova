@@ -1,6 +1,6 @@
-package com.pro.jenova.omnidrive.util;
+package com.pro.jenova.common.util;
 
-import static com.pro.jenova.omnidrive.util.IdUtils.uuid;
+import static com.pro.jenova.common.util.IdUtils.uuid;
 
 public class LogCorrelation {
 
