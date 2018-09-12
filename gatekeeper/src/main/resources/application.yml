@@ -3,7 +3,6 @@ spring:
     name: gatekeeper
 
 zuul:
-  sensitiveHeaders: Cookie,Set-Cookie
   ignoredServices: '*'
   prefix: /jenova
   routes:
