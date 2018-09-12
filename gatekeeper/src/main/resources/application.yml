@@ -10,17 +10,17 @@ zuul:
       path: /user/**
       sensitiveHeaders:
       serviceId: justitia
-      stripPrefix: true
+      stripPrefix: false
     authority:
       path: /authority/**
       sensitiveHeaders:
       serviceId: justitia
-      stripPrefix: true
+      stripPrefix: false
     echo:
       path: /echo/**
       sensitiveHeaders:
       serviceId: omnidrive
-      stripPrefix: true
+      stripPrefix: false
 
 server:
   port: 8090
