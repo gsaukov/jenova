@@ -1,14 +1,11 @@
 package com.pro.jenova.omnidrive.data.entity;
 
-import org.springframework.security.core.Authentication;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import static com.pro.jenova.common.util.IdUtils.uuid;
 import static java.time.LocalDateTime.now;
-import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
@@ -82,11 +79,7 @@ public abstract class BaseEntity implements Serializable {
     }
 
     protected String username() {
-        Authentication authentication = getContext().getAuthentication();
 
-        if (authentication.isAuthenticated()) {
-            return authentication.getName();
-        }
 
         return "anonymous";
     }
