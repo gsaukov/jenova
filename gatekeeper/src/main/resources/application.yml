@@ -8,12 +8,15 @@ zuul:
   routes:
     user:
       path: /user/**
+      sensitiveHeaders:
       serviceId: justitia
     authority:
       path: /authority/**
+      sensitiveHeaders:
       serviceId: justitia
     echo:
       path: /echo/**
+      sensitiveHeaders:
       serviceId: omnidrive
 
 server:
