@@ -10,11 +10,12 @@ zuul:
     user:
       path: /user/**
       serviceId: justitia
-      strip-prefix: false
     authority:
       path: /authority/**
       serviceId: justitia
-      strip-prefix: false
+    echo:
+      path: /echo/**
+      serviceId: omnidrive
 
 server:
   port: 8090
