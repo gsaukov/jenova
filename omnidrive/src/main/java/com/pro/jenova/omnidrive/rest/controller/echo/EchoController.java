@@ -1,5 +1,6 @@
 package com.pro.jenova.omnidrive.rest.controller.echo;
 
+import com.pro.jenova.omnidrive.messaging.notification.NotificationEventProducer;
 import com.pro.jenova.omnidrive.rest.controller.RestResponse;
 import com.pro.jenova.omnidrive.rest.controller.VoidResponse;
 import com.pro.jenova.omnidrive.rest.controller.client.EchoClient;
@@ -20,14 +21,14 @@ public class EchoController {
     private static final Logger logger = getLogger(EchoController.class);
 
     @Autowired
-    private EchoClient echoClient;
+    private NotificationEventProducer notificationEventProducer;
 
     @RequestMapping(value = "/{times}", method = RequestMethod.GET)
     public ResponseEntity<RestResponse> create(@PathVariable(value = "times") int times) {
-        logger.info("Echo: [{}]", times);
+        logger.info("REST Echo: [{}]", times);
 
         if (times > 0) {
-            echoClient.echo(times - 1);
+            notificationEventProducer.notify("echo", Integer.toString(times - 1));
         }
 
         return VoidResponse.ok();

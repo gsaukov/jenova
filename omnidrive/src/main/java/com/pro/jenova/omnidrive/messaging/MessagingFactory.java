@@ -18,13 +18,13 @@ public class MessagingFactory {
     }
 
     @Bean
-    public Queue userEventsQueue() {
-        return new Queue("userEventsQueue");
+    public Queue notificationEventsQueue() {
+        return new Queue("notificationEventsQueue");
     }
 
     @Bean
     public Binding userEventsBinding() {
-        return bind(userEventsQueue()).to(jenovaTopicExchange()).with("user.*").noargs();
+        return bind(notificationEventsQueue()).to(jenovaTopicExchange()).with("notification.*").noargs();
     }
 
 }
