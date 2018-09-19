@@ -4,7 +4,6 @@ import com.pro.jenova.justitia.data.entity.Authority;
 import com.pro.jenova.justitia.data.entity.User;
 import com.pro.jenova.justitia.data.repository.AuthorityRepository;
 import com.pro.jenova.justitia.data.repository.UserRepository;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,13 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.text.MessageFormat.format;
-import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.security.core.authority.AuthorityUtils.createAuthorityList;
 
 @Service
 public class CustomerUserDetailsService implements UserDetailsService {
-
-    private static final Logger logger = getLogger(CustomerUserDetailsService.class);
 
     @Autowired
     private UserRepository userRepository;
