@@ -30,10 +30,6 @@ spring:
     username: admin
     password: admin
 
-  cloud:
-    refresh:
-      enabled: false # FIXME: This needs to be removed once issue is fixed (bug with circular dependency).
-
 server:
   port: 8001
 

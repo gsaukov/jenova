@@ -24,10 +24,6 @@ spring:
     enabled: true
     change-log: classpath:liquibase/changelog-master.xml
 
-  cloud:
-    refresh:
-      enabled: false # FIXME: This needs to be removed once issue is fixed (bug with circular dependency).
-
 server:
   port: 8002
 
