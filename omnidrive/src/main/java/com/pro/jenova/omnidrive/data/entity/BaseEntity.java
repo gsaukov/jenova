@@ -79,7 +79,7 @@ public abstract class BaseEntity implements Serializable {
     }
 
     protected String username() {
-        // FIXME: Load the value from the ambient security context.
+        // FIXME Load the value from the ambient security context.
         return "anonymous";
     }
 
