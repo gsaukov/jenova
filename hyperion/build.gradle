@@ -16,7 +16,7 @@ apply plugin: "io.spring.dependency-management"
 apply plugin: "nebula.ospackage"
 
 bootJar {
-    mainClassName = "com.pro.jenova.justitia.Application"
+    mainClassName = "com.pro.jenova.hyperion.Application"
     launchScript()
 }
 
@@ -27,18 +27,13 @@ dependencyManagement {
 }
 
 dependencies {
-    compile project(':common')
-
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
     compile "org.springframework.boot:spring-boot-starter-web"
-    compile "org.springframework.boot:spring-boot-starter-security"
-    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+
+    compile "de.codecentric:spring-boot-admin-starter-server:${springBootAdminVersion}"
 
     runtime "net.logstash.logback:logstash-logback-encoder:${logstashEncoderVersion}"
-    runtime "org.liquibase:liquibase-core:${liquibaseVersion}"
-    runtime "mysql:mysql-connector-java:${mysqlVersion}"
-    runtime "com.h2database:h2:${h2Version}"
 }
 
 repositories {
@@ -53,22 +48,23 @@ ospackage {
     os = LINUX
     type = BINARY
 
-    into "/opt/justitia"
-    user "justitia"
-    permissionGroup "justitia"
+    into "/opt/hyperion"
+    user "hyperion"
+    permissionGroup "hyperion"
 
-    from("${rootDir}/justitia/build/libs") {
+    from("${rootDir}/hyperion/build/libs") {
         into "application"
         include "**/*.jar"
         fileMode 0775
     }
 
-    from("${rootDir}/justitia/build/resources/main") {
+    from("${rootDir}/hyperion/build/resources/main") {
         into "configuration"
         include "**/*.conf"
         fileMode 0775
     }
 
-    link("/etc/init.d/justitia", "/opt/justitia/application/justitia-${project.version}.jar")
-    link("/opt/justitia/application/justitia-${project.version}.conf", "/opt/justitia/configuration/startup.conf")
+    link("/etc/init.d/hyperion", "/opt/hyperion/application/hyperion-${project.version}.jar")
+    link("/opt/hyperion/application/hyperion-${project.version}.conf", "/opt/hyperion/configuration/startup.conf")
 }
+
