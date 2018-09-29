@@ -46,7 +46,7 @@ node {
 
 		// 30 attempts x 10 seconds = 5 minutes until aborting.
 		for (int attempt in 1..30) {
-			actual = env.instancesCount = sh(script: "curl -s http://deepwater:8761/eureka/apps | grep instanceId | wc -l",
+			actual = sh(script: "curl -s http://deepwater:8761/eureka/apps | grep instanceId | wc -l",
 					returnStdout: true).trim() as Integer
 
 			if (actual > 0) actual += 1 // Compensate for the eureka instance which is not registered with itself.
