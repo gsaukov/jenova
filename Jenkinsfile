@@ -43,9 +43,10 @@ node {
 	stage("Waiting for Startup") {
 		int expected = env.instancesCount as Integer
 		int actual = 0
+		int attempt = 0
 
 		// 30 attempts x 10 seconds = 5 minutes until aborting.
-		for (int attempt in 1..30) {
+		for (attempt = 0; attempt < 30; attempt++) {
 			actual = sh(script: "curl -s http://deepwater:8761/eureka/apps | grep instanceId | wc -l",
 					returnStdout: true).trim() as Integer
 
