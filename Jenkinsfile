@@ -20,6 +20,9 @@ node {
 	stage("Version Info") {
 		env.version = sh(script: "./gradlew printVersion -q", returnStdout: true).trim()
 		currentBuild.description = env.version
+
+		env.instancesCount = sh(script: "cat ./ansible/inventories/inventory.ini | grep ansible_connection | wc -l",
+				returnStdout: true).trim()
 	}
 
 	stage("Build Artifacts") {
@@ -33,6 +36,12 @@ node {
 	stage("Install Artifacts") {
 		sh "ansible-playbook ./ansible/playbooks/distribute.yml -i ./ansible/inventories/inventory.ini " +
 				"--extra-vars \"version=" + env.version + "\""
+	}
+
+	stage("Waiting for Startup") {
+		print "Expected server instances: " + env.instancesCount
+
+
 	}
 
 }
