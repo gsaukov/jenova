@@ -24,6 +24,12 @@ spring:
     enabled: true
     change-log: classpath:liquibase/changelog-master.xml
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
 server:
   port: 8002
 

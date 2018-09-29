@@ -2,6 +2,12 @@ spring:
   application:
     name: hyperion
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
 server:
   port: 8091
 

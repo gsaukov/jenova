@@ -22,6 +22,12 @@ zuul:
       serviceId: omnidrive
       stripPrefix: false
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
 server:
   port: 8090
 
