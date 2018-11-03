@@ -21,10 +21,6 @@ node {
 		env.version = sh(script: "./gradlew printVersion -q", returnStdout: true).trim()
 		currentBuild.description = env.version
 		print "Build version assigned: " + env.version
-
-		env.instancesCount = sh(script: "cat ./ansible/inventories/inventory.ini | grep ansible_connection | wc -l",
-				returnStdout: true).trim()
-		print "Expected server instances: " + env.instancesCount
 	}
 
 	stage("Build Artifacts") {
@@ -38,33 +34,6 @@ node {
 	stage("Install Artifacts") {
 		sh "ansible-playbook ./ansible/playbooks/distribute.yml -i ./ansible/inventories/inventory.ini " +
 				"--extra-vars \"version=" + env.version + "\""
-	}
-
-	stage("Waiting for Startup") {
-		int expected = env.instancesCount as Integer
-		int actual = 0
-		int attempt = 0
-
-		// 30 attempts x 10 seconds = 5 minutes until aborting.
-		for (attempt = 0; attempt < 30; attempt++) {
-			actual = sh(script: "curl -s http://deepwater:8761/eureka/apps | grep instanceId | wc -l",
-					returnStdout: true).trim() as Integer
-
-			if (actual > 0) actual += 1 // Compensate for the eureka instance which is not registered with itself.
-
-			print "Attempt: " + attempt + ", Status: " + actual + " out of " + expected
-
-			if (actual < expected) {
-				sleep 10 // Wait for some time until next retry (in seconds).
-			} else {
-				break
-			}
-		}
-
-		if (actual != expected) {
-			error "Not all instances were started within 5 minutes time."
-		}
-
 	}
 
 }
