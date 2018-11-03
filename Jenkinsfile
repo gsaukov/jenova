@@ -17,7 +17,7 @@ node {
 		checkout scm
 	}
 
-	stage("Gathering Info") {
+	stage("Version Info") {
 		env.version = sh(script: "./gradlew printVersion -q", returnStdout: true).trim()
 		currentBuild.description = env.version
 		print "Build version assigned: " + env.version
