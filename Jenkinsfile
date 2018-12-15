@@ -24,6 +24,7 @@ node {
 	}
 
 	stage("Build Artifacts") {
+		sh "./gradlew --version"
 		sh "./gradlew -PversionToUse=" + env.version + " clean build buildDeb"
 	}
 
