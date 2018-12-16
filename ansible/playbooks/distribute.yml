@@ -7,6 +7,12 @@
       - openjdk-8-jdk
       - whois
       - curl
+- name: ensure log directory for application exists
+    become: true
+    file:
+      path: "/var/log/jenova"
+      state: directory
+      mode: 0777
   - name: ensure log shipper is installed
     become: true
     apt:

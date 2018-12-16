@@ -10,9 +10,9 @@
     </appender>
 
     <appender name="ELKOUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/var/log/jenova.${appName}.log</file>
+        <file>/var/log/jenova/${appName}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/var/log/jenova.${appName}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/var/log/jenova/${appName}.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>10</maxHistory>
         </rollingPolicy>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
