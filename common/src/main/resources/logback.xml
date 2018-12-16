@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <springProperty name="appName" source="spring.application.name"/>
+    <include resource="logging.properties"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -10,13 +10,13 @@
     </appender>
 
     <appender name="ELKOUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/var/log/jenova/${appName}.log</file>
+        <file>/var/log/jenova/${application.name}/${application.name}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/var/log/jenova/${appName}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/var/log/jenova/${application.name}/${application.name}.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>10</maxHistory>
         </rollingPolicy>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <customFields>{"application":"${appName}"}</customFields>
+            <customFields>{"application":"${application.name}"}</customFields>
         </encoder>
     </appender>
 

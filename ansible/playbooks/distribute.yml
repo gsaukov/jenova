@@ -7,12 +7,12 @@
       - openjdk-8-jdk
       - whois
       - curl
-  - name: ensure log directory for application exists
+  - name: ensure parent log directory for application exists
     become: true
     file:
       path: "/var/log/jenova"
       state: directory
-      mode: 0777
+      mode: 0775
   - name: ensure log shipper is installed
     become: true
     apt:
@@ -44,6 +44,14 @@
       name: earthrise
       password: '$6$i37xBhfw$sovtpYT/XfbjezSU1wxKUWo/WwICusd47S.vMoArqK/RkXZzxWxynMsKA9YqjBmt/T88ACgPzrgx18WRP0zBD0'
       group: earthrise
+  - name: ensure application specific log directory exists
+    become: true
+    file:
+      path: "/var/log/jenova/earthrise"
+      state: directory
+      owner: earthrise
+      group: earthrise
+      mode: 0775
   - name: create artifacts directory where the package will be copied into
     become: true
     file:
@@ -95,12 +103,12 @@
       - openjdk-8-jdk
       - whois
       - curl
-  - name: ensure log directory for application exists
+  - name: ensure parent log directory for application exists
     become: true
     file:
       path: "/var/log/jenova"
       state: directory
-      mode: 0777
+      mode: 0775
   - name: ensure log shipper is installed
     become: true
     apt:
@@ -132,6 +140,14 @@
       name: omnidrive
       password: '$6$0xaZLZHv$KgV4ysGCZyNYb1rw0C7uiEedjYAHNxgUW7YLtrYweRqJp0fpyWj8E2XwyxX8kCuhlSgOVSjp6AR7hzOfozwtY1'
       group: omnidrive
+  - name: ensure application specific log directory exists
+    become: true
+    file:
+      path: "/var/log/jenova/omnidrive"
+      state: directory
+      owner: omnidrive
+      group: omnidrive
+      mode: 0775
   - name: create artifacts directory where the package will be copied into
     become: true
     file:
@@ -183,12 +199,12 @@
       - openjdk-8-jdk
       - whois
       - curl
-  - name: ensure log directory for application exists
+  - name: ensure parent log directory for application exists
     become: true
     file:
       path: "/var/log/jenova"
       state: directory
-      mode: 0777
+      mode: 0775
   - name: ensure log shipper is installed
     become: true
     apt:
@@ -220,6 +236,14 @@
       name: gatekeeper
       password: '$6$OTx6q0i.Vkcs$n/P46yuW.GBC5U4NA8Meb2kSzYzT859XPvr6.FR0gcN/h2fVGACcIyP2Wfi9KaO4yVqvpamuUMWI8TBmKGBR2.'
       group: gatekeeper
+  - name: ensure application specific log directory exists
+    become: true
+    file:
+      path: "/var/log/jenova/gatekeeper"
+      state: directory
+      owner: gatekeeper
+      group: gatekeeper
+      mode: 0775
   - name: create artifacts directory where the package will be copied into
     become: true
     file:
@@ -271,12 +295,12 @@
     - openjdk-8-jdk
     - whois
     - curl
-  - name: ensure log directory for application exists
+  - name: ensure parent log directory for application exists
     become: true
     file:
       path: "/var/log/jenova"
       state: directory
-      mode: 0777
+      mode: 0775
   - name: ensure log shipper is installed
     become: true
     apt:
@@ -308,6 +332,14 @@
       name: justitia
       password: '$6$Fwa4zmAFiHD/lXF$5jh1nMBJNcB9L0X39igbGvmMOxUGRjHJjJCt0BwL4RtniWzGaLcBipgDf40QObjf1h14.SnYEHlLRy2eN/hse1'
       group: justitia
+  - name: ensure application specific log directory exists
+    become: true
+    file:
+      path: "/var/log/jenova/justitia"
+      state: directory
+      owner: justitia
+      group: justitia
+      mode: 0775
   - name: create artifacts directory where the package will be copied into
     become: true
     file:
@@ -359,12 +391,12 @@
     - openjdk-8-jdk
     - whois
     - curl
-  - name: ensure log directory for application exists
+  - name: ensure parent log directory for application exists
     become: true
     file:
       path: "/var/log/jenova"
       state: directory
-      mode: 0777
+      mode: 0775
   - name: ensure log shipper is installed
     become: true
     apt:
@@ -396,6 +428,14 @@
       name: hyperion
       password: '$6$ypok1b8uUY$gdsZTDBzWwh3hhgk6vxSg7muDLNsPD.T1LC.66dbkJW.1vDFXpiI9ZDmjDSjr3CyDNM7MnpTHfBI0gWs28dsH0'
       group: hyperion
+  - name: ensure application specific log directory exists
+    become: true
+    file:
+      path: "/var/log/jenova/hyperion"
+      state: directory
+      owner: hyperion
+      group: hyperion
+      mode: 0775
   - name: create artifacts directory where the package will be copied into
     become: true
     file:
