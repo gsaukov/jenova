@@ -18,13 +18,15 @@ node {
 	}
 
 	stage("Version Info") {
+		sh "./gradlew --version"
+
 		env.version = sh(script: "./gradlew printVersion -q", returnStdout: true).trim()
+
 		currentBuild.description = env.version
 		print "Build version assigned: " + env.version
 	}
 
 	stage("Build Artifacts") {
-		sh "./gradlew --version"
 		sh "./gradlew -PversionToUse=" + env.version + " clean build buildDeb"
 	}
 
