@@ -3,7 +3,6 @@ package com.pro.jenova.omnidrive.rest.controller.echo;
 import com.pro.jenova.omnidrive.messaging.notification.NotificationEventProducer;
 import com.pro.jenova.omnidrive.rest.controller.RestResponse;
 import com.pro.jenova.omnidrive.rest.controller.VoidResponse;
-import com.pro.jenova.omnidrive.rest.controller.client.EchoClient;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

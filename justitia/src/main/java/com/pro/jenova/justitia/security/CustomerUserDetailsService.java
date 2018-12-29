@@ -43,7 +43,7 @@ public class CustomerUserDetailsService implements UserDetailsService {
     }
 
     private org.springframework.security.core.userdetails.User toUserDetails(User user, List<Authority> authorities) {
-        String[] assigned = authorities.stream().map(Authority::getAuthority).toArray(size -> new String[size]);
+        String[] assigned = authorities.stream().map(Authority::getAuthority).toArray(String[]::new);
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 createAuthorityList(assigned));
