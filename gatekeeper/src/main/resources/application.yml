@@ -20,12 +20,17 @@ zuul:
   ignoredServices: '*'
   prefix: /jenova
   routes:
-    justitia:
+    oauth:
+      path: /oauth/**
+      sensitiveHeaders:
+      serviceId: justitia
+      stripPrefix: false
+    justitia-api:
       path: /justitia-api/**
       sensitiveHeaders:
       serviceId: justitia
       stripPrefix: false
-    omnidrive:
+    omnidrive-api:
       path: /omnidrive-api/**
       sensitiveHeaders:
       serviceId: omnidrive
