@@ -1,16 +1,8 @@
 package com.pro.jenova.justitia.rest.controller.user.request;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 public class RestCreateUserRequest {
 
-    @NotNull(message = "USERNAME_REQUIRED")
-    @Size(min = 4, max = 64, message = "USERNAME_INVALID_SIZE")
     private String username;
-
-    @NotNull(message = "PASSWORD_REQUIRED")
-    @Size(min = 4, max = 64, message = "PASSWORD_INVALID_SIZE")
     private String password;
 
     private RestCreateUserRequest() {

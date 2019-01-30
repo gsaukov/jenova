@@ -1,16 +1,8 @@
 package com.pro.jenova.justitia.rest.controller.authority.request;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 public class RestRemoveAuthorityRequest {
 
-    @NotNull(message = "USERNAME_REQUIRED")
-    @Size(min = 4, max = 64, message = "USERNAME_INVALID_SIZE")
     private String username;
-
-    @NotNull(message = "AUTHORITY_REQUIRED")
-    @Size(min = 4, max = 64, message = "AUTHORITY_INVALID_SIZE")
     private String authority;
 
     private RestRemoveAuthorityRequest() {

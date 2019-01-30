@@ -27,12 +27,12 @@ dependencyManagement {
 }
 
 dependencies {
-    compile project(':common')
+    compile project(':common-logging')
 
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
-    compile "org.springframework.boot:spring-boot-starter-web"
 
+    compile "org.springframework.boot:spring-boot-starter-web"
     compile "de.codecentric:spring-boot-admin-starter-server:${springBootAdminVersion}"
 
     runtime "net.logstash.logback:logstash-logback-encoder:${logstashEncoderVersion}"

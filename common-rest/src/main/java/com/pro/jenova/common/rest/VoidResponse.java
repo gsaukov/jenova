@@ -1,4 +1,4 @@
-package com.pro.jenova.justitia.rest.controller;
+package com.pro.jenova.common.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

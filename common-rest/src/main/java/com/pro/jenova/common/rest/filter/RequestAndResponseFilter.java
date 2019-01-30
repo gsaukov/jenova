@@ -1,4 +1,4 @@
-package com.pro.jenova.justitia.rest.filter;
+package com.pro.jenova.common.rest.filter;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;

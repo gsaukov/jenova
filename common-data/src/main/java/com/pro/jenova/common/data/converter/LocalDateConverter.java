@@ -1,4 +1,4 @@
-package com.pro.jenova.justitia.data.converter;
+package com.pro.jenova.common.data.converter;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

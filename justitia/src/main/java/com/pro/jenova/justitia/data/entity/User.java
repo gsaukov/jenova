@@ -1,5 +1,7 @@
 package com.pro.jenova.justitia.data.entity;
 
+import com.pro.jenova.common.data.entity.BaseEntity;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;

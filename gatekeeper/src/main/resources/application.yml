@@ -2,26 +2,6 @@ spring:
   application:
     name: gatekeeper
 
-zuul:
-  ignoredServices: '*'
-  prefix: /jenova
-  routes:
-    user:
-      path: /user/**
-      sensitiveHeaders:
-      serviceId: justitia
-      stripPrefix: false
-    authority:
-      path: /authority/**
-      sensitiveHeaders:
-      serviceId: justitia
-      stripPrefix: false
-    echo:
-      path: /echo/**
-      sensitiveHeaders:
-      serviceId: omnidrive
-      stripPrefix: false
-
 management:
   endpoints:
     web:
@@ -36,3 +16,17 @@ eureka:
     serviceUrl:
       defaultZone: http://deepwater:8761/eureka/
 
+zuul:
+  ignoredServices: '*'
+  prefix: /jenova
+  routes:
+    justitia:
+      path: /justitia-api/**
+      sensitiveHeaders:
+      serviceId: justitia
+      stripPrefix: false
+    omnidrive:
+      path: /omnidrive-api/**
+      sensitiveHeaders:
+      serviceId: omnidrive
+      stripPrefix: false

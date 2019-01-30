@@ -1,6 +1,6 @@
 package com.pro.jenova.justitia.rest.controller.authority.response;
 
-import com.pro.jenova.justitia.rest.controller.RestResponse;
+import com.pro.jenova.common.rest.RestResponse;
 
 import java.util.ArrayList;
 import java.util.Collection;

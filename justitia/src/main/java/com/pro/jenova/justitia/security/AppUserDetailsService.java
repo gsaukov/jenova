@@ -14,10 +14,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.text.MessageFormat.format;
-import static org.springframework.security.core.authority.AuthorityUtils.createAuthorityList;
 
 @Service
-public class CustomerUserDetailsService implements UserDetailsService {
+public class AppUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -27,10 +26,6 @@ public class CustomerUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if ("admin".equals(username)) {
-            return loadAdminUserDetails();
-        }
-
         Optional<User> user = userRepository.findByUsername(username);
 
         if (!user.isPresent()) {
@@ -39,21 +34,11 @@ public class CustomerUserDetailsService implements UserDetailsService {
 
         List<Authority> authorities = authorityRepository.findByUser(user.get());
 
-        return toUserDetails(user.get(), authorities);
+        return toAppUser(user.get(), authorities);
     }
 
-    private org.springframework.security.core.userdetails.User toUserDetails(User user, List<Authority> authorities) {
-        String[] assigned = authorities.stream().map(Authority::getAuthority).toArray(String[]::new);
-
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                createAuthorityList(assigned));
-    }
-
-    private org.springframework.security.core.userdetails.User loadAdminUserDetails() {
-        return new org.springframework.security.core.userdetails.User("admin",
-                "$2a$10$bKV1xuUfAxJHDECvfQGXV.5pOGkOMGfIYr1jDS4FzuGc.OlQ44V2O",
-                createAuthorityList("ADMIN", "CREATE_USER", "REMOVE_USER", "LIST_USERS",
-                        "CREATE_AUTHORITY", "REMOVE_AUTHORITY", "LIST_AUTHORITIES"));
+    private AppUser toAppUser(User user, List<Authority> authorities) {
+        return new AppUser(user.getUsername(), user.getPassword(), authorities);
     }
 
 }
