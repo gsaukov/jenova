@@ -21,7 +21,7 @@
         <createTable tableName="oauth_access_token">
             <column name="token_id" type="varchar(256)"/>
             <column name="token" type="longvarbinary"/>
-            <column name="authentication_id" type="varchar(256)">
+            <column name="authentication_id" type="varchar(256)"/>
             <column name="user_name" type="varchar(256)"/>
             <column name="client_id" type="varchar(256)"/>
             <column name="authentication" type="longvarbinary"/>
