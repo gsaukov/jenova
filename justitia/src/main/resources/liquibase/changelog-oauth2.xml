@@ -5,9 +5,7 @@
 
     <changeSet id="create_oauth_tables" author="d.konstantopoulos">
         <createTable tableName="oauth_client_details">
-            <column name="client_id" type="varchar(255)">
-                <constraints primaryKey="true"/>
-            </column>
+            <column name="client_id" type="varchar(255)"/>
             <column name="resource_ids" type="varchar(256)"/>
             <column name="client_secret" type="varchar(256)"/>
             <column name="scope" type="varchar(256)"/>
@@ -24,8 +22,6 @@
             <column name="token_id" type="varchar(256)"/>
             <column name="token" type="longvarbinary"/>
             <column name="authentication_id" type="varchar(256)">
-                <constraints primaryKey="true"/>
-            </column>
             <column name="user_name" type="varchar(256)"/>
             <column name="client_id" type="varchar(256)"/>
             <column name="authentication" type="longvarbinary"/>
