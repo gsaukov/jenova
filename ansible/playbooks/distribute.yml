@@ -7,6 +7,7 @@
       - openjdk-8-jdk
       - whois
       - curl
+      - htop
   - name: ensure parent log directory for application exists
     become: true
     file:
@@ -103,6 +104,7 @@
       - openjdk-8-jdk
       - whois
       - curl
+      - htop
   - name: ensure parent log directory for application exists
     become: true
     file:
@@ -199,6 +201,7 @@
       - openjdk-8-jdk
       - whois
       - curl
+      - htop
   - name: ensure parent log directory for application exists
     become: true
     file:
@@ -295,6 +298,7 @@
     - openjdk-8-jdk
     - whois
     - curl
+    - htop
   - name: ensure parent log directory for application exists
     become: true
     file:
@@ -391,6 +395,7 @@
     - openjdk-8-jdk
     - whois
     - curl
+    - htop
   - name: ensure parent log directory for application exists
     become: true
     file:
