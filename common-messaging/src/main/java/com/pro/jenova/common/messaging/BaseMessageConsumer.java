@@ -1,4 +1,4 @@
-package com.pro.jenova.omnidrive.messaging;
+package com.pro.jenova.common.messaging;
 
 import org.slf4j.MDC;
 import org.springframework.amqp.core.Message;
@@ -7,7 +7,7 @@ import org.springframework.amqp.core.MessageProperties;
 import static com.pro.jenova.common.util.LogCorrelation.LOG_CORRELATION_ID;
 import static com.pro.jenova.common.util.LogCorrelation.useExistingOrCreateNew;
 
-public abstract class BaseEventConsumer {
+public abstract class BaseMessageConsumer {
 
     public void prepare(Message message) {
         MessageProperties properties = message.getMessageProperties();

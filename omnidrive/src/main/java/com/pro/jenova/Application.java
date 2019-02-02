@@ -1,4 +1,4 @@
-package com.pro.jenova.omnidrive;
+package com.pro.jenova;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;

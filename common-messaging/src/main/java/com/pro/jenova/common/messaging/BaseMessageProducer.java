@@ -1,4 +1,4 @@
-package com.pro.jenova.omnidrive.messaging;
+package com.pro.jenova.common.messaging;
 
 import org.slf4j.MDC;
 import org.springframework.amqp.core.Exchange;
@@ -8,7 +8,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import static com.pro.jenova.common.util.LogCorrelation.LOG_CORRELATION_ID;
 import static com.pro.jenova.common.util.LogCorrelation.useExistingOrCreateNew;
 
-public abstract class BaseEventProducer {
+public abstract class BaseMessageProducer {
 
     public void send(String routingKey, Object message) {
         getTemplate().convertAndSend(getExchange().getName(), routingKey, message, msg -> {

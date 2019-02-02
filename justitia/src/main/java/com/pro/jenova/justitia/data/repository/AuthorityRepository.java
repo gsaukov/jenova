@@ -7,14 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional(readOnly = true)
+@Transactional
 public interface AuthorityRepository extends JpaRepository<Authority, String> {
 
     List<Authority> findByUser(User user);
 
     boolean existsByUserAndAuthority(User user, String authority);
 
-    @Transactional
     long removeByUserAndAuthority(User user, String authority);
 
 }

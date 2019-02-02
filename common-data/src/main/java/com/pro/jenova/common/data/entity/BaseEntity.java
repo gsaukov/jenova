@@ -59,6 +59,16 @@ public abstract class BaseEntity implements Serializable {
         return updatedBy;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        throw new IllegalArgumentException("Method 'equals' must be overridden from downstream implementation.");
+    }
+
+    @Override
+    public int hashCode() {
+        throw new IllegalArgumentException("Method 'hashCode' must be overridden from downstream implementation.");
+    }
+
     @PrePersist
     private void prePersist() {
         id = uuid();

@@ -1,10 +1,10 @@
 rootProject.name = 'jenova'
 include 'common-logging'
 include 'common-data'
+include 'common-rest'
+include 'common-messaging'
 include 'earthrise'
 include 'omnidrive'
 include 'gatekeeper'
 include 'justitia'
 include 'hyperion'
-include 'common-rest'
-
