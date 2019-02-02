@@ -1,4 +1,4 @@
-package com.pro.jenova.hyperion;
+package com.pro.jenova;
 
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

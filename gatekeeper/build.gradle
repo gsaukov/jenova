@@ -16,7 +16,7 @@ apply plugin: "io.spring.dependency-management"
 apply plugin: "nebula.ospackage"
 
 bootJar {
-    mainClassName = "com.pro.jenova.gatekeeper.Application"
+    mainClassName = "com.pro.jenova.Application"
     launchScript()
 }
 
