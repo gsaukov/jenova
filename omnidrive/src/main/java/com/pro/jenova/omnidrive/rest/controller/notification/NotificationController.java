@@ -1,4 +1,4 @@
-package com.pro.jenova.omnidrive.rest.controller.echo;
+package com.pro.jenova.omnidrive.rest.controller.notification;
 
 import com.pro.jenova.common.rest.RestResponse;
 import com.pro.jenova.common.rest.VoidResponse;
