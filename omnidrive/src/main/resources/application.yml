@@ -16,6 +16,7 @@ spring:
       connectionTimeout: 30000
 
   jpa:
+    open-in-view: false
     database-platform: org.hibernate.dialect.MySQL5Dialect
     hibernate:
       ddl-auto: none
