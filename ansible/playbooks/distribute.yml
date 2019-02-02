@@ -61,7 +61,7 @@
   - name: upload package binary into artifacts directory
     become: true
     copy:
-      src: "{{playbook_dir}}/../../earthrise/build/distributions/earthrise_{{version}}_all.deb"
+      src: "{{playbook_dir}}/../../earthrise/build/distributions/earthrise_{{version}}.deb"
       dest: "/opt/earthrise_tmp/earthrise_{{version}}.deb"
   - name: check if service being installed exists from before
     become: true
@@ -158,7 +158,7 @@
   - name: upload package binary into artifacts directory
     become: true
     copy:
-      src: "{{playbook_dir}}/../../omnidrive/build/distributions/omnidrive_{{version}}_all.deb"
+      src: "{{playbook_dir}}/../../omnidrive/build/distributions/omnidrive_{{version}}.deb"
       dest: "/opt/omnidrive_tmp/omnidrive_{{version}}.deb"
   - name: check if service being installed exists from before
     become: true
@@ -255,7 +255,7 @@
   - name: upload package binary into artifacts directory
     become: true
     copy:
-      src: "{{playbook_dir}}/../../gatekeeper/build/distributions/gatekeeper_{{version}}_all.deb"
+      src: "{{playbook_dir}}/../../gatekeeper/build/distributions/gatekeeper_{{version}}.deb"
       dest: "/opt/gatekeeper_tmp/gatekeeper_{{version}}.deb"
   - name: check if service being installed exists from before
     become: true
@@ -352,7 +352,7 @@
   - name: upload package binary into artifacts directory
     become: true
     copy:
-      src: "{{playbook_dir}}/../../justitia/build/distributions/justitia_{{version}}_all.deb"
+      src: "{{playbook_dir}}/../../justitia/build/distributions/justitia_{{version}}.deb"
       dest: "/opt/justitia_tmp/justitia_{{version}}.deb"
   - name: check if service being installed exists from before
     become: true
@@ -449,7 +449,7 @@
   - name: upload package binary into artifacts directory
     become: true
     copy:
-      src: "{{playbook_dir}}/../../hyperion/build/distributions/hyperion_{{version}}_all.deb"
+      src: "{{playbook_dir}}/../../hyperion/build/distributions/hyperion_{{version}}.deb"
       dest: "/opt/hyperion_tmp/hyperion_{{version}}.deb"
   - name: check if service being installed exists from before
     become: true
