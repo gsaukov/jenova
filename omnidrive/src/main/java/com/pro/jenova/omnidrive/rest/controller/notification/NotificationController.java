@@ -7,6 +7,7 @@ import com.pro.jenova.omnidrive.data.repository.NotificationRepository;
 import com.pro.jenova.omnidrive.rest.controller.notification.request.RestSendNotificationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +20,7 @@ public class NotificationController {
     @Autowired
     private NotificationRepository notificationRepository;
 
+    @PreAuthorize("hasAuthority('NOTIFICATION')")
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public ResponseEntity<RestResponse> send(@RequestBody RestSendNotificationRequest restSendNotificationRequest) {
         notificationRepository.save(new Notification.Builder()
