@@ -3,6 +3,7 @@ package com.pro.jenova.justitia.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -25,6 +26,9 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
     private DataSource dataSource;
 
     @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
     private UserDetailsService userDetailsService;
 
     @Autowired
@@ -38,12 +42,14 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.checkTokenAccess("isAuthenticated()")
+                .tokenKeyAccess("permitAll()")
                 .passwordEncoder(passwordEncoder);
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.userDetailsService(userDetailsService)
+        endpoints.authenticationManager(authenticationManager)
+                .userDetailsService(userDetailsService)
                 .approvalStore(approvalStore())
                 .tokenStore(tokenStore());
     }

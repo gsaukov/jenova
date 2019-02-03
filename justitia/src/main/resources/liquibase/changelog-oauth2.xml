@@ -64,7 +64,7 @@
             <column name="client_secret" type="varchar(256)" value="$2a$10$A3sHMidauVkpWTfCJRBny.syCFDyTblIxwT9luO4l18JXzACVsdHe"/>
             <column name="scope" type="varchar(256)" value="trusted"/>
             <column name="authorized_grant_types" type="varchar(256)" value="password,refresh_token"/>
-            <column name="web_server_redirect_uri" type="varchar(256)" value="http://localhost:9000/callback"/>
+            <column name="web_server_redirect_uri" type="varchar(256)" />
             <column name="authorities" type="varchar(256)"/>
             <column name="access_token_validity" type="int" value="300"/>
             <column name="refresh_token_validity" type="int" value="-1"/>
