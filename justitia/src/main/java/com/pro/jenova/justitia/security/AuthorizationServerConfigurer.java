@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -29,6 +30,9 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
     private PasswordEncoder passwordEncoder;
 
     @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
     @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
 
@@ -46,7 +50,8 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.authenticationManager(authenticationManager)
+        endpoints.authenticationManager(authenticationManager) // Required for password grant.
+                .userDetailsService(userDetailsService) // Required for refresh_token grant.
                 .approvalStore(approvalStore())
                 .tokenStore(tokenStore());
     }
