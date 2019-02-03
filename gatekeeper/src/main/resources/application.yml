@@ -25,16 +25,19 @@ zuul:
       sensitiveHeaders:
       serviceId: justitia
       stripPrefix: false
+      retryable: true
     justitia-api:
       path: /justitia-api/**
       sensitiveHeaders:
       serviceId: justitia
       stripPrefix: false
+      retryable: true
     omnidrive-api:
       path: /omnidrive-api/**
       sensitiveHeaders:
       serviceId: omnidrive
       stripPrefix: false
+      retryable: true
 
   ribbon:
     eager-load:
