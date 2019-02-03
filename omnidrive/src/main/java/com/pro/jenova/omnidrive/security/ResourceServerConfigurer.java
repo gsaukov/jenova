@@ -17,13 +17,13 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
 
-    @Value("#{security.oauth2.resource.client-id}")
+    @Value("${security.oauth2.resource.client-id}")
     private String clientId;
 
-    @Value("#{security.oauth2.resource.client-secret}")
+    @Value("${security.oauth2.resource.client-secret}")
     private String clientSecret;
 
-    @Value("#{security.oauth2.resource.token-info-uri}")
+    @Value("${security.oauth2.resource.token-info-uri}")
     private String tokenInfoUri;
 
     @Override
