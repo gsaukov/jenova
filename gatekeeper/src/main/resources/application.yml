@@ -35,3 +35,7 @@ zuul:
       sensitiveHeaders:
       serviceId: omnidrive
       stripPrefix: false
+
+  ribbon:
+    eager-load:
+      enabled: true
