@@ -39,7 +39,7 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security.checkTokenAccess("permitAll()")
+        security.checkTokenAccess("isAuthenticated()")
                 .tokenKeyAccess("permitAll()")
                 .passwordEncoder(passwordEncoder);
     }
