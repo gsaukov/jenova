@@ -33,11 +33,7 @@ spring:
 
 security:
   oauth2:
-    client:
-      client-id: trusted-client
-      client-secret: trusted-client
     resource:
-      load-balanced: true
       token-info-uri: http://deepwater:8090/jenova/oauth/check_token
 
 management:
