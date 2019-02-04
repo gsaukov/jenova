@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import static java.util.Collections.list;
+
 public class RequestAndResponseFilter extends OncePerRequestFilter {
 
     @Override
@@ -29,11 +31,20 @@ public class RequestAndResponseFilter extends OncePerRequestFilter {
     private void logRequest(HttpServletRequest request, ContentCachingRequestWrapper requestWrapper) {
         logger.debug("Incoming Request - " + formattedForLogging(request));
 
+        logHeaders(request);
         logContent(requestWrapper.getContentAsByteArray(), request.getCharacterEncoding());
     }
 
     private String formattedForLogging(HttpServletRequest request) {
         return request.getMethod().concat(" ").concat(request.getRequestURL().toString());
+    }
+
+    private void logHeaders(HttpServletRequest request) {
+        list(request.getHeaderNames()).forEach(header -> logHeader(header, request));
+    }
+
+    private void logHeader(String headerName, HttpServletRequest request) {
+        logger.debug("Header " + headerName + " = " + request.getHeader(headerName));
     }
 
     private void logResponse(HttpServletResponse response, ContentCachingResponseWrapper responseWrapper) {
