@@ -8,3 +8,5 @@ include 'omnidrive'
 include 'gatekeeper'
 include 'justitia'
 include 'hyperion'
+include 'exodus'
+

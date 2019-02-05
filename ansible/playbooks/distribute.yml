@@ -95,6 +95,103 @@
       path: "/opt/earthrise_tmp"
       state: absent
 
+- hosts: exodus
+  tasks:
+    - name: ensure base packages are installed
+      become: true
+      apt: name={{ item }} state=installed
+      with_items:
+        - openjdk-8-jdk
+        - whois
+        - curl
+        - htop
+    - name: ensure parent log directory for application exists
+      become: true
+      file:
+        path: "/var/log/jenova"
+        state: directory
+        mode: 0775
+    - name: ensure log shipper is installed
+      become: true
+      apt:
+        deb: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.2.4-amd64.deb
+    - name: stop log shipper if it is running
+      become: true
+      service:
+        name: filebeat
+        state: stopped
+    - name: copy filebeat configuration file
+      become: true
+      copy:
+        src: "{{playbook_dir}}/../files/filebeat.yml"
+        dest: "/etc/filebeat/filebeat.yml"
+    - name: start log shipper that was installed
+      become: true
+      service:
+        name: filebeat
+        state: started
+        enabled: true
+    - name: ensure appropriate group exists
+      become: true
+      group:
+        name: exodus
+        state: present
+    - name: ensure appropriate user exists
+      become: true
+      user:
+        name: exodus
+        password: '$6$y9O3JHUDXmYNoY0$Mp0c/Ob/u3wHf4Pg0T.6k3U.3jkD7BX08tIntHnW7EdJTMZhBdwpne9DPe3LgbUt4qvCrRHfLU2Krnaokwdxb1'
+        group: exodus
+    - name: ensure application specific log directory exists
+      become: true
+      file:
+        path: "/var/log/jenova/exodus"
+        state: directory
+        owner: exodus
+        group: exodus
+        mode: 0775
+    - name: create artifacts directory where the package will be copied into
+      become: true
+      file:
+        path: "/opt/exodus_tmp"
+        state: directory
+    - name: upload package binary into artifacts directory
+      become: true
+      copy:
+        src: "{{playbook_dir}}/../../exodus/build/distributions/exodus-{{version}}.deb"
+        dest: "/opt/exodus_tmp/exodus_{{version}}.deb"
+    - name: check if service being installed exists from before
+      become: true
+      stat:
+        path: "/etc/init.d/exodus"
+      register: service_status
+    - name: if service being installed exists, then make sure it is stopped
+      become: true
+      service:
+        name: exodus
+        state: stopped
+      when: service_status.stat.exists
+    - name: uninstall package of interest if already installed from before
+      become: true
+      apt:
+        name: exodus
+        state: absent
+    - name: install uploaded package
+      become: true
+      apt:
+        deb: "/opt/exodus_tmp/exodus_{{version}}.deb"
+    - name: start service that was installed
+      become: true
+      service:
+        name: exodus
+        state: started
+        enabled: true
+    - name: clean up artifacts directory
+      become: true
+      file:
+        path: "/opt/exodus_tmp"
+        state: absent
+
 - hosts: omnidrive
   tasks:
   - name: ensure base packages are installed

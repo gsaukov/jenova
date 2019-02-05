@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: exodus
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+server:
+  port: 8100
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://deepwater:8761/eureka/
