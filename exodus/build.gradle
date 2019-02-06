@@ -35,6 +35,7 @@ dependencies {
     compile "org.springframework.cloud:spring-cloud-starter-openfeign"
 
     compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.boot:spring-boot-starter-thymeleaf"
 
     runtime "net.logstash.logback:logstash-logback-encoder:${logstashEncoderVersion}"
 }

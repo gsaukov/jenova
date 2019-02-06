@@ -1,4 +1,4 @@
-package com.pro.jenova.omnidrive.rest.controller.client;
+package com.pro.jenova.exodus.rest.client;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import static com.pro.jenova.common.util.LogCorrelation.LOG_CORRELATION_ID;
 import static com.pro.jenova.common.util.LogCorrelation.useExistingOrCreateNew;
 
-// FIXME
 @Configuration
 public class LogCorrelationIdInterceptor implements RequestInterceptor {
 
