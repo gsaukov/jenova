@@ -12,7 +12,6 @@ public class LoginController {
     @RequestMapping(value = "/greet", method = RequestMethod.GET)
     public String greet(Model model) {
         model.addAttribute("message", "Welcome, please enter your login name to proceed.");
-
         return "greet";
     }
 
