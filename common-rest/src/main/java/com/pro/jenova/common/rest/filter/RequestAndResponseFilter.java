@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import static java.lang.System.lineSeparator;
 import static java.util.Collections.list;
 
 public class RequestAndResponseFilter extends OncePerRequestFilter {
@@ -40,21 +41,34 @@ public class RequestAndResponseFilter extends OncePerRequestFilter {
     }
 
     private void logHeaders(HttpServletRequest request) {
-        list(request.getHeaderNames()).forEach(header -> logHeader(header, request));
+        StringBuilder builder = new StringBuilder();
+        list(request.getHeaderNames()).forEach(header -> logHeader(header, request, builder));
+        logger.debug(builder.toString());
     }
 
-    private void logHeader(String headerName, HttpServletRequest request) {
-        logger.debug("Header " + headerName + " = " + request.getHeader(headerName));
+    private void logHeader(String headerName, HttpServletRequest request, StringBuilder builder) {
+        builder.append(headerName).append(" = ").append(request.getHeader(headerName)).append(lineSeparator());
     }
 
     private void logResponse(HttpServletResponse response, ContentCachingResponseWrapper responseWrapper) {
         logger.debug("Outgoing Response - " + formattedForLogging(response));
 
+        logHeaders(response);
         logContent(responseWrapper.getContentAsByteArray(), response.getCharacterEncoding());
     }
 
     private String formattedForLogging(HttpServletResponse response) {
         return Integer.toString(response.getStatus());
+    }
+
+    private void logHeaders(HttpServletResponse response) {
+        StringBuilder builder = new StringBuilder();
+        response.getHeaderNames().forEach(header -> logHeader(header, response, builder));
+        logger.debug(builder.toString());
+    }
+
+    private void logHeader(String headerName, HttpServletResponse response, StringBuilder builder) {
+        builder.append(headerName).append(" = ").append(response.getHeader(headerName)).append(lineSeparator());
     }
 
     private void logContent(byte[] content, String encoding) {
