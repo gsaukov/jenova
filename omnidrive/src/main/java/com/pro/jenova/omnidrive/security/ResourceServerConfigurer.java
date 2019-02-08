@@ -34,7 +34,8 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/omnidrive-api/**").hasAuthority("USER")
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and().anonymous().disable();
     }
 
     @Override
