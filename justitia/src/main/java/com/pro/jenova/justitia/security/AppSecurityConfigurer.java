@@ -33,8 +33,7 @@ public class AppSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/justitia-api/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
-                .and().httpBasic()
-                .and().anonymous().disable();
+                .and().httpBasic();
     }
 
     @Override
