@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
@@ -38,7 +39,7 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.jdbc(dataSource);
+        clients.withClientDetails(jdbcClientDetailsService());
     }
 
     @Override
@@ -54,6 +55,13 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
                 .userDetailsService(userDetailsService) // Required for refresh_token grant.
                 .approvalStore(approvalStore())
                 .tokenStore(tokenStore());
+    }
+
+    @Bean
+    public JdbcClientDetailsService jdbcClientDetailsService() {
+        JdbcClientDetailsService clientDetailsService = new JdbcClientDetailsService(dataSource);
+        clientDetailsService.setPasswordEncoder(passwordEncoder);
+        return clientDetailsService;
     }
 
     @Bean

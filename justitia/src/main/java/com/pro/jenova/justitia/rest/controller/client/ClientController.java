@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientAlreadyExistsException;
 import org.springframework.security.oauth2.provider.ClientDetails;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.NoSuchClientException;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +28,7 @@ import static java.util.stream.Collectors.toList;
 public class ClientController {
 
     @Autowired
-    private ClientDetailsService clientDetailsService;
+    private JdbcClientDetailsService clientDetailsService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -37,7 +36,7 @@ public class ClientController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<RestResponse> create(@RequestBody RestCreateClientRequest restCreateClientRequest) {
         try {
-            ((JdbcClientDetailsService) clientDetailsService).addClientDetails(restCreateClientRequest);
+            clientDetailsService.addClientDetails(restCreateClientRequest);
         } catch (final ClientAlreadyExistsException exc) {
             return ErrorResponse.badRequest("CLIENT_ALREADY_EXISTS");
         }
@@ -48,7 +47,7 @@ public class ClientController {
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
     public ResponseEntity<RestResponse> remove(@RequestBody RestCreateClientRequest restCreateClientRequest) {
         try {
-            ((JdbcClientDetailsService) clientDetailsService).removeClientDetails(restCreateClientRequest.getClientId());
+            clientDetailsService.removeClientDetails(restCreateClientRequest.getClientId());
         } catch (final NoSuchClientException exc) {
             return ErrorResponse.badRequest("USERNAME_NOT_FOUND");
         }
@@ -58,7 +57,7 @@ public class ClientController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity<RestResponse> list() {
-        List<ClientDetails> clients = ((JdbcClientDetailsService) clientDetailsService).listClientDetails();
+        List<ClientDetails> clients = clientDetailsService.listClientDetails();
 
         return new ResponseEntity<>(new RestListClientsResponse.Builder().withClients(clients.stream()
                 .map(this::toRestClientDetails).collect(toList())).build(), HttpStatus.OK);
