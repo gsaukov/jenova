@@ -17,6 +17,7 @@ eureka:
       defaultZone: http://deepwater:8761/eureka/
 
 zuul:
+  retryable: true
   ignoredServices: '*'
   prefix: /jenova
   routes:
@@ -41,6 +42,7 @@ zuul:
       serviceId: exodus
       stripPrefix: false
 
-  ribbon:
-    eager-load:
-      enabled: true
+ribbon:
+  MaxAutoRetries: 2
+  MaxAutoRetriesNextServer: 1
+  OkToRetryOnAllOperations: true
