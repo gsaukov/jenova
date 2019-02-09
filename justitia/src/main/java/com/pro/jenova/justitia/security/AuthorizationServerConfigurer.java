@@ -12,7 +12,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -34,7 +33,7 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
     private UserDetailsService userDetailsService;
 
     @Autowired
-    private ClientDetailsService clientDetailsService;
+    private AppClientDetailsService clientDetailsService;
 
     @Autowired
     @Qualifier("authenticationManagerBean")
