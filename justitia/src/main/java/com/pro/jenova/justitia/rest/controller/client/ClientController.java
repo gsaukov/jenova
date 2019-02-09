@@ -3,17 +3,16 @@ package com.pro.jenova.justitia.rest.controller.client;
 import com.pro.jenova.common.rest.ErrorResponse;
 import com.pro.jenova.common.rest.RestResponse;
 import com.pro.jenova.common.rest.VoidResponse;
+import com.pro.jenova.justitia.data.entity.Client;
+import com.pro.jenova.justitia.data.repository.ClientRepository;
 import com.pro.jenova.justitia.rest.controller.client.request.RestCreateClientRequest;
-import com.pro.jenova.justitia.rest.controller.client.response.RestClientDetails;
+import com.pro.jenova.justitia.rest.controller.client.request.RestRemoveClientRequest;
+import com.pro.jenova.justitia.rest.controller.client.response.RestListClientDetails;
 import com.pro.jenova.justitia.rest.controller.client.response.RestListClientsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.ClientAlreadyExistsException;
-import org.springframework.security.oauth2.provider.ClientDetails;
-import org.springframework.security.oauth2.provider.NoSuchClientException;
-import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,48 +27,57 @@ import static java.util.stream.Collectors.toList;
 public class ClientController {
 
     @Autowired
-    private JdbcClientDetailsService clientDetailsService;
+    private ClientRepository clientRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<RestResponse> create(@RequestBody RestCreateClientRequest restCreateClientRequest) {
-        try {
-            clientDetailsService.addClientDetails(restCreateClientRequest);
-        } catch (final ClientAlreadyExistsException exc) {
-            return ErrorResponse.badRequest("CLIENT_ALREADY_EXISTS");
+        if (clientRepository.existsByClientId(restCreateClientRequest.getClientId())) {
+            return ErrorResponse.badRequest("CLIENT_ID_ALREADY_EXISTS");
         }
+
+        clientRepository.save(new Client.Builder()
+                .withClientId(restCreateClientRequest.getClientId())
+                .withClientSecret(passwordEncoder.encode(restCreateClientRequest.getClientSecret()))
+                .withGrantTypes(restCreateClientRequest.getGrantTypes())
+                .withScopes(restCreateClientRequest.getScopes())
+                .withAccessTokenDuration(restCreateClientRequest.getAccessTokenDuration())
+                .withRefreshTokenDuration(restCreateClientRequest.getRefreshTokenDuration())
+                .withAutoApprove(restCreateClientRequest.getAutoApprove())
+                .withRedirectUri(restCreateClientRequest.getRedirectUri())
+                .build());
 
         return VoidResponse.created();
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
-    public ResponseEntity<RestResponse> remove(@RequestBody RestCreateClientRequest restCreateClientRequest) {
-        try {
-            clientDetailsService.removeClientDetails(restCreateClientRequest.getClientId());
-        } catch (final NoSuchClientException exc) {
-            return ErrorResponse.badRequest("USERNAME_NOT_FOUND");
+    public ResponseEntity<RestResponse> remove(@RequestBody RestRemoveClientRequest restRemoveClientRequest) {
+        if (clientRepository.removeByClientId(restRemoveClientRequest.getClientId()) > 0L) {
+            return VoidResponse.ok();
         }
 
-        return VoidResponse.ok();
+        return ErrorResponse.badRequest("CLIENT_ID_NOT_FOUND");
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity<RestResponse> list() {
-        List<ClientDetails> clients = clientDetailsService.listClientDetails();
+        List<Client> clients = clientRepository.findAll();
 
         return new ResponseEntity<>(new RestListClientsResponse.Builder().withClients(clients.stream()
-                .map(this::toRestClientDetails).collect(toList())).build(), HttpStatus.OK);
+                .map(this::toRestListClientDetails).collect(toList())).build(), HttpStatus.OK);
     }
 
-    private RestClientDetails toRestClientDetails(ClientDetails details) {
-        return new RestClientDetails.Builder()
-                .withClientId(details.getClientId())
-                .withScopes(details.getScope())
-                .withRedirectUri(details.getRegisteredRedirectUri())
-                .withAccessTokenDurationSecs(details.getAccessTokenValiditySeconds())
-                .withRefreshTokenDurationSecs(details.getRefreshTokenValiditySeconds())
+    private RestListClientDetails toRestListClientDetails(Client client) {
+        return new RestListClientDetails.Builder()
+                .withClientId(client.getClientId())
+                .withGrantTypes(client.getGrantTypes())
+                .withScopes(client.getScopes())
+                .withAccessTokenDuration(client.getAccessTokenDuration())
+                .withRefreshTokenDuration(client.getRefreshTokenDuration())
+                .withAutoApprove(client.getAutoApprove())
+                .withRedirectUri(client.getRedirectUri())
                 .build();
     }
 

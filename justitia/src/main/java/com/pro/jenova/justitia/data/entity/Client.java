@@ -1,21 +1,47 @@
-package com.pro.jenova.justitia.rest.controller.client.request;
+package com.pro.jenova.justitia.data.entity;
 
-public class RestCreateClientRequest {
+import com.pro.jenova.common.data.entity.BaseEntity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.util.Objects;
+
+@Entity
+@Table(name = "CLIENT")
+public class Client extends BaseEntity {
+
+    private static final long serialVersionUID = 1L;
+
+    @Column(name = "CLIENT_ID")
     private String clientId;
+
+    @Column(name = "CLIENT_SECRET")
     private String clientSecret;
+
+    @Column(name = "GRANT_TYPES")
     private String grantTypes;
+
+    @Column(name = "SCOPES")
     private String scopes;
+
+    @Column(name = "ACCESS_TOKEN_DURATION")
     private Integer accessTokenDuration;
+
+    @Column(name = "REFRESH_TOKEN_DURATION")
     private Integer refreshTokenDuration;
+
+    @Column(name = "AUTO_APPROVE")
     private Boolean autoApprove;
+
+    @Column(name = "REDIRECT_URI")
     private String redirectUri;
 
-    private RestCreateClientRequest() {
-        // REST
+    private Client() {
+        // JPA
     }
 
-    private RestCreateClientRequest(Builder builder) {
+    private Client(Builder builder) {
         clientId = builder.clientId;
         clientSecret = builder.clientSecret;
         grantTypes = builder.grantTypes;
@@ -90,6 +116,22 @@ public class RestCreateClientRequest {
         this.redirectUri = redirectUri;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Client client = (Client) o;
+
+        return Objects.equals(clientId, client.clientId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(clientId);
+    }
+
     public static final class Builder {
 
         private String clientId;
@@ -141,8 +183,8 @@ public class RestCreateClientRequest {
             return this;
         }
 
-        public RestCreateClientRequest build() {
-            return new RestCreateClientRequest(this);
+        public Client build() {
+            return new Client(this);
         }
 
     }

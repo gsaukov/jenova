@@ -4,10 +4,9 @@ import com.pro.jenova.common.rest.RestResponse;
 
 import java.util.List;
 
-
 public class RestListClientsResponse implements RestResponse {
 
-    private List<RestClientDetails> clients;
+    private List<RestListClientDetails> clients;
 
     private RestListClientsResponse() {
         // REST
@@ -17,19 +16,19 @@ public class RestListClientsResponse implements RestResponse {
         clients = builder.clients;
     }
 
-    public List<RestClientDetails> getClients() {
+    public List<RestListClientDetails> getClients() {
         return clients;
     }
 
-    public void ListClients(List<RestClientDetails> clients) {
+    public void ListClients(List<RestListClientDetails> clients) {
         this.clients = clients;
     }
 
     public static final class Builder {
 
-        private List<RestClientDetails> clients;
+        private List<RestListClientDetails> clients;
 
-        public Builder withClients(List<RestClientDetails> clients) {
+        public Builder withClients(List<RestListClientDetails> clients) {
             this.clients = clients;
             return this;
         }

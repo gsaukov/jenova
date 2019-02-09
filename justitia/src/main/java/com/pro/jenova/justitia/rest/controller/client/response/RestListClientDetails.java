@@ -1,9 +1,8 @@
-package com.pro.jenova.justitia.rest.controller.client.request;
+package com.pro.jenova.justitia.rest.controller.client.response;
 
-public class RestCreateClientRequest {
+public class RestListClientDetails {
 
     private String clientId;
-    private String clientSecret;
     private String grantTypes;
     private String scopes;
     private Integer accessTokenDuration;
@@ -11,13 +10,12 @@ public class RestCreateClientRequest {
     private Boolean autoApprove;
     private String redirectUri;
 
-    private RestCreateClientRequest() {
+    private RestListClientDetails() {
         // REST
     }
 
-    private RestCreateClientRequest(Builder builder) {
+    private RestListClientDetails(Builder builder) {
         clientId = builder.clientId;
-        clientSecret = builder.clientSecret;
         grantTypes = builder.grantTypes;
         scopes = builder.scopes;
         accessTokenDuration = builder.accessTokenDuration;
@@ -32,14 +30,6 @@ public class RestCreateClientRequest {
 
     public void setClientId(String clientId) {
         this.clientId = clientId;
-    }
-
-    public String getClientSecret() {
-        return clientSecret;
-    }
-
-    public void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
     }
 
     public String getGrantTypes() {
@@ -93,7 +83,6 @@ public class RestCreateClientRequest {
     public static final class Builder {
 
         private String clientId;
-        private String clientSecret;
         private String grantTypes;
         private String scopes;
         private Integer accessTokenDuration;
@@ -103,11 +92,6 @@ public class RestCreateClientRequest {
 
         public Builder withClientId(String clientId) {
             this.clientId = clientId;
-            return this;
-        }
-
-        public Builder withClientSecret(String clientSecret) {
-            this.clientSecret = clientSecret;
             return this;
         }
 
@@ -141,8 +125,8 @@ public class RestCreateClientRequest {
             return this;
         }
 
-        public RestCreateClientRequest build() {
-            return new RestCreateClientRequest(this);
+        public RestListClientDetails build() {
+            return new RestListClientDetails(this);
         }
 
     }
