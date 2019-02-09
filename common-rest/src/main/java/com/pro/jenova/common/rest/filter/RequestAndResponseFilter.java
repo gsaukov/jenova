@@ -30,20 +30,21 @@ public class RequestAndResponseFilter extends OncePerRequestFilter {
     }
 
     private void logRequest(HttpServletRequest request, ContentCachingRequestWrapper requestWrapper) {
-        logger.debug("Incoming Request - " + formattedForLogging(request));
-
-        logHeaders(request);
-        logContent(requestWrapper.getContentAsByteArray(), request.getCharacterEncoding());
-    }
-
-    private String formattedForLogging(HttpServletRequest request) {
-        return request.getMethod().concat(" ").concat(request.getRequestURL().toString());
-    }
-
-    private void logHeaders(HttpServletRequest request) {
         StringBuilder builder = new StringBuilder();
-        list(request.getHeaderNames()).forEach(header -> logHeader(header, request, builder));
+
+        logHeaders(request, builder);
+        logContent(requestWrapper.getContentAsByteArray(), request.getCharacterEncoding(), builder);
+
         logger.debug(builder.toString());
+    }
+
+    private void logHeaders(HttpServletRequest request, StringBuilder builder) {
+        builder.append("Incoming Request - ")
+                .append(request.getMethod()).append(" ")
+                .append(request.getRequestURL().toString())
+                .append(lineSeparator());
+
+        list(request.getHeaderNames()).forEach(header -> logHeader(header, request, builder));
     }
 
     private void logHeader(String headerName, HttpServletRequest request, StringBuilder builder) {
@@ -51,31 +52,31 @@ public class RequestAndResponseFilter extends OncePerRequestFilter {
     }
 
     private void logResponse(HttpServletResponse response, ContentCachingResponseWrapper responseWrapper) {
-        logger.debug("Outgoing Response - " + formattedForLogging(response));
-
-        logHeaders(response);
-        logContent(responseWrapper.getContentAsByteArray(), response.getCharacterEncoding());
-    }
-
-    private String formattedForLogging(HttpServletResponse response) {
-        return Integer.toString(response.getStatus());
-    }
-
-    private void logHeaders(HttpServletResponse response) {
         StringBuilder builder = new StringBuilder();
-        response.getHeaderNames().forEach(header -> logHeader(header, response, builder));
+
+        logHeaders(response, builder);
+        logContent(responseWrapper.getContentAsByteArray(), response.getCharacterEncoding(), builder);
+
         logger.debug(builder.toString());
+    }
+
+    private void logHeaders(HttpServletResponse response, StringBuilder builder) {
+        builder.append("Outgoing Response - ")
+                .append(response.getStatus())
+                .append(lineSeparator());
+
+        response.getHeaderNames().forEach(header -> logHeader(header, response, builder));
     }
 
     private void logHeader(String headerName, HttpServletResponse response, StringBuilder builder) {
         builder.append(headerName).append(" = ").append(response.getHeader(headerName)).append(lineSeparator());
     }
 
-    private void logContent(byte[] content, String encoding) {
+    private void logContent(byte[] content, String encoding, StringBuilder builder) {
         String requestBody = getContentAsString(content, encoding);
 
         if (!requestBody.isEmpty()) {
-            logger.debug(requestBody);
+            builder.append(requestBody).append(lineSeparator());
         }
     }
 
