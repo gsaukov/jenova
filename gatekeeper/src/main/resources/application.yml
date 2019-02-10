@@ -17,6 +17,9 @@ eureka:
       defaultZone: http://deepwater:8761/eureka/
 
 zuul:
+  ribbon:
+    eager-load:
+      enabled: true
   retryable: true
   ignoredServices: '*'
   prefix: /jenova
@@ -43,6 +46,6 @@ zuul:
       stripPrefix: false
 
 ribbon:
-  MaxAutoRetries: 2
+  MaxAutoRetries: 3
   MaxAutoRetriesNextServer: 1
   OkToRetryOnAllOperations: true
