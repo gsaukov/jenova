@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import static java.lang.System.lineSeparator;
@@ -24,7 +24,7 @@ public class NotificationController {
     private NotificationProducer notificationProducer;
 
     @PreAuthorize("hasAuthority('NOTIFICATION')")
-    @RequestMapping(value = "/send", method = RequestMethod.POST)
+    @PostMapping("/send")
     public ResponseEntity<RestResponse> send(@RequestBody RestSendNotificationRequest restSendNotificationRequest) {
         StringBuilder builder = new StringBuilder();
 

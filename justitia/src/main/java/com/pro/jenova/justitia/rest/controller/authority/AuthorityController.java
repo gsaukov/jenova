@@ -14,9 +14,9 @@ import com.pro.jenova.justitia.rest.controller.authority.response.RestListAuthor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class AuthorityController {
     @Autowired
     private AuthorityRepository authorityRepository;
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @PostMapping("/create")
     public ResponseEntity<RestResponse> create(@RequestBody RestCreateAuthorityRequest restCreateAuthorityRequest) {
         Optional<User> user = userRepository.findByUsername(restCreateAuthorityRequest.getUsername());
 
@@ -54,7 +54,7 @@ public class AuthorityController {
         return VoidResponse.created();
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.POST)
+    @PostMapping("/remove")
     public ResponseEntity<RestResponse> remove(@RequestBody RestRemoveAuthorityRequest restRemoveAuthorityRequest) {
         Optional<User> user = userRepository.findByUsername(restRemoveAuthorityRequest.getUsername());
 
@@ -69,7 +69,7 @@ public class AuthorityController {
         return ErrorResponse.badRequest("AUTHORITY_NOT_FOUND");
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    @PostMapping("/list")
     public ResponseEntity<RestResponse> list(@RequestBody RestListAuthoritiesRequest restListAuthoritiesRequest) {
         Optional<User> user = userRepository.findByUsername(restListAuthoritiesRequest.getUsername());
 

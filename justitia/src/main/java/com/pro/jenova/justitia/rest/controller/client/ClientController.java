@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,7 +29,7 @@ public class ClientController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @PostMapping("/create")
     public ResponseEntity<RestResponse> create(@RequestBody RestCreateClientRequest restCreateClientRequest) {
         if (clientRepository.existsByClientId(restCreateClientRequest.getClientId())) {
             return ErrorResponse.badRequest("CLIENT_ID_ALREADY_EXISTS");
@@ -52,7 +49,7 @@ public class ClientController {
         return VoidResponse.created();
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.POST)
+    @PostMapping("/remove")
     public ResponseEntity<RestResponse> remove(@RequestBody RestRemoveClientRequest restRemoveClientRequest) {
         if (clientRepository.removeByClientId(restRemoveClientRequest.getClientId()) > 0L) {
             return VoidResponse.ok();
@@ -61,7 +58,7 @@ public class ClientController {
         return ErrorResponse.badRequest("CLIENT_ID_NOT_FOUND");
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @GetMapping("/list")
     public ResponseEntity<RestResponse> list() {
         List<Client> clients = clientRepository.findAll();
 
