@@ -26,7 +26,7 @@ public class NotificationConsumer extends BaseMessageConsumer {
     public void onMessage(Message message) {
         prepare(message);
 
-        String content = new String(message.getBody(), UTF_8);
+        String content = message.toString();
 
         notificationRepository.save(new Notification.Builder()
                 .withRoute(NOTIFICATION_ROUTE)
