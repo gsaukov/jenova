@@ -7,6 +7,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.pro.jenova.omnidrive.messaging.notification.NotificationConfigurer.NOTIFICATION_ROUTE;
+
 @Component
 public class NotificationProducer extends BaseMessageProducer {
 
@@ -18,7 +20,7 @@ public class NotificationProducer extends BaseMessageProducer {
     private RabbitTemplate rabbitTemplate;
 
     public void send(String message) {
-        send("notification", message);
+        send(NOTIFICATION_ROUTE, message);
     }
 
     @Override

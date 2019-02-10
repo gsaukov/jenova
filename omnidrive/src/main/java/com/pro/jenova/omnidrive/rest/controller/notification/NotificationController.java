@@ -2,33 +2,48 @@ package com.pro.jenova.omnidrive.rest.controller.notification;
 
 import com.pro.jenova.common.rest.RestResponse;
 import com.pro.jenova.common.rest.VoidResponse;
-import com.pro.jenova.omnidrive.data.entity.Notification;
-import com.pro.jenova.omnidrive.data.repository.NotificationRepository;
+import com.pro.jenova.omnidrive.messaging.notification.NotificationProducer;
 import com.pro.jenova.omnidrive.rest.controller.notification.request.RestSendNotificationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import static java.lang.System.lineSeparator;
+import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RestController
 @RequestMapping("/omnidrive-api/notification")
 public class NotificationController {
 
     @Autowired
-    private NotificationRepository notificationRepository;
+    private NotificationProducer notificationProducer;
 
     @PreAuthorize("hasAuthority('NOTIFICATION')")
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public ResponseEntity<RestResponse> send(@RequestBody RestSendNotificationRequest restSendNotificationRequest) {
-        notificationRepository.save(new Notification.Builder()
-                .withRoute(restSendNotificationRequest.getRoute())
-                .withContent(restSendNotificationRequest.getContent())
-                .build());
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("From: ").append(getSender()).append(lineSeparator());
+        builder.append("Message: ").append(restSendNotificationRequest.getContent()).append(lineSeparator());
+
+        notificationProducer.send(builder.toString());
 
         return VoidResponse.created();
+    }
+
+    private String getSender() {
+        Authentication authentication = getContext().getAuthentication();
+
+        if (authentication.isAuthenticated()) {
+            return authentication.getName();
+        }
+
+        return "anonymous";
     }
 
 }

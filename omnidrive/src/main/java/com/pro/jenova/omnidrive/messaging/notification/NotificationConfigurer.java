@@ -13,18 +13,21 @@ import static org.springframework.amqp.core.BindingBuilder.bind;
 @Configuration
 public class NotificationConfigurer {
 
+    public static final String NOTIFICATION_ROUTE = "notification";
+    public static final String NOTIFICATION_QUEUE = "notificationQueue";
+
     @Autowired
     @ApplicationTopicExchange
     private Exchange applicationTopicExchange;
 
     @Bean
     public Queue notificationQueue() {
-        return new Queue("notificationQueue");
+        return new Queue(NOTIFICATION_QUEUE);
     }
 
     @Bean
     public Binding notificationQueueBinding() {
-        return bind(notificationQueue()).to(applicationTopicExchange).with("notification").noargs();
+        return bind(notificationQueue()).to(applicationTopicExchange).with(NOTIFICATION_ROUTE).noargs();
     }
 
 }
