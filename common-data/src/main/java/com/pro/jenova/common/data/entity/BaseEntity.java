@@ -95,7 +95,7 @@ public abstract class BaseEntity implements Serializable {
     protected String username() {
         Authentication authentication = getContext().getAuthentication();
 
-        if (authentication.isAuthenticated()) {
+        if (authentication != null && authentication.isAuthenticated()) {
             return defaultIfEmpty(authentication.getName(), "anonymous");
         }
 

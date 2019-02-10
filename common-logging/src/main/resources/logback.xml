@@ -13,7 +13,7 @@
         <file>/var/log/jenova/${application.name}/${application.name}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>/var/log/jenova/${application.name}/${application.name}.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>10</maxHistory>
+            <maxHistory>5</maxHistory>
         </rollingPolicy>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
             <customFields>{"application":"${application.name}"}</customFields>
