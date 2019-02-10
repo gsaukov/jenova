@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import static com.pro.jenova.common.util.IdUtils.uuid;
 import static java.time.LocalDateTime.now;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
+import static org.springframework.util.StringUtils.isEmpty;
 
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
@@ -95,10 +96,14 @@ public abstract class BaseEntity implements Serializable {
         Authentication authentication = getContext().getAuthentication();
 
         if (authentication.isAuthenticated()) {
-            return authentication.getName();
+            return defaultIfEmpty(authentication.getName(), "anonymous");
         }
 
         return "anonymous";
+    }
+
+    protected String defaultIfEmpty(String actualValue, String defaultValue) {
+        return isEmpty(actualValue) ? defaultValue : actualValue;
     }
 
 }
