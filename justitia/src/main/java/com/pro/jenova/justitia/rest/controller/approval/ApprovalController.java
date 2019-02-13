@@ -23,7 +23,7 @@ import java.util.List;
 @RequestMapping("/justitia-api/approval")
 public class ApprovalController {
 
-    private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss'Z");
+    private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
 
     @Autowired
     private UserRepository userRepository;
