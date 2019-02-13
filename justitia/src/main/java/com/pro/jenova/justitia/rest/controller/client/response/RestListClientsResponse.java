@@ -4,6 +4,8 @@ import com.pro.jenova.common.rest.RestResponse;
 
 import java.util.List;
 
+import static java.util.Collections.unmodifiableList;
+
 public class RestListClientsResponse implements RestResponse {
 
     private List<RestListClientDetails> clients;
@@ -13,7 +15,7 @@ public class RestListClientsResponse implements RestResponse {
     }
 
     private RestListClientsResponse(Builder builder) {
-        clients = builder.clients;
+        clients = unmodifiableList(builder.clients);
     }
 
     public List<RestListClientDetails> getClients() {
