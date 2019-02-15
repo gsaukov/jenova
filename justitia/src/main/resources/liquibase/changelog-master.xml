@@ -6,6 +6,7 @@
     <include file="liquibase/changelog-1.0.0.xml"/>
     <include file="liquibase/changelog-1.0.1.xml"/>
     <include file="liquibase/changelog-1.0.2.xml"/>
+    <include file="liquibase/changelog-1.0.3.xml"/>
 
     <include file="liquibase/changelog-2.0.0.xml"/>
 

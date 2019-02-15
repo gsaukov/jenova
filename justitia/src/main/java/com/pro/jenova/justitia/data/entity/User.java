@@ -62,16 +62,16 @@ public class User extends BaseEntity {
 
     public static final class Builder {
 
-        private String password;
         private String username;
-
-        public Builder withPassword(String password) {
-            this.password = password;
-            return this;
-        }
+        private String password;
 
         public Builder withUsername(String username) {
             this.username = username;
+            return this;
+        }
+
+        public Builder withPassword(String password) {
+            this.password = password;
             return this;
         }
 
