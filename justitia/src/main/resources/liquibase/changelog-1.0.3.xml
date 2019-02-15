@@ -26,7 +26,7 @@
             <column name="USERNAME" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
-            <column name="REFERENCE" type="varchar(512)">
+            <column name="REFERENCE" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
             <column name="STATUS" type="varchar(64)">
