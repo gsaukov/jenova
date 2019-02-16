@@ -20,7 +20,7 @@ public class OneTimePasswordProducer extends BaseMessageProducer {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void send(String username, String oneTimePassword) {
+    public void sendOneTimePassword(String username, String oneTimePassword) {
         StringBuilder builder = new StringBuilder();
 
         builder.append("Dear ").append(username)

@@ -9,7 +9,7 @@ import static com.pro.jenova.common.util.LogCorrelation.useExistingOrCreateNew;
 
 public abstract class BaseMessageConsumer {
 
-    public void prepare(Message message) {
+    protected void prepare(Message message) {
         MessageProperties properties = message.getMessageProperties();
 
         Object correlationId = properties.getHeaders().get(LOG_CORRELATION_ID);

@@ -69,7 +69,7 @@ public class LoginServiceImpl implements LoginService {
                 .withValue(oneTimePassword)
                 .build());
 
-        oneTimePasswordProducer.send(loginRequest.getUsername(), oneTimePassword);
+        oneTimePasswordProducer.sendOneTimePassword(loginRequest.getUsername(), oneTimePassword);
 
         return methods;
     }

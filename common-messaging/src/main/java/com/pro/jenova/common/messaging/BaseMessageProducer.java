@@ -10,7 +10,7 @@ import static com.pro.jenova.common.util.LogCorrelation.useExistingOrCreateNew;
 
 public abstract class BaseMessageProducer {
 
-    public void send(String routingKey, Object message) {
+    protected void send(String routingKey, Object message) {
         getTemplate().convertAndSend(getExchange().getName(), routingKey, message, msg -> {
             MessageProperties properties = msg.getMessageProperties();
             properties.getHeaders().put(LOG_CORRELATION_ID, useExistingOrCreateNew(MDC.get(LOG_CORRELATION_ID)));

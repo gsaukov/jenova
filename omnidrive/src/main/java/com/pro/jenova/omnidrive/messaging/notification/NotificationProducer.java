@@ -19,7 +19,7 @@ public class NotificationProducer extends BaseMessageProducer {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void send(String message) {
+    public void sendNotification(String message) {
         send(NOTIFICATION_ROUTE, message);
     }
 
