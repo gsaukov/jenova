@@ -4,6 +4,7 @@ import com.pro.jenova.justitia.data.entity.LoginRequest;
 import com.pro.jenova.justitia.data.entity.LoginVerification;
 import com.pro.jenova.justitia.data.repository.LoginRequestRepository;
 import com.pro.jenova.justitia.data.repository.LoginVerificationRepository;
+import com.pro.jenova.justitia.messaging.otp.OneTimePasswordProducer;
 import com.pro.jenova.justitia.service.otp.OneTimePasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private OneTimePasswordGenerator oneTimePasswordGenerator;
+
+    @Autowired
+    private OneTimePasswordProducer oneTimePasswordProducer;
 
     @Override
     public LoginServiceResult initiate(String username, Map<String, String> attributes) {
@@ -56,12 +60,16 @@ public class LoginServiceImpl implements LoginService {
                 .withStatus(LoginVerification.Status.PENDING)
                 .build());
 
+        String oneTimePassword = oneTimePasswordGenerator.generate();
+
         loginVerificationRepository.save(new LoginVerification.Builder()
                 .withLoginRequest(loginRequest)
                 .withMethod(LoginVerification.Method.ONE_TIME_PASSWORD)
                 .withStatus(LoginVerification.Status.PENDING)
-                .withValue(oneTimePasswordGenerator.generate())
+                .withValue(oneTimePassword)
                 .build());
+
+        oneTimePasswordProducer.send(loginRequest.getUsername(), oneTimePassword);
 
         return methods;
     }
