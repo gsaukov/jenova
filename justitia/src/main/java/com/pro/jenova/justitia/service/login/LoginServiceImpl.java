@@ -8,15 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import static com.pro.jenova.common.util.IdUtils.uuid;
 import static com.pro.jenova.justitia.data.entity.LoginVerification.Method.ONE_TIME_PASSWORD;
 import static com.pro.jenova.justitia.data.entity.LoginVerification.Method.USERNAME_PASSWORD;
 import static java.time.LocalDateTime.now;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Stream.of;
+import static java.util.Arrays.asList;
 
 @Service
 @Transactional
@@ -32,13 +31,13 @@ public class LoginServiceImpl implements LoginService {
     public LoginServiceResult initiate(String username, Map<String, String> attributes) {
         LoginRequest loginRequest = saveLoginRequest(username, attributes);
 
-        Stream<LoginVerification.Method> methods = of(USERNAME_PASSWORD, ONE_TIME_PASSWORD);
+        List<LoginVerification.Method> methods = asList(USERNAME_PASSWORD, ONE_TIME_PASSWORD);
 
         methods.forEach(method -> saveLoginVerification(loginRequest, method));
 
         return new LoginServiceResult.Builder()
                 .withReference(loginRequest.getReference())
-                .withVerifications(methods.collect(toList()))
+                .withVerifications(methods)
                 .build();
     }
 
