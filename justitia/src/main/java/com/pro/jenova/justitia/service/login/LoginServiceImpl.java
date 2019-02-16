@@ -29,16 +29,26 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public LoginServiceResult initiate(String username, Map<String, String> attributes) {
+        invalidateAllExistingLoginRequests(username);
         LoginRequest loginRequest = saveLoginRequest(username, attributes);
-
-        List<LoginVerification.Method> methods = asList(USERNAME_PASSWORD, ONE_TIME_PASSWORD);
-
-        methods.forEach(method -> saveLoginVerification(loginRequest, method));
+        List<LoginVerification.Method> methods = saveLoginVerificationMethods(loginRequest);
 
         return new LoginServiceResult.Builder()
                 .withReference(loginRequest.getReference())
                 .withVerifications(methods)
                 .build();
+    }
+
+    private void invalidateAllExistingLoginRequests(String username) {
+        loginRequestRepository.findByUsername(username).forEach(request -> request.setStatus(LoginRequest.Status.COMPLETED));
+    }
+
+    private List<LoginVerification.Method> saveLoginVerificationMethods(LoginRequest loginRequest) {
+        List<LoginVerification.Method> methods = asList(USERNAME_PASSWORD, ONE_TIME_PASSWORD);
+
+        methods.forEach(method -> saveLoginVerification(loginRequest, method));
+
+        return methods;
     }
 
     private LoginVerification saveLoginVerification(LoginRequest loginRequest, LoginVerification.Method method) {
