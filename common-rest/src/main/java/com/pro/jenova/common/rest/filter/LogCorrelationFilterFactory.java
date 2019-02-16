@@ -13,7 +13,7 @@ public class LogCorrelationFilterFactory {
 
         registration.setFilter(logCorrelationIdFilter());
         registration.addUrlPatterns("/*");
-        registration.setOrder(1);
+        registration.setOrder(0);
 
         return registration;
     }
@@ -29,7 +29,7 @@ public class LogCorrelationFilterFactory {
 
         registration.setFilter(requestAndResponseLoggerFilter());
         registration.addUrlPatterns("/*");
-        registration.setOrder(2);
+        registration.setOrder(1);
 
         return registration;
     }

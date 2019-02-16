@@ -23,6 +23,9 @@ public class LoginVerification extends BaseEntity {
     @Column(name = "STATUS")
     private Status status;
 
+    @Column(name = "VALUE")
+    private String value;
+
     private LoginVerification() {
         // JPA
     }
@@ -31,6 +34,7 @@ public class LoginVerification extends BaseEntity {
         loginRequest = builder.loginRequest;
         method = builder.method;
         status = builder.status;
+        value = builder.value;
     }
 
     public LoginRequest getLoginRequest() {
@@ -55,6 +59,14 @@ public class LoginVerification extends BaseEntity {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override
@@ -90,6 +102,7 @@ public class LoginVerification extends BaseEntity {
         private LoginRequest loginRequest;
         private Method method;
         private Status status;
+        private String value;
 
         public Builder withLoginRequest(LoginRequest loginRequest) {
             this.loginRequest = loginRequest;
@@ -103,6 +116,11 @@ public class LoginVerification extends BaseEntity {
 
         public Builder withStatus(Status status) {
             this.status = status;
+            return this;
+        }
+
+        public Builder withValue(String value) {
+            this.value = value;
             return this;
         }
 

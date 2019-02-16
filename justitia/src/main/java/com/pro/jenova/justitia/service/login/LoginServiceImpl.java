@@ -4,6 +4,7 @@ import com.pro.jenova.justitia.data.entity.LoginRequest;
 import com.pro.jenova.justitia.data.entity.LoginVerification;
 import com.pro.jenova.justitia.data.repository.LoginRequestRepository;
 import com.pro.jenova.justitia.data.repository.LoginVerificationRepository;
+import com.pro.jenova.justitia.service.otp.OneTimePasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.pro.jenova.common.util.IdUtils.uuid;
-import static com.pro.jenova.justitia.data.entity.LoginVerification.Method.ONE_TIME_PASSWORD;
-import static com.pro.jenova.justitia.data.entity.LoginVerification.Method.USERNAME_PASSWORD;
 import static java.time.LocalDateTime.now;
 import static java.util.Arrays.asList;
 
@@ -26,6 +25,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private LoginVerificationRepository loginVerificationRepository;
+
+    @Autowired
+    private OneTimePasswordGenerator oneTimePasswordGenerator;
 
     @Override
     public LoginServiceResult initiate(String username, Map<String, String> attributes) {
@@ -44,19 +46,23 @@ public class LoginServiceImpl implements LoginService {
     }
 
     private List<LoginVerification.Method> saveLoginVerificationMethods(LoginRequest loginRequest) {
-        List<LoginVerification.Method> methods = asList(USERNAME_PASSWORD, ONE_TIME_PASSWORD);
+        List<LoginVerification.Method> methods = asList(LoginVerification.Method.USERNAME_PASSWORD,
+                LoginVerification.Method.ONE_TIME_PASSWORD);
 
-        methods.forEach(method -> saveLoginVerification(loginRequest, method));
-
-        return methods;
-    }
-
-    private LoginVerification saveLoginVerification(LoginRequest loginRequest, LoginVerification.Method method) {
-        return loginVerificationRepository.save(new LoginVerification.Builder()
+        loginVerificationRepository.save(new LoginVerification.Builder()
                 .withLoginRequest(loginRequest)
-                .withMethod(method)
+                .withMethod(LoginVerification.Method.USERNAME_PASSWORD)
                 .withStatus(LoginVerification.Status.PENDING)
                 .build());
+
+        loginVerificationRepository.save(new LoginVerification.Builder()
+                .withLoginRequest(loginRequest)
+                .withMethod(LoginVerification.Method.ONE_TIME_PASSWORD)
+                .withStatus(LoginVerification.Status.PENDING)
+                .withValue(oneTimePasswordGenerator.generate())
+                .build());
+
+        return methods;
     }
 
     private LoginRequest saveLoginRequest(String username, Map<String, String> attributes) {
