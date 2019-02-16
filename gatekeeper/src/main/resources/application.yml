@@ -29,6 +29,11 @@ zuul:
       sensitiveHeaders:
       serviceId: justitia
       stripPrefix: false
+    login:
+      path: /login/**
+      sensitiveHeaders:
+      serviceId: justitia
+      stripPrefix: false
     justitia-api:
       path: /justitia-api/**
       sensitiveHeaders:
