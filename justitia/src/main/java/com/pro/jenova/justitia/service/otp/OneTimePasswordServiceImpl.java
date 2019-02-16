@@ -32,7 +32,9 @@ public class OneTimePasswordServiceImpl implements OneTimePasswordService {
 
     private void verify(LoginVerification loginVerification, String oneTimePassword) {
         if (oneTimePassword.equals(loginVerification.getValue())) {
-            loginVerification.setStatus(LoginVerification.Status.COMPLETED);
+            loginVerification.setStatus(LoginVerification.Status.PROVIDED);
+        } else {
+            loginVerification.setStatus(LoginVerification.Status.FAILED);
         }
     }
 

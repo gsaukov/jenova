@@ -42,7 +42,8 @@ public class LoginServiceImpl implements LoginService {
     }
 
     private void invalidateAllExistingLoginRequests(String username) {
-        loginRequestRepository.findByUsername(username).forEach(request -> request.setStatus(LoginRequest.Status.COMPLETED));
+        loginRequestRepository.findByUsername(username).forEach(request ->
+                request.setStatus(LoginRequest.Status.INVALIDATED));
     }
 
     private List<LoginVerification.Method> saveLoginVerificationMethods(LoginRequest loginRequest) {

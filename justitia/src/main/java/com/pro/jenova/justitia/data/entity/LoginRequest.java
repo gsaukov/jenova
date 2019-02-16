@@ -103,7 +103,8 @@ public class LoginRequest extends BaseEntity {
 
     public enum Status {
         PENDING,
-        COMPLETED
+        COMPLETED,
+        INVALIDATED
     }
 
     public static final class Builder {
