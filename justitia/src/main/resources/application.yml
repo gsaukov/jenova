@@ -25,6 +25,12 @@ spring:
     enabled: true
     change-log: classpath:liquibase/changelog-master.xml
 
+  rabbitmq:
+    host: cronos
+    port: 5672
+    username: admin
+    password: admin
+
 management:
   endpoints:
     web:

@@ -2,6 +2,12 @@ spring:
   application:
     name: exodus
 
+  rabbitmq:
+    host: cronos
+    port: 5672
+    username: admin
+    password: admin
+
 management:
   endpoints:
     web:

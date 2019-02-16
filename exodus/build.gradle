@@ -29,13 +29,14 @@ dependencyManagement {
 dependencies {
     compile project(':common-logging')
     compile project(':common-rest')
+    compile project(':common-messaging')
 
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
     compile "org.springframework.cloud:spring-cloud-starter-openfeign"
+    compile "org.springframework.boot:spring-boot-starter-amqp"
 
     compile "org.springframework.boot:spring-boot-starter-web"
-    compile "org.springframework.boot:spring-boot-starter-thymeleaf"
 
     runtime "net.logstash.logback:logstash-logback-encoder:${logstashEncoderVersion}"
 }
