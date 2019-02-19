@@ -34,12 +34,18 @@ public class AppSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/justitia-api/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
-                .and().httpBasic();
+                .and().httpBasic()
+                .authenticationDetailsSource(customWebAuthenticationDetailsSource());
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authenticationProvider());
+    }
+
+    @Bean
+    public CustomWebAuthenticationDetailsSource customWebAuthenticationDetailsSource() {
+        return new CustomWebAuthenticationDetailsSource();
     }
 
     @Bean

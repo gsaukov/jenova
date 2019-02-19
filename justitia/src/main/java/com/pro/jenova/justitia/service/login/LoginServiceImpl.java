@@ -10,16 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static com.pro.jenova.common.util.IdUtils.uuid;
 import static java.time.LocalDateTime.now;
-import static java.util.Arrays.asList;
 
 @Service
 @Transactional
 public class LoginServiceImpl implements LoginService {
+
+    private static final String LEVEL_1 = "level_1";
+    private static final String LEVEL_2 = "level_2";
 
     @Autowired
     private LoginRequestRepository loginRequestRepository;
@@ -34,10 +37,10 @@ public class LoginServiceImpl implements LoginService {
     private OneTimePasswordProducer oneTimePasswordProducer;
 
     @Override
-    public LoginServiceResult initiate(String username, Map<String, String> attributes) {
-        invalidateAllExistingLoginRequests(username);
-        LoginRequest loginRequest = saveLoginRequest(username, attributes);
-        List<LoginVerification.Method> methods = saveLoginVerificationMethods(loginRequest);
+    public LoginServiceResult initiate(String username, String level, Map<String, String> attributes) {
+        LoginRequest loginRequest = saveLoginRequest(username, level, attributes);
+
+        List<LoginVerification.Method> methods = saveLoginVerificationMethods(loginRequest, level);
 
         return new LoginServiceResult.Builder()
                 .withReference(loginRequest.getReference())
@@ -45,21 +48,32 @@ public class LoginServiceImpl implements LoginService {
                 .build();
     }
 
-    private void invalidateAllExistingLoginRequests(String username) {
-        loginRequestRepository.findByUsername(username).forEach(request ->
-                request.setStatus(LoginRequest.Status.INVALIDATED));
+    private List<LoginVerification.Method> saveLoginVerificationMethods(LoginRequest loginRequest, String level) {
+        List<LoginVerification.Method> methods = new ArrayList<>();
+
+        if (LEVEL_1.equals(level)) {
+            saveUsernamePassword(loginRequest, methods);
+            saveOneTimePassword(loginRequest, methods);
+        } else if (LEVEL_2.equals(level)) {
+            saveOutOfBand(loginRequest, methods);
+        } else {
+            throw new IllegalArgumentException("invalid level specified " + level);
+        }
+
+        return methods;
     }
 
-    private List<LoginVerification.Method> saveLoginVerificationMethods(LoginRequest loginRequest) {
-        List<LoginVerification.Method> methods = asList(LoginVerification.Method.USERNAME_PASSWORD,
-                LoginVerification.Method.ONE_TIME_PASSWORD);
-
+    private void saveOutOfBand(LoginRequest loginRequest, List<LoginVerification.Method> methods) {
         loginVerificationRepository.save(new LoginVerification.Builder()
                 .withLoginRequest(loginRequest)
-                .withMethod(LoginVerification.Method.USERNAME_PASSWORD)
+                .withMethod(LoginVerification.Method.OUT_OF_BAND)
                 .withStatus(LoginVerification.Status.PENDING)
                 .build());
 
+        methods.add(LoginVerification.Method.OUT_OF_BAND);
+    }
+
+    private void saveOneTimePassword(LoginRequest loginRequest, List<LoginVerification.Method> methods) {
         String oneTimePassword = oneTimePasswordGenerator.generate();
 
         loginVerificationRepository.save(new LoginVerification.Builder()
@@ -71,13 +85,24 @@ public class LoginServiceImpl implements LoginService {
 
         oneTimePasswordProducer.sendOneTimePassword(loginRequest.getUsername(), oneTimePassword);
 
-        return methods;
+        methods.add(LoginVerification.Method.ONE_TIME_PASSWORD);
     }
 
-    private LoginRequest saveLoginRequest(String username, Map<String, String> attributes) {
+    private void saveUsernamePassword(LoginRequest loginRequest, List<LoginVerification.Method> methods) {
+        loginVerificationRepository.save(new LoginVerification.Builder()
+                .withLoginRequest(loginRequest)
+                .withMethod(LoginVerification.Method.USERNAME_PASSWORD)
+                .withStatus(LoginVerification.Status.PENDING)
+                .build());
+
+        methods.add(LoginVerification.Method.USERNAME_PASSWORD);
+    }
+
+    private LoginRequest saveLoginRequest(String username, String level, Map<String, String> attributes) {
         LoginRequest.Builder builder = new LoginRequest.Builder()
                 .withUsername(username)
                 .withReference(uuid())
+                .withLevel(level)
                 .withStatus(LoginRequest.Status.PENDING)
                 .withExpiresAt(now().plusMinutes(10));
 

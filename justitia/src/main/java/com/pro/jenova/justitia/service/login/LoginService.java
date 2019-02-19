@@ -4,6 +4,6 @@ import java.util.Map;
 
 public interface LoginService {
 
-    LoginServiceResult initiate(String username, Map<String, String> attributes);
+    LoginServiceResult initiate(String username, String level, Map<String, String> attributes);
 
 }

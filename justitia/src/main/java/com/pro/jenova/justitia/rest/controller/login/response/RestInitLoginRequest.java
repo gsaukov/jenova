@@ -11,6 +11,7 @@ import static java.util.Collections.unmodifiableMap;
 public class RestInitLoginRequest implements RestResponse {
 
     private String username;
+    private String level;
     private Map<String, String> attributes = emptyMap();
 
     private RestInitLoginRequest() {
@@ -19,6 +20,7 @@ public class RestInitLoginRequest implements RestResponse {
 
     private RestInitLoginRequest(Builder builder) {
         username = builder.username;
+        level = builder.level;
         attributes = unmodifiableMap(builder.attributes);
     }
 
@@ -28,6 +30,14 @@ public class RestInitLoginRequest implements RestResponse {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public Map<String, String> getAttributes() {
@@ -41,10 +51,16 @@ public class RestInitLoginRequest implements RestResponse {
     public static final class Builder {
 
         private String username;
+        private String level;
         private Map<String, String> attributes = new HashMap<>();
 
         private Builder withUsername(String username) {
             this.username = username;
+            return this;
+        }
+
+        private Builder withLevel(String level) {
+            this.level = level;
             return this;
         }
 

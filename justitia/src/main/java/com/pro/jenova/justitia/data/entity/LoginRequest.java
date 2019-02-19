@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static java.time.LocalDateTime.now;
+
 @Entity
 @Table(name = "LOGIN_REQUEST")
 public class LoginRequest extends BaseEntity {
@@ -19,6 +21,9 @@ public class LoginRequest extends BaseEntity {
 
     @Column(name = "REFERENCE")
     private String reference;
+
+    @Column(name = "LEVEL")
+    private String level;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
@@ -40,6 +45,7 @@ public class LoginRequest extends BaseEntity {
     private LoginRequest(Builder builder) {
         username = builder.username;
         reference = builder.reference;
+        level = builder.level;
         status = builder.status;
         expiresAt = builder.expiresAt;
         attributes = builder.attributes;
@@ -61,6 +67,14 @@ public class LoginRequest extends BaseEntity {
         this.reference = reference;
     }
 
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
     public Status getStatus() {
         return status;
     }
@@ -69,12 +83,20 @@ public class LoginRequest extends BaseEntity {
         this.status = status;
     }
 
+    public boolean isPending() {
+        return Status.PENDING.equals(status);
+    }
+
     public LocalDateTime getExpiresAt() {
         return expiresAt;
     }
 
     public void setExpiresAt(LocalDateTime expiresAt) {
         this.expiresAt = expiresAt;
+    }
+
+    public boolean isExpired() {
+        return now().isAfter(expiresAt);
     }
 
     public Map<String, String> getAttributes() {
@@ -104,13 +126,13 @@ public class LoginRequest extends BaseEntity {
     public enum Status {
         PENDING,
         COMPLETED,
-        INVALIDATED
     }
 
     public static final class Builder {
 
         private String username;
         private String reference;
+        private String level;
         private Status status;
         private LocalDateTime expiresAt;
         private Map<String, String> attributes = new HashMap<>();
@@ -122,6 +144,11 @@ public class LoginRequest extends BaseEntity {
 
         public Builder withReference(String reference) {
             this.reference = reference;
+            return this;
+        }
+
+        public Builder withLevel(String level) {
+            this.level = level;
             return this;
         }
 

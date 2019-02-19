@@ -94,7 +94,7 @@ public class LoginVerification extends BaseEntity {
 
     public enum Status {
         PENDING,
-        PROVIDED,
+        COMPLETED,
         FAILED,
     }
 
