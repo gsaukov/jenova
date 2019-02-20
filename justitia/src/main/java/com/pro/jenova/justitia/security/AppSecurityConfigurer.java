@@ -34,7 +34,6 @@ public class AppSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/justitia-api/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
-                .and().httpBasic()
                 .and().formLogin()
                 .authenticationDetailsSource(customWebAuthenticationDetailsSource());
     }
