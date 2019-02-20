@@ -45,16 +45,23 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
         verifyOneTimePassword(loginVerifications, customWebAuthenticationDetails);
         verifyOutOfBand(loginVerifications);
 
+        return verifyUsernameAndPassword(loginRequest, authentication, loginVerifications);
+    }
+
+    private Authentication verifyUsernameAndPassword(LoginRequest loginRequest, Authentication authentication,
+                                                     List<LoginVerification> loginVerifications) {
         Optional<LoginVerification> usernamePassword = loginVerifications.stream().filter(
                 candidate -> candidate.getMethod().equals(LoginVerification.Method.USERNAME_PASSWORD)).findFirst();
 
         if (usernamePassword.isPresent()) {
             return super.authenticate(authentication);
-        } else {
-            UserDetails userDetails = getUserDetailsService().loadUserByUsername(loginRequest.getUsername());
-            return new UsernamePasswordAuthenticationToken(userDetails, authentication.getCredentials(),
-                    userDetails.getAuthorities());
         }
+
+        UserDetails userDetails = getUserDetailsService().loadUserByUsername(loginRequest.getUsername());
+
+        return new UsernamePasswordAuthenticationToken(userDetails, authentication.getCredentials(),
+                userDetails.getAuthorities());
+
     }
 
     private void verifyOneTimePassword(List<LoginVerification> loginVerifications,

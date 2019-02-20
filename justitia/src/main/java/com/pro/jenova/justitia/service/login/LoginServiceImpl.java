@@ -4,6 +4,7 @@ import com.pro.jenova.justitia.data.entity.LoginRequest;
 import com.pro.jenova.justitia.data.entity.LoginVerification;
 import com.pro.jenova.justitia.data.repository.LoginRequestRepository;
 import com.pro.jenova.justitia.data.repository.LoginVerificationRepository;
+import com.pro.jenova.justitia.messaging.oob.OutOfBandProducer;
 import com.pro.jenova.justitia.messaging.otp.OneTimePasswordProducer;
 import com.pro.jenova.justitia.service.otp.OneTimePasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private OneTimePasswordProducer oneTimePasswordProducer;
+
+    @Autowired
+    private OutOfBandProducer outOfBandProducer;
 
     @Override
     public LoginServiceResult initiate(String username, String level, Map<String, String> attributes) {
@@ -69,6 +73,8 @@ public class LoginServiceImpl implements LoginService {
                 .withMethod(LoginVerification.Method.OUT_OF_BAND)
                 .withStatus(LoginVerification.Status.PENDING)
                 .build());
+
+        outOfBandProducer.initOutOfBand(loginRequest.getUsername());
 
         methods.add(LoginVerification.Method.OUT_OF_BAND);
     }
