@@ -45,14 +45,13 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
     }
 
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+    public void configure(AuthorizationServerSecurityConfigurer security) {
         security.checkTokenAccess("isAuthenticated()")
-                .tokenKeyAccess("permitAll()")
                 .passwordEncoder(passwordEncoder);
     }
 
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.authenticationManager(authenticationManager) // Required for password grant.
                 .userDetailsService(userDetailsService) // Required for refresh_token grant.
                 .approvalStore(approvalStore())

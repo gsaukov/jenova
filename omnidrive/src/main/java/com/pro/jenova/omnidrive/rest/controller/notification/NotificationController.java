@@ -19,7 +19,7 @@ public class NotificationController {
     @Autowired
     private NotificationProducer notificationProducer;
 
-    @PreAuthorize("hasAuthority('NOTIFICATION')")
+    @PreAuthorize("hasAuthority('NOTIFICATION_SEND')")
     @PostMapping("/send")
     public ResponseEntity<RestResponse> send(@RequestBody RestSendNotificationRequest restSendNotificationRequest) {
         notificationProducer.sendNotification(restSendNotificationRequest.getContent());

@@ -38,7 +38,7 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
     }
 
     @Override
-    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+    public void configure(ResourceServerSecurityConfigurer resources) {
         resources.tokenServices(remoteTokenServices());
     }
 

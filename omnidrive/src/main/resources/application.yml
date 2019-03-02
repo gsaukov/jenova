@@ -3,10 +3,10 @@ spring:
     name: omnidrive
 
   datasource:
-    url: jdbc:mysql://cronos:3306/omnidrive?useUnicode=true&serverTimezone=UTC
+    url: jdbc:mariadb://cronos:3306/omnidrive?useUnicode=true&serverTimezone=UTC
     username: dimitrios
     password: password
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
 
     hikari:
       minimumIdle: 5
@@ -17,7 +17,7 @@ spring:
 
   jpa:
     open-in-view: false
-    database-platform: org.hibernate.dialect.MySQL5Dialect
+    database-platform: org.hibernate.dialect.MariaDBDialect
     hibernate:
       ddl-auto: none
 
@@ -48,13 +48,18 @@ server:
   port: 8001
 
 eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 4
+    leaseExpirationDurationInSeconds: 10
   client:
+    registryFetchIntervalSeconds: 3
+    shouldDisableDelta: true
     serviceUrl:
       defaultZone: http://deepwater:8761/eureka/
 
 ---
 spring:
-  profiles: h2
+  profiles: local
 
   datasource:
     url: jdbc:h2:mem:testdb
@@ -64,3 +69,13 @@ spring:
 
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+security:
+  oauth2:
+    resource:
+      token-info-uri: http://localhost:8090/jenova/oauth/check_token

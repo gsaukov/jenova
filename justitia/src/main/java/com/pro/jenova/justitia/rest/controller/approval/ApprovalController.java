@@ -27,10 +27,10 @@ public class ApprovalController {
     @PostMapping("/revoke")
     public ResponseEntity<RestResponse> remove(@RequestBody RestRevokeApprovalRequest restRevokeApprovalRequest) {
 
-        // Uses JdbcTemplate's batchUpdate operation to bulk load data
         int result = jdbcTemplate.update(
                 "delete from oauth_approvals where clientId = ? and userId = ? and scope = ?",
-                restRevokeApprovalRequest.getClientId(), restRevokeApprovalRequest.getUserId(),
+                restRevokeApprovalRequest.getClientId(),
+                restRevokeApprovalRequest.getUserId(),
                 restRevokeApprovalRequest.getScope());
 
         if (result > 0) {

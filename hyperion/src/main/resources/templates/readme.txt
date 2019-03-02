@@ -1,0 +1,1 @@
+Directory exists to remove thymeleaf warning about not finding "classpath:/templates/".

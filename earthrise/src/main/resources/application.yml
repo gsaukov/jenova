@@ -12,13 +12,14 @@ server:
   port: 8761
 
 eureka:
-  numberRegistrySyncRetries: 1
-  instance:
-    hostname: deepwater
   client:
     registerWithEureka: false
     fetchRegistry: false
-    serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
   server:
-    enableSelfPreservation: true
+    enableSelfPreservation: false
+    evictionIntervalTimerInMs: 4000
+    responseCacheUpdateIntervalMs: 3000
+
+---
+spring:
+  profiles: local

@@ -31,11 +31,9 @@ public class AppSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/actuator/**").permitAll()
-                .antMatchers("/login/**").permitAll()
                 .antMatchers("/justitia-api/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
-                .and().httpBasic()
-                .authenticationDetailsSource(customWebAuthenticationDetailsSource());
+                .and().httpBasic();
     }
 
     @Override
@@ -44,16 +42,11 @@ public class AppSecurityConfigurer extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public CustomWebAuthenticationDetailsSource customWebAuthenticationDetailsSource() {
-        return new CustomWebAuthenticationDetailsSource();
-    }
-
-    @Bean
-    public CustomAuthenticationProvider authenticationProvider() {
-        CustomAuthenticationProvider customAuthenticationProvider = new CustomAuthenticationProvider();
-        customAuthenticationProvider.setUserDetailsService(userDetailsService);
-        customAuthenticationProvider.setPasswordEncoder(passwordEncoder);
-        return customAuthenticationProvider;
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+        return daoAuthenticationProvider;
     }
 
     @Bean

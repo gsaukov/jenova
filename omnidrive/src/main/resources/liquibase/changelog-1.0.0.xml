@@ -23,16 +23,10 @@
             <column name="UPDATED_BY" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
-            <column name="ROUTE" type="varchar(64)">
-                <constraints nullable="false"/>
-            </column>
             <column name="CONTENT" type="clob">
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createIndex tableName="NOTIFICATION" indexName="IDX_NOT_RTE" unique="false">
-            <column name="ROUTE" type="varchar(64)"/>
-        </createIndex>
     </changeSet>
 
 </databaseChangeLog>

@@ -3,10 +3,10 @@ spring:
     name: justitia
 
   datasource:
-    url: jdbc:mysql://cronos:3306/justitia?useUnicode=true&serverTimezone=UTC
+    url: jdbc:mariadb://cronos:3306/justitia?useUnicode=true&serverTimezone=UTC
     username: dimitrios
     password: password
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
 
     hikari:
       minimumIdle: 5
@@ -17,19 +17,13 @@ spring:
 
   jpa:
     open-in-view: false
-    database-platform: org.hibernate.dialect.MySQL5Dialect
+    database-platform: org.hibernate.dialect.MariaDBDialect
     hibernate:
       ddl-auto: none
 
   liquibase:
     enabled: true
     change-log: classpath:liquibase/changelog-master.xml
-
-  rabbitmq:
-    host: cronos
-    port: 5672
-    username: admin
-    password: admin
 
 management:
   endpoints:
@@ -41,13 +35,18 @@ server:
   port: 8002
 
 eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 4
+    leaseExpirationDurationInSeconds: 10
   client:
+    registryFetchIntervalSeconds: 3
+    shouldDisableDelta: true
     serviceUrl:
       defaultZone: http://deepwater:8761/eureka/
 
 ---
 spring:
-  profiles: h2
+  profiles: local
 
   datasource:
     url: jdbc:h2:mem:testdb
@@ -57,3 +56,8 @@ spring:
 
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

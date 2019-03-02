@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static com.pro.jenova.omnidrive.messaging.notification.NotificationConfigurer.NOTIFICATION_QUEUE;
-import static com.pro.jenova.omnidrive.messaging.notification.NotificationConfigurer.NOTIFICATION_ROUTE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -29,7 +28,6 @@ public class NotificationConsumer extends BaseMessageConsumer {
         String content = new String(message.getBody(), UTF_8);
 
         notificationRepository.save(new Notification.Builder()
-                .withRoute(NOTIFICATION_ROUTE)
                 .withContent(content)
                 .build());
 

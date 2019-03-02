@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+    <!-- Used to load property "application.name". -->
     <property resource="logging.properties"/>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="HUMAN_OUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/var/log/jenova/${application.name}/${application.name}.human.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/var/log/jenova/${application.name}/${application.name}.%d{yyyy-MM-dd}.human.log</fileNamePattern>
+            <maxHistory>5</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
         <encoder>
-            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %mdc{logCorrelationId:-} %logger{36} - %msg %n</pattern>
         </encoder>
     </appender>
 
-    <appender name="ELKOUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/var/log/jenova/${application.name}/${application.name}.log</file>
+    <appender name="ELK_OUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/var/log/jenova/${application.name}/${application.name}.elk.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/var/log/jenova/${application.name}/${application.name}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/var/log/jenova/${application.name}/${application.name}.%d{yyyy-MM-dd}.elk.log</fileNamePattern>
             <maxHistory>5</maxHistory>
             <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
@@ -22,10 +29,11 @@
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="STDOUT"/>
-        <appender-ref ref="ELKOUT"/>
+        <appender-ref ref="HUMAN_OUT"/>
+        <appender-ref ref="ELK_OUT"/>
     </root>
 
     <logger name="com.pro.jenova" level="DEBUG"/>
+    <logger name="com.zaxxer.hikari" level="DEBUG"/>
 
 </configuration>

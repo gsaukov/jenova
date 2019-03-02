@@ -1,1 +1,5 @@
 group "com.pro.jenova"
+
+dependencies {
+    compile project(':common-util')
+}

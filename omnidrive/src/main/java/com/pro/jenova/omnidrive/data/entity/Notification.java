@@ -14,9 +14,6 @@ public class Notification extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "ROUTE")
-    private String route;
-
     @Lob
     @Column(name = "CONTENT")
     private String content;
@@ -26,16 +23,7 @@ public class Notification extends BaseEntity {
     }
 
     private Notification(Builder builder) {
-        route = builder.route;
         content = builder.content;
-    }
-
-    public String getRoute() {
-        return route;
-    }
-
-    public void setRoute(String route) {
-        this.route = route;
     }
 
     public String getContent() {
@@ -64,13 +52,7 @@ public class Notification extends BaseEntity {
 
     public static final class Builder {
 
-        private String route;
         private String content;
-
-        public Builder withRoute(String route) {
-            this.route = route;
-            return this;
-        }
 
         public Builder withContent(String content) {
             this.content = content;
