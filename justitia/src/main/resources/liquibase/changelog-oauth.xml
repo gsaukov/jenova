@@ -25,8 +25,8 @@
             <column name="clientId" type="varchar(256)"/>
             <column name="scope" type="varchar(256)"/>
             <column name="status" type="varchar(10)"/>
-            <column name="expiresAt" type="timestamp"/>
-            <column name="lastModifiedAt" type="timestamp"/>
+            <column name="expiresAt" type="datetime"/>
+            <column name="lastModifiedAt" type="datetime"/>
         </createTable>
     </changeSet>
 
