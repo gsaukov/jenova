@@ -3,7 +3,7 @@ spring:
     name: omnidrive
 
   datasource:
-    url: jdbc:mariadb://cronos:3306/omnidrive?useUnicode=true&serverTimezone=UTC
+    url: jdbc:mariadb://cronos:3306/omnidrive
     username: dimitrios
     password: password
     driver-class-name: org.mariadb.jdbc.Driver

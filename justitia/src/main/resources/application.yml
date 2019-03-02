@@ -3,7 +3,7 @@ spring:
     name: justitia
 
   datasource:
-    url: jdbc:mariadb://cronos:3306/justitia?useUnicode=true&serverTimezone=UTC
+    url: jdbc:mariadb://cronos:3306/justitia
     username: dimitrios
     password: password
     driver-class-name: org.mariadb.jdbc.Driver
