@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class LogCorrelationFilterFactory {
+public class AppFilterFactory {
 
     @Bean
     public FilterRegistrationBean<LogCorrelationIdFilter> logCorrelationIdFilterRegistration() {
@@ -24,12 +24,28 @@ public class LogCorrelationFilterFactory {
     }
 
     @Bean
+    public FilterRegistrationBean<LogAuditContextFilter> logAuditContextFilterRegistration() {
+        FilterRegistrationBean<LogAuditContextFilter> registration = new FilterRegistrationBean<>();
+
+        registration.setFilter(logAuditContextFilter());
+        registration.addUrlPatterns("/*");
+        registration.setOrder(1);
+
+        return registration;
+    }
+
+    @Bean
+    public LogAuditContextFilter logAuditContextFilter() {
+        return new LogAuditContextFilter();
+    }
+
+    @Bean
     public FilterRegistrationBean<RequestAndResponseFilter> requestAndResponseLoggerFilterRegistration() {
         FilterRegistrationBean<RequestAndResponseFilter> registration = new FilterRegistrationBean<>();
 
         registration.setFilter(requestAndResponseLoggerFilter());
         registration.addUrlPatterns("/*");
-        registration.setOrder(1);
+        registration.setOrder(2);
 
         return registration;
     }
