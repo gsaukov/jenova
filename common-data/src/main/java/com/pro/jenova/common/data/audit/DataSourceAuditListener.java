@@ -18,9 +18,14 @@ public class DataSourceAuditListener extends AbstractQueryLoggingListener {
     public void afterQuery(ExecutionInfo execInfo, List<QueryInfo> queryInfoList) {
         super.afterQuery(execInfo, queryInfoList);
 
-        AuditContext auditContext = AuditContext.DIAGNOSTICS.get();
-        auditContext.incDbTimeMillis(execInfo.getElapsedTime());
-        auditContext.incDbQueriesCount(1L);
+        enrichAuditContext(execInfo);
+    }
+
+    private void enrichAuditContext(ExecutionInfo execInfo) {
+        AuditContext.getIfExists().ifPresent(context -> {
+            context.incDbTimeMillis(execInfo.getElapsedTime());
+            context.incDbQueriesCount(1L);
+        });
     }
 
     @Override

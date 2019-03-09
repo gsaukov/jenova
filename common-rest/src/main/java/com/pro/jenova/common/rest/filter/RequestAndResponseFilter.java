@@ -1,5 +1,6 @@
 package com.pro.jenova.common.rest.filter;
 
+import org.slf4j.Logger;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
@@ -13,8 +14,11 @@ import java.io.UnsupportedEncodingException;
 
 import static java.lang.System.lineSeparator;
 import static java.util.Collections.list;
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class RequestAndResponseFilter extends OncePerRequestFilter {
+
+    private static final Logger logger = getLogger(RequestAndResponseFilter.class);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

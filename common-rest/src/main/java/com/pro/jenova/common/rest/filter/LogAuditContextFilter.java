@@ -19,15 +19,20 @@ public class LogAuditContextFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        AuditContext context = AuditContext.getReady();
+
         try {
             filterChain.doFilter(request, response);
         } finally {
-            AuditContext auditContext = AuditContext.DIAGNOSTICS.get();
-            logger.debug("dbQueriesCount {}, dbTimeMillis {}",
-                    auditContext.getDbQueriesCount(),
-                    auditContext.getDbTimeMillis());
-            AuditContext.DIAGNOSTICS.remove();
+            logAuditContext(context);
+            AuditContext.cleanup();
         }
+    }
+
+    private void logAuditContext(AuditContext context) {
+        logger.debug("dbQueriesCount {}, dbTimeMillis {}",
+                context.getDbQueriesCount(),
+                context.getDbTimeMillis());
     }
 
 }
