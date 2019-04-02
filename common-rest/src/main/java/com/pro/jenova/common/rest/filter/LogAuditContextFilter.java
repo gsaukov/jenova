@@ -30,7 +30,7 @@ public class LogAuditContextFilter extends OncePerRequestFilter {
     }
 
     private void logAuditContext(AuditContext context) {
-        logger.debug("dbQueriesCount {}, dbTimeMillis {}",
+        logger.debug("audit - dbQueriesCount {}, dbTimeMillis {}",
                 context.getDbQueriesCount(),
                 context.getDbTimeMillis());
     }
