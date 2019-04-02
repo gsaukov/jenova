@@ -21,9 +21,15 @@ public class DatabaseMetricsCollector implements QueryExecutionListener {
 
     @Override
     public void afterQuery(ExecutionInfo execInfo, List<QueryInfo> queryInfoList) {
-        queryInfoList.forEach(queryInfo -> logger.debug(queryInfo.getQuery()));
+        logger.debug("FINDING THE ISSUE: " + execInfo.getElapsedTime());
+        logger.debug("FINDING THE ISSUE: " + queryInfoList.size());
 
+        logQueryInfo(queryInfoList);
         enrichAuditContext(execInfo);
+    }
+
+    private void logQueryInfo(List<QueryInfo> queryInfoList) {
+        queryInfoList.forEach(queryInfo -> logger.debug(queryInfo.getQuery()));
     }
 
     private void enrichAuditContext(ExecutionInfo execInfo) {
