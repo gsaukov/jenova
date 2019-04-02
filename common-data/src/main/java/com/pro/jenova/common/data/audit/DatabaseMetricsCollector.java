@@ -21,8 +21,9 @@ public class DatabaseMetricsCollector implements QueryExecutionListener {
 
     @Override
     public void afterQuery(ExecutionInfo execInfo, List<QueryInfo> queryInfoList) {
-        logger.debug("FINDING THE ISSUE: " + execInfo.getElapsedTime());
-        logger.debug("FINDING THE ISSUE: " + queryInfoList.size());
+        logger.debug("FINDING THE ISSUE ELAPSED: " + execInfo.getElapsedTime());
+        logger.debug("FINDING THE ISSUE QUERY SIZE: " + queryInfoList.size());
+        logger.debug("FINDING THE ISSUE QUERY COUNT: " + AuditContext.get().getDbQueriesCount());
 
         logQueryInfo(queryInfoList);
         enrichAuditContext(execInfo);
