@@ -3,7 +3,7 @@ group "com.pro.jenova"
 dependencies {
     compile project(':common-logging')
 
-    compile "net.ttddyy:datasource-proxy:1.4.1"
+    compile "com.github.gavlyukovskiy:datasource-proxy-spring-boot-starter:${dataSourceProxyVersion}"
 
     compile "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
     compile "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
