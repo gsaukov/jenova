@@ -52,7 +52,14 @@ public class AppFilterFactory {
 
     @Bean
     public RequestAndResponseFilter requestAndResponseLoggerFilter() {
-        return new RequestAndResponseFilter();
+        RequestAndResponseFilter filter = new RequestAndResponseFilter();
+
+        filter.setIncludeClientInfo(true);
+        filter.setIncludeHeaders(true);
+        filter.setIncludePayload(true);
+        filter.setIncludeQueryString(true);
+
+        return filter;
     }
 
 }
