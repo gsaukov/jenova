@@ -1,6 +1,7 @@
 package com.pro.jenova.common.data.audit;
 
 
+import net.ttddyy.dsproxy.listener.logging.SLF4JLogLevel;
 import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -37,7 +38,10 @@ public class DataSourceProxyPostProcessor implements BeanPostProcessor {
         private DataSource dataSource;
 
         public ProxyDataSourceInterceptor(DataSource dataSource) {
-            this.dataSource = ProxyDataSourceBuilder.create(dataSource).listener(new DataSourceAuditListener()).build();
+            this.dataSource = ProxyDataSourceBuilder.create(dataSource)
+                    .logQueryBySlf4j(SLF4JLogLevel.INFO)
+                    //.listener(new DataSourceAuditListener())
+                    .build();
         }
 
         @Override
