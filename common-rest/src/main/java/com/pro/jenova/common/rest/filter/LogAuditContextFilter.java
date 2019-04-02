@@ -19,13 +19,13 @@ public class LogAuditContextFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        AuditContext context = AuditContext.getReady();
+        AuditContext.remove();
 
         try {
             filterChain.doFilter(request, response);
         } finally {
-            logAuditContext(context);
-            AuditContext.cleanup();
+            logAuditContext(AuditContext.get());
+            AuditContext.remove();
         }
     }
 

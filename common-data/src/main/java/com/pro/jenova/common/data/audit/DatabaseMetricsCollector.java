@@ -27,10 +27,10 @@ public class DatabaseMetricsCollector implements QueryExecutionListener {
     }
 
     private void enrichAuditContext(ExecutionInfo execInfo) {
-        AuditContext.getIfExists().ifPresent(context -> {
-            context.incDbTimeMillis(execInfo.getElapsedTime());
-            context.incDbQueriesCount(1L);
-        });
+        AuditContext context = AuditContext.get();
+
+        context.incDbTimeMillis(execInfo.getElapsedTime());
+        context.incDbQueriesCount(1L);
     }
 
 }
