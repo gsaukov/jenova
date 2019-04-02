@@ -61,6 +61,8 @@ public class ClientController {
     @GetMapping("/list")
     public ResponseEntity<RestResponse> list() {
         List<Client> clients = clientRepository.findAll();
+        clients = clientRepository.findAll();
+        clients = clientRepository.findAll();
 
         return new ResponseEntity<>(new RestListClientsResponse.Builder().withClients(clients.stream()
                 .map(this::toRestListClientDetails).collect(toList())).build(), HttpStatus.OK);
