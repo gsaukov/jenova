@@ -23,8 +23,11 @@ public class NotificationConsumer extends BaseMessageConsumer {
 
     @RabbitListener(queues = NOTIFICATION_QUEUE)
     public void onMessage(Message message) {
-        prepare(message);
+        consume(message);
+    }
 
+    @Override
+    protected void receive(Message message) {
         String content = new String(message.getBody(), UTF_8);
 
         notificationRepository.save(new Notification.Builder()

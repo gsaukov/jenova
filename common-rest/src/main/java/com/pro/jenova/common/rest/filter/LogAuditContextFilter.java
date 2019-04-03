@@ -14,23 +14,24 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class LogAuditContextFilter extends OncePerRequestFilter {
 
-    private static final Logger logger = getLogger(LogAuditContextFilter.class);
+    private static final Logger logger = getLogger(AuditContext.class);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         AuditContext.remove();
-
         try {
             filterChain.doFilter(request, response);
         } finally {
-            logAuditContext(AuditContext.get());
+            logAuditContext();
             AuditContext.remove();
         }
     }
 
-    private void logAuditContext(AuditContext context) {
-        logger.debug("audit - dbQueriesCount {}, dbTimeMillis {}",
+    private void logAuditContext() {
+        AuditContext context = AuditContext.get();
+
+        logger.debug("audit (web) - dbQueriesCount {}, dbTimeMillis {}",
                 context.getDbQueriesCount(),
                 context.getDbTimeMillis());
     }

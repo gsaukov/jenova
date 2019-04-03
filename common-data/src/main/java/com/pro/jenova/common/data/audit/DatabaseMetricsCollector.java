@@ -15,29 +15,24 @@ public class DatabaseMetricsCollector implements QueryExecutionListener {
     private static final Logger logger = getLogger(DatabaseMetricsCollector.class);
 
     @Override
-    public void beforeQuery(ExecutionInfo execInfo, List<QueryInfo> queryInfoList) {
-        enrichAuditContext(execInfo);
+    public void beforeQuery(ExecutionInfo execInfo, List<QueryInfo> queryInfos) {
     }
 
     @Override
-    public void afterQuery(ExecutionInfo execInfo, List<QueryInfo> queryInfoList) {
-        logger.debug("FINDING THE ISSUE ELAPSED: " + execInfo.getElapsedTime());
-        logger.debug("FINDING THE ISSUE QUERY SIZE: " + queryInfoList.size());
-        logger.debug("FINDING THE ISSUE QUERY COUNT: " + AuditContext.get().getDbQueriesCount());
-
-        logQueryInfo(queryInfoList);
-        enrichAuditContext(execInfo);
+    public void afterQuery(ExecutionInfo execInfo, List<QueryInfo> queryInfos) {
+        logQueryInfo(queryInfos);
+        enrichAuditContext(execInfo, queryInfos);
     }
 
-    private void logQueryInfo(List<QueryInfo> queryInfoList) {
-        queryInfoList.forEach(queryInfo -> logger.debug(queryInfo.getQuery()));
+    private void logQueryInfo(List<QueryInfo> queryInfos) {
+        queryInfos.forEach(queryInfo -> logger.debug(queryInfo.getQuery()));
     }
 
-    private void enrichAuditContext(ExecutionInfo execInfo) {
+    private void enrichAuditContext(ExecutionInfo execInfo, List<QueryInfo> queryInfos) {
         AuditContext context = AuditContext.get();
 
         context.incDbTimeMillis(execInfo.getElapsedTime());
-        context.incDbQueriesCount(1L);
+        context.incDbQueriesCount(queryInfos.size());
     }
 
 }
