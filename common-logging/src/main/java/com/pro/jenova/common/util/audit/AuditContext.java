@@ -1,6 +1,10 @@
 package com.pro.jenova.common.util.audit;
 
+import java.util.logging.Logger;
+
 public class AuditContext {
+
+    private static final Logger logger = Logger.getLogger(AuditContext.class.getName());
 
     private static final ThreadLocal<AuditContext> DIAGNOSTICS = ThreadLocal.withInitial(AuditContext::new);
 
@@ -24,7 +28,9 @@ public class AuditContext {
     }
 
     public void incDbQueriesCount(long count) {
+        logger.warning("before was " + dbQueriesCount);
         dbQueriesCount = increase(dbQueriesCount, count);
+        logger.warning("after is " + dbQueriesCount);
     }
 
     public void incDbTimeMillis(long millis) {
