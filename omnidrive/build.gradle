@@ -41,7 +41,7 @@ dependencies {
     compile "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
 
     compile "org.springframework.security.oauth:spring-security-oauth2:${springOauthVersion}"
-    compile "org.springframework.boot:spring-security-jwt:${springJwtVersion}"
+    compile "org.springframework.security:spring-security-jwt:${springJwtVersion}"
 
     runtime "net.logstash.logback:logstash-logback-encoder:${logstashEncoderVersion}"
     runtime "org.mariadb.jdbc:mariadb-java-client:${mariadbVersion}"
