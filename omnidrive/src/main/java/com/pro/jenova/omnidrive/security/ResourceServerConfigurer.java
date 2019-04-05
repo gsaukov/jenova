@@ -54,8 +54,7 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
         return delegatingTokenServices;
     }
 
-    @Bean
-    public RemoteTokenServices remoteTokenServices() {
+    private RemoteTokenServices remoteTokenServices() {
         RemoteTokenServices tokenServices = new RemoteTokenServices();
         tokenServices.setCheckTokenEndpointUrl(tokenInfoUri);
         tokenServices.setClientId(clientId);
@@ -63,20 +62,17 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
         return tokenServices;
     }
 
-    @Bean
-    public DefaultTokenServices defaultTokenServices() {
+    private DefaultTokenServices defaultTokenServices() {
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(tokenStore());
         return defaultTokenServices;
     }
 
-    @Bean
-    public TokenStore tokenStore() {
+    private TokenStore tokenStore() {
         return new JwtTokenStore(accessTokenConverter());
     }
 
-    @Bean
-    public JwtAccessTokenConverter accessTokenConverter() {
+    private JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         converter.setSigningKey("123");
         return converter;
