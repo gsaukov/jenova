@@ -1,3 +1,4 @@
+/*
 package com.pro.jenova.exodus.rest.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
@@ -14,4 +15,4 @@ public interface EchoClient {
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     String echo(@PathVariable(value = "times") int times);
 
-}
+}*/

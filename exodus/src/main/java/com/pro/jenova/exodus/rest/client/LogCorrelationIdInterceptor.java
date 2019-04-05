@@ -1,3 +1,4 @@
+/*
 package com.pro.jenova.exodus.rest.client;
 
 import feign.RequestInterceptor;
@@ -18,3 +19,4 @@ public class LogCorrelationIdInterceptor implements RequestInterceptor {
     }
 
 }
+*/
