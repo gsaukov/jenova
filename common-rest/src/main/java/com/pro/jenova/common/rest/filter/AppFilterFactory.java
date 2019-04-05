@@ -7,13 +7,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppFilterFactory {
 
+    private static final int REFERENCE_ORDER = -1000;
+
     @Bean
     public FilterRegistrationBean<LogCorrelationIdFilter> logCorrelationIdFilterRegistration() {
         FilterRegistrationBean<LogCorrelationIdFilter> registration = new FilterRegistrationBean<>();
 
         registration.setFilter(logCorrelationIdFilter());
         registration.addUrlPatterns("/*");
-        registration.setOrder(0);
+        registration.setOrder(REFERENCE_ORDER);
 
         return registration;
     }
@@ -29,7 +31,7 @@ public class AppFilterFactory {
 
         registration.setFilter(logAuditContextFilter());
         registration.addUrlPatterns("/*");
-        registration.setOrder(1);
+        registration.setOrder(REFERENCE_ORDER + 1);
 
         return registration;
     }
@@ -45,7 +47,7 @@ public class AppFilterFactory {
 
         registration.setFilter(requestAndResponseLoggerFilter());
         registration.addUrlPatterns("/*");
-        registration.setOrder(2);
+        registration.setOrder(REFERENCE_ORDER + 2);
 
         return registration;
     }
