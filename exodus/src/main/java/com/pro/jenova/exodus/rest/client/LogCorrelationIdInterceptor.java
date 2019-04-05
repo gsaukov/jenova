@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import static com.pro.jenova.common.util.LogCorrelation.LOG_CORRELATION_ID;
 import static com.pro.jenova.common.util.LogCorrelation.useExistingOrCreateNew;
 
+// FIXME
 @Configuration
 public class LogCorrelationIdInterceptor implements RequestInterceptor {
 
