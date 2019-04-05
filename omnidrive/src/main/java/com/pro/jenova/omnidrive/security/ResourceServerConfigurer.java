@@ -8,7 +8,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -39,16 +43,43 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
-        resources.tokenServices(remoteTokenServices());
+        resources.tokenServices(delegatingTokenServices());
+    }
+
+    @Bean
+    public DelegatingTokenServices delegatingTokenServices() {
+        DelegatingTokenServices delegatingTokenServices = new DelegatingTokenServices();
+        delegatingTokenServices.setRemoteTokenServices(remoteTokenServices());
+        delegatingTokenServices.setDefaultTokenServices(defaultTokenServices());
+        return delegatingTokenServices;
     }
 
     @Bean
     public RemoteTokenServices remoteTokenServices() {
-        final RemoteTokenServices tokenServices = new RemoteTokenServices();
+        RemoteTokenServices tokenServices = new RemoteTokenServices();
         tokenServices.setCheckTokenEndpointUrl(tokenInfoUri);
         tokenServices.setClientId(clientId);
         tokenServices.setClientSecret(clientSecret);
         return tokenServices;
+    }
+
+    @Bean
+    public DefaultTokenServices defaultTokenServices() {
+        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+        defaultTokenServices.setTokenStore(tokenStore());
+        return defaultTokenServices;
+    }
+
+    @Bean
+    public TokenStore tokenStore() {
+        return new JwtTokenStore(accessTokenConverter());
+    }
+
+    @Bean
+    public JwtAccessTokenConverter accessTokenConverter() {
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        converter.setSigningKey("123");
+        return converter;
     }
 
 }

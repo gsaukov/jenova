@@ -31,7 +31,7 @@ public abstract class BaseMessageConsumer {
     private void logAuditContext() {
         AuditContext context = AuditContext.get();
 
-        logger.debug("audit (messaging) - dbQueriesCount {}, dbTimeMillis {}",
+        logger.debug("Audit (messaging) - dbQueriesCount {}, dbTimeMillis {}",
                 context.getDbQueriesCount(),
                 context.getDbTimeMillis());
     }
