@@ -21,7 +21,7 @@ public class LogCorrelationIdInterceptor implements ClientHttpRequestInterceptor
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
             throws IOException {
         String logCorrelationId = useExistingOrCreateNew(MDC.get(LOG_CORRELATION_ID));
-        logger.debug("Adding logCorrelationId {} into headers for outgoing client request.", logCorrelationId);
+        logger.debug("Adding logCorrelationId {} into headers for outgoing REST call.", logCorrelationId);
 
         request.getHeaders().add(LOG_CORRELATION_ID, logCorrelationId);
         return execution.execute(request, body);

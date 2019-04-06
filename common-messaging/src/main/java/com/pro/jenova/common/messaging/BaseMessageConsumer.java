@@ -19,6 +19,10 @@ public abstract class BaseMessageConsumer {
         Object correlationId = properties.getHeaders().get(LOG_CORRELATION_ID);
         MDC.put(LOG_CORRELATION_ID, useExistingOrCreateNew(correlationId));
 
+        doConsume(message);
+    }
+
+    private void doConsume(Message message) {
         AuditContext.remove();
         try {
             receive(message);

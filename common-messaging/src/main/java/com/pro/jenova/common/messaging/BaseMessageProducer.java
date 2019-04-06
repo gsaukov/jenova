@@ -19,7 +19,7 @@ public abstract class BaseMessageProducer {
             MessageProperties properties = msg.getMessageProperties();
 
             String logCorrelationId = useExistingOrCreateNew(MDC.get(LOG_CORRELATION_ID));
-            logger.debug("Adding logCorrelationId {} into headers for outgoing client request.", logCorrelationId);
+            logger.debug("Adding logCorrelationId {} into headers for outgoing message.", logCorrelationId);
 
             properties.getHeaders().put(LOG_CORRELATION_ID, logCorrelationId);
             return msg;
