@@ -79,7 +79,9 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
 
     @Bean
     public JwtTokenStore tokenStore() {
-        return new JwtTokenStore(accessTokenConverter());
+        JwtTokenStore tokenStore = new JwtTokenStore(accessTokenConverter());
+        tokenStore.setApprovalStore(approvalStore());
+        return tokenStore;
     }
 
     @Bean
