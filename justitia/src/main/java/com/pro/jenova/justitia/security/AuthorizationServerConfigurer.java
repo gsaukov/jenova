@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -27,6 +28,9 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
     private AppClientDetailsService clientDetailsService;
 
     @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
     @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
 
@@ -37,13 +41,14 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) {
-        security.passwordEncoder(passwordEncoder); // For client secret.
+        security.passwordEncoder(passwordEncoder); // for client secret
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.tokenStore(tokenStore())
                 .accessTokenConverter(accessTokenConverter())
+                .userDetailsService(userDetailsService) // for refresh-token grant
                 .authenticationManager(authenticationManager);
     }
 
