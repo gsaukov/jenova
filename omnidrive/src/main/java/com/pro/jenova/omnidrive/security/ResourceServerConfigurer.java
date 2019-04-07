@@ -1,5 +1,6 @@
 package com.pro.jenova.omnidrive.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -18,6 +19,9 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
+
+    @Value("${security.oauth2.jwt.signing-key}")
+    private String signingKey;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -51,7 +55,7 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("123");
+        converter.setSigningKey(signingKey);
         return converter;
     }
 
