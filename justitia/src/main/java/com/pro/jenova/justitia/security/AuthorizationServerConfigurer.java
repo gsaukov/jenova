@@ -17,7 +17,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import javax.sql.DataSource;
 
@@ -78,9 +77,9 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
     }
 
     @Bean
-    public JwtTokenStore tokenStore() {
-        JwtTokenStore tokenStore = new JwtTokenStore(accessTokenConverter());
-        tokenStore.setApprovalStore(approvalStore());
+    public CustomJwtTokenStore tokenStore() {
+        CustomJwtTokenStore tokenStore = new CustomJwtTokenStore(accessTokenConverter());
+        tokenStore.setApprovalStore(approvalStore()); // refresh token only if approval still exists
         return tokenStore;
     }
 
