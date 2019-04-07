@@ -65,9 +65,7 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
 
     @Bean
     public TokenStore tokenStore() {
-        ProxyTokenStore tokenStore = new ProxyTokenStore();
-        tokenStore.setTarget(new JdbcTokenStore(dataSource));
-        return tokenStore;
+        return new JdbcTokenStore(dataSource);
     }
 
 }

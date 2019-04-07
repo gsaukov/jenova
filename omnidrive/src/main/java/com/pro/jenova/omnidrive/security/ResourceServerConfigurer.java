@@ -63,7 +63,7 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
         return tokenServices;
     }
 
-    private DefaultTokenServices defaultTokenServices() {
+    private ResourceServerTokenServices defaultTokenServices() {
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(tokenStore());
         return defaultTokenServices;
