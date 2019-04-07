@@ -35,19 +35,19 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
     }
 
     @Bean
-    private DefaultTokenServices defaultTokenServices() {
+    public DefaultTokenServices defaultTokenServices() {
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(tokenStore());
         return defaultTokenServices;
     }
 
     @Bean
-    private JwtTokenStore tokenStore() {
+    public JwtTokenStore tokenStore() {
         return new JwtTokenStore(accessTokenConverter());
     }
 
     @Bean
-    private JwtAccessTokenConverter accessTokenConverter() {
+    public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         converter.setSigningKey("123");
         return converter;
