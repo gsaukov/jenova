@@ -1,5 +1,6 @@
 package com.pro.jenova.justitia.security;
 
+import com.pro.jenova.justitia.data.repository.AccessTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +41,9 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
     @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private AccessTokenRepository accessTokenRepository;
+
     @Value("${security.oauth2.jwt.signing-key}")
     private String signingKey;
 
@@ -78,7 +82,7 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
 
     @Bean
     public CustomJwtTokenStore tokenStore() {
-        CustomJwtTokenStore tokenStore = new CustomJwtTokenStore(accessTokenConverter());
+        CustomJwtTokenStore tokenStore = new CustomJwtTokenStore(accessTokenConverter(), accessTokenRepository);
         tokenStore.setApprovalStore(approvalStore()); // refresh token only if approval still exists
         return tokenStore;
     }
