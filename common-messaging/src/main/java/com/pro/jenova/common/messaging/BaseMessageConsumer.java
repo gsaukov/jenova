@@ -16,8 +16,9 @@ public abstract class BaseMessageConsumer {
 
     protected void consume(Message message) {
         MessageProperties properties = message.getMessageProperties();
-        Object correlationId = properties.getHeaders().get(LOG_CORRELATION_ID);
-        MDC.put(LOG_CORRELATION_ID, useExistingOrCreateNew(correlationId));
+
+        Object logCorrelationId = properties.getHeaders().get(LOG_CORRELATION_ID);
+        MDC.put(LOG_CORRELATION_ID, useExistingOrCreateNew(logCorrelationId));
 
         doConsume(message);
     }

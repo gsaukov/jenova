@@ -17,8 +17,9 @@ public class LogCorrelationIdFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String correlationId = request.getHeader(LOG_CORRELATION_ID);
-        MDC.put(LOG_CORRELATION_ID, useExistingOrCreateNew(correlationId));
+        String logCorrelationId = request.getHeader(LOG_CORRELATION_ID);
+        MDC.put(LOG_CORRELATION_ID, useExistingOrCreateNew(logCorrelationId));
+
         filterChain.doFilter(request, response);
     }
 
