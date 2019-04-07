@@ -4,33 +4,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.approval.ApprovalStore;
-import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
-
-import javax.sql.DataSource;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfigurer extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
-    private DataSource dataSource;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Autowired
     private AppClientDetailsService clientDetailsService;
@@ -46,26 +37,35 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) {
-        security.checkTokenAccess("isAuthenticated()")
-                .passwordEncoder(passwordEncoder);
+        security.passwordEncoder(passwordEncoder); // For client secret.
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        endpoints.authenticationManager(authenticationManager) // Required for password grant.
-                .userDetailsService(userDetailsService) // Required for refresh_token grant.
-                .approvalStore(approvalStore())
-                .tokenStore(tokenStore());
+        endpoints.tokenStore(tokenStore())
+                .accessTokenConverter(accessTokenConverter())
+                .authenticationManager(authenticationManager);
     }
 
     @Bean
-    public ApprovalStore approvalStore() {
-        return new JdbcApprovalStore(dataSource);
+    @Primary
+    public DefaultTokenServices defaultTokenServices() {
+        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+        defaultTokenServices.setTokenStore(tokenStore());
+        defaultTokenServices.setSupportRefreshToken(true);
+        return defaultTokenServices;
     }
 
     @Bean
-    public TokenStore tokenStore() {
-        return new JdbcTokenStore(dataSource);
+    public JwtTokenStore tokenStore() {
+        return new JwtTokenStore(accessTokenConverter());
+    }
+
+    @Bean
+    public JwtAccessTokenConverter accessTokenConverter() {
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        converter.setSigningKey("123");
+        return converter;
     }
 
 }
