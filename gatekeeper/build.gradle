@@ -37,6 +37,8 @@ dependencies {
     compile "org.springframework.cloud:spring-cloud-starter-netflix-zuul"
 
     runtime "net.logstash.logback:logstash-logback-encoder:${logstashEncoderVersion}"
+    runtime "org.mariadb.jdbc:mariadb-java-client:${mariadbVersion}"
+    runtime "com.h2database:h2:${h2Version}"
 }
 
 repositories {
