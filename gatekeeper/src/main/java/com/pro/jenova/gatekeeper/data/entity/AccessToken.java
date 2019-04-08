@@ -1,7 +1,5 @@
 package com.pro.jenova.gatekeeper.data.entity;
 
-import com.pro.jenova.common.data.entity.BaseEntity;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -9,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "ACCESS_TOKEN")
-public class AccessToken extends BaseEntity {
+public class AccessToken {
 
     private static final long serialVersionUID = 1L;
 
