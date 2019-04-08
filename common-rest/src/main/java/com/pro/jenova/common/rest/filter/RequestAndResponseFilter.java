@@ -26,9 +26,10 @@ public class RequestAndResponseFilter extends OncePerRequestFilter {
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
 
+        logRequest(request, requestWrapper);
         filterChain.doFilter(requestWrapper, responseWrapper);
 
-        logRequest(request, requestWrapper);
+        // logRequest(request, requestWrapper);
         logResponse(response, responseWrapper);
 
         responseWrapper.copyBodyToResponse();
@@ -38,7 +39,7 @@ public class RequestAndResponseFilter extends OncePerRequestFilter {
         StringBuilder builder = new StringBuilder();
 
         logHeaders(request, builder);
-        logContent(requestWrapper.getContentAsByteArray(), request.getCharacterEncoding(), builder);
+        // logContent(requestWrapper.getContentAsByteArray(), request.getCharacterEncoding(), builder);
 
         logger.debug(builder.toString());
     }
