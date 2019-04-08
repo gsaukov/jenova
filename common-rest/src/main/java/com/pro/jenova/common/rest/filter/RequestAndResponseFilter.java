@@ -38,17 +38,17 @@ public class RequestAndResponseFilter extends OncePerRequestFilter {
     private void logRequestHeaders(HttpServletRequest request) {
         StringBuilder builder = new StringBuilder();
 
+        builder.append("Incoming Request Headers - ")
+                .append(request.getMethod()).append(" ")
+                .append(request.getRequestURL().toString())
+                .append(lineSeparator());
+
         logRequestHeaders(request, builder);
 
         logger.debug(builder.toString());
     }
 
     private void logRequestHeaders(HttpServletRequest request, StringBuilder builder) {
-        builder.append("Incoming Request Headers - ")
-                .append(request.getMethod()).append(" ")
-                .append(request.getRequestURL().toString())
-                .append(lineSeparator());
-
         list(request.getHeaderNames()).forEach(header -> logHeader(header, request, builder));
     }
 
@@ -61,7 +61,14 @@ public class RequestAndResponseFilter extends OncePerRequestFilter {
                                        ContentCachingResponseWrapper responseWrapper) {
         StringBuilder builder = new StringBuilder();
 
+        builder.append("Incoming Request - ")
+                .append(lineSeparator());
+
         logContent(requestWrapper.getContentAsByteArray(), request.getCharacterEncoding(), builder);
+
+        builder.append("Outgoing Response - ")
+                .append(response.getStatus())
+                .append(lineSeparator());
 
         logResponseHeaders(response, builder);
         logContent(responseWrapper.getContentAsByteArray(), response.getCharacterEncoding(), builder);
@@ -70,10 +77,6 @@ public class RequestAndResponseFilter extends OncePerRequestFilter {
     }
 
     private void logResponseHeaders(HttpServletResponse response, StringBuilder builder) {
-        builder.append("Outgoing Response - ")
-                .append(response.getStatus())
-                .append(lineSeparator());
-
         response.getHeaderNames().forEach(header -> logHeader(header, response, builder));
     }
 
