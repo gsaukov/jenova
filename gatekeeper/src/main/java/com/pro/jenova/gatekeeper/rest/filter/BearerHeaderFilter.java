@@ -17,8 +17,9 @@ public class BearerHeaderFilter extends ZuulFilter {
     private static final Logger logger = getLogger(BearerHeaderFilter.class);
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String BEARER_PREFIX = "bearer ";
-    private static final int JTI_LENGTH = 36;
+    private static final String BEARER_PREFIX = "Bearer ";
+    private static final Integer JTI_LENGTH = 36;
+    private static final Object NOT_USED = null;
 
     @Autowired
     private AccessTokenRepository accessTokenRepository;
@@ -43,48 +44,46 @@ public class BearerHeaderFilter extends ZuulFilter {
         RequestContext currentContext = RequestContext.getCurrentContext();
         HttpServletRequest request = currentContext.getRequest();
 
+        process(currentContext, request);
+
+        return NOT_USED;
+    }
+
+    private void process(RequestContext currentContext, HttpServletRequest request) {
         Enumeration<String> headerNames = request.getHeaderNames();
+
         while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
 
-            if (AUTHORIZATION_HEADER.equalsIgnoreCase(request.getHeader(headerName))) {
-                process(currentContext, headerName);
+            if (AUTHORIZATION_HEADER.equalsIgnoreCase(headerName)) {
+                process(currentContext, request.getHeader(headerName));
                 break;
             }
         }
-
-        return null;
     }
 
     private void process(RequestContext currentContext, String authorizationHeader) {
-        if (!isBearer(authorizationHeader)) {
-            logger.debug("Not a Bearer token.");
-            return;
+        if (authorizationHeader.toLowerCase().startsWith(BEARER_PREFIX.toLowerCase())) {
+            doProcess(currentContext, authorizationHeader);
         }
+    }
 
+    private void doProcess(RequestContext currentContext, String authorizationHeader) {
         String token = authorizationHeader.substring(BEARER_PREFIX.length()).trim();
 
-        if (!isJti(token)) {
-            logger.debug("Not a JTI token.");
-            return;
+        if (JTI_LENGTH.equals(token.length())) {
+            replaceHeader(currentContext, authorizationHeader, token);
         }
+    }
 
-        accessTokenRepository.findByJti(token)
+    private void replaceHeader(RequestContext currentContext, String authorizationHeader, String jti) {
+        accessTokenRepository.findByJti(jti)
                 .ifPresent(accessToken -> process(currentContext, authorizationHeader, accessToken));
     }
 
     private void process(RequestContext currentContext, String authorizationHeader, AccessToken accessToken) {
         logger.debug("Replacing bearer token having jti {} with encoded jwt value.", accessToken.getJti());
-
         currentContext.addZuulRequestHeader(authorizationHeader, BEARER_PREFIX.concat(accessToken.getEncoded()));
-    }
-
-    private boolean isBearer(String header) {
-        return header.toLowerCase().startsWith(BEARER_PREFIX);
-    }
-
-    private boolean isJti(String token) {
-        return JTI_LENGTH == token.length();
     }
 
 }
