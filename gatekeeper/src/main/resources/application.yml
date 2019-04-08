@@ -2,6 +2,25 @@ spring:
   application:
     name: gatekeeper
 
+  datasource:
+    url: jdbc:mariadb://cronos:3306/justitia
+    username: dimitrios
+    password: password
+    driver-class-name: org.mariadb.jdbc.Driver
+
+    hikari:
+      minimumIdle: 5
+      maximumPoolSize: 20
+      idleTimeout: 30000
+      maxLifetime: 2000000
+      connectionTimeout: 30000
+
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MariaDBDialect
+    hibernate:
+      ddl-auto: none
+
 management:
   endpoints:
     web:
