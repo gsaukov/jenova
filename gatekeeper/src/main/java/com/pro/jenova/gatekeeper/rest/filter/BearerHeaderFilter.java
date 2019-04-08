@@ -49,6 +49,7 @@ public class BearerHeaderFilter extends ZuulFilter {
 
             if (AUTHORIZATION_HEADER.equalsIgnoreCase(request.getHeader(headerName))) {
                 process(currentContext, headerName);
+                break;
             }
         }
 
@@ -57,15 +58,19 @@ public class BearerHeaderFilter extends ZuulFilter {
 
     private void process(RequestContext currentContext, String authorizationHeader) {
         if (!isBearer(authorizationHeader)) {
+            logger.debug("Not a Bearer token.");
             return;
         }
 
         String token = authorizationHeader.substring(BEARER_PREFIX.length()).trim();
 
-        if (isJti(token)) {
-            accessTokenRepository.findByJti(token).ifPresent(accessToken
-                    -> process(currentContext, authorizationHeader, accessToken));
+        if (!isJti(token)) {
+            logger.debug("Not a JTI token.");
+            return;
         }
+
+        accessTokenRepository.findByJti(token)
+                .ifPresent(accessToken -> process(currentContext, authorizationHeader, accessToken));
     }
 
     private void process(RequestContext currentContext, String authorizationHeader, AccessToken accessToken) {
