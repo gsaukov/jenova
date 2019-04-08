@@ -2,6 +2,7 @@ package com.pro.jenova.gatekeeper.data.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Objects;
 
@@ -10,6 +11,10 @@ import java.util.Objects;
 public class AccessToken {
 
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @Column(name = "ID")
+    private String id;
 
     @Column(name = "JTI")
     private String jti;
@@ -21,9 +26,12 @@ public class AccessToken {
         // JPA
     }
 
-    private AccessToken(Builder builder) {
-        jti = builder.jti;
-        encoded = builder.encoded;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getJti() {
@@ -58,26 +66,4 @@ public class AccessToken {
         return Objects.hash(jti);
     }
 
-    public static final class Builder {
-
-        private String jti;
-        private String encoded;
-
-        public Builder withJti(String jti) {
-            this.jti = jti;
-            return this;
-        }
-
-        public Builder withEncoded(String encoded) {
-            this.encoded = encoded;
-            return this;
-        }
-
-        public AccessToken build() {
-            return new AccessToken(this);
-        }
-
-    }
-
 }
-
