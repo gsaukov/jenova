@@ -56,34 +56,34 @@ public class BearerHeaderFilter extends ZuulFilter {
             String headerName = headerNames.nextElement();
 
             if (AUTHORIZATION_HEADER.equalsIgnoreCase(headerName)) {
-                process(currentContext, request.getHeader(headerName));
+                process(currentContext, headerName, request.getHeader(headerName));
                 break;
             }
         }
     }
 
-    private void process(RequestContext currentContext, String authorizationHeader) {
+    private void process(RequestContext currentContext, String headerName, String authorizationHeader) {
         if (authorizationHeader.toLowerCase().startsWith(BEARER_PREFIX.toLowerCase())) {
-            doProcess(currentContext, authorizationHeader);
+            doProcess(currentContext, headerName, authorizationHeader);
         }
     }
 
-    private void doProcess(RequestContext currentContext, String authorizationHeader) {
+    private void doProcess(RequestContext currentContext, String headerName, String authorizationHeader) {
         String token = authorizationHeader.substring(BEARER_PREFIX.length()).trim();
 
         if (JTI_LENGTH.equals(token.length())) {
-            replaceHeader(currentContext, authorizationHeader, token);
+            replaceHeader(currentContext, headerName, token);
         }
     }
 
-    private void replaceHeader(RequestContext currentContext, String authorizationHeader, String jti) {
+    private void replaceHeader(RequestContext currentContext, String headerName, String jti) {
         accessTokenRepository.findByJti(jti)
-                .ifPresent(accessToken -> process(currentContext, authorizationHeader, accessToken));
+                .ifPresent(accessToken -> process(currentContext, headerName, accessToken));
     }
 
-    private void process(RequestContext currentContext, String authorizationHeader, AccessToken accessToken) {
+    private void process(RequestContext currentContext, String headerName, AccessToken accessToken) {
         logger.debug("Replacing bearer token having jti {} with encoded jwt value.", accessToken.getJti());
-        currentContext.addZuulRequestHeader(authorizationHeader, BEARER_PREFIX.concat(accessToken.getEncoded()));
+        currentContext.addZuulRequestHeader(headerName, BEARER_PREFIX.concat(accessToken.getEncoded()));
     }
 
 }

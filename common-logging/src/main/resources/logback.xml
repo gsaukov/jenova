@@ -34,6 +34,6 @@
     </root>
 
     <logger name="com.pro.jenova" level="DEBUG"/>
-    <logger name="com.zaxxer.hikari" level="INFO"/> <!-- switch to DEBUG to see connection pool status -->
+    <logger name="com.zaxxer.hikari" level="DEBUG"/>
 
 </configuration>

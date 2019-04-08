@@ -26,26 +26,25 @@ public class RequestAndResponseFilter extends OncePerRequestFilter {
         ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
 
-        logRequest(request, requestWrapper);
+        logRequestHeaders(request);
+
         filterChain.doFilter(requestWrapper, responseWrapper);
 
-        // logRequest(request, requestWrapper);
-        logResponse(response, responseWrapper);
+        logRequestAndResponse(request, response, requestWrapper, responseWrapper);
 
         responseWrapper.copyBodyToResponse();
     }
 
-    private void logRequest(HttpServletRequest request, ContentCachingRequestWrapper requestWrapper) {
+    private void logRequestHeaders(HttpServletRequest request) {
         StringBuilder builder = new StringBuilder();
 
-        logHeaders(request, builder);
-        // logContent(requestWrapper.getContentAsByteArray(), request.getCharacterEncoding(), builder);
+        logRequestHeaders(request, builder);
 
         logger.debug(builder.toString());
     }
 
-    private void logHeaders(HttpServletRequest request, StringBuilder builder) {
-        builder.append("Incoming Request - ")
+    private void logRequestHeaders(HttpServletRequest request, StringBuilder builder) {
+        builder.append("Incoming Request Headers - ")
                 .append(request.getMethod()).append(" ")
                 .append(request.getRequestURL().toString())
                 .append(lineSeparator());
@@ -57,16 +56,20 @@ public class RequestAndResponseFilter extends OncePerRequestFilter {
         builder.append(headerName).append(" = ").append(request.getHeader(headerName)).append(lineSeparator());
     }
 
-    private void logResponse(HttpServletResponse response, ContentCachingResponseWrapper responseWrapper) {
+    private void logRequestAndResponse(HttpServletRequest request, HttpServletResponse response,
+                                       ContentCachingRequestWrapper requestWrapper,
+                                       ContentCachingResponseWrapper responseWrapper) {
         StringBuilder builder = new StringBuilder();
 
-        logHeaders(response, builder);
+        logContent(requestWrapper.getContentAsByteArray(), request.getCharacterEncoding(), builder);
+
+        logResponseHeaders(response, builder);
         logContent(responseWrapper.getContentAsByteArray(), response.getCharacterEncoding(), builder);
 
         logger.debug(builder.toString());
     }
 
-    private void logHeaders(HttpServletResponse response, StringBuilder builder) {
+    private void logResponseHeaders(HttpServletResponse response, StringBuilder builder) {
         builder.append("Outgoing Response - ")
                 .append(response.getStatus())
                 .append(lineSeparator());
@@ -82,7 +85,9 @@ public class RequestAndResponseFilter extends OncePerRequestFilter {
         String requestBody = getContentAsString(content, encoding);
 
         if (!requestBody.isEmpty()) {
-            builder.append(requestBody).append(lineSeparator());
+            builder.append(requestBody)
+                    .append(lineSeparator())
+                    .append(lineSeparator());
         }
     }
 
