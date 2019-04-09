@@ -33,7 +33,7 @@ public class AuthorizationHeaderFilter extends ZuulFilter {
     @Autowired
     private OAuth2Client oAuth2Client;
 
-    @Value("${feign.oauth2.client.username}")
+    @Value("${feign.oauth2.client-id}")
     private String clientId;
 
     @Override

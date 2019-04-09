@@ -23,9 +23,8 @@ spring:
 
 feign:
   oauth2:
-    client:
-      username: trusted-client
-      password: trusted-client
+    client-id: trusted-client
+    client-secret: trusted-client
 
 management:
   endpoints:
