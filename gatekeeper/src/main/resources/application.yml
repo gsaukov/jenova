@@ -21,6 +21,12 @@ spring:
     hibernate:
       ddl-auto: none
 
+feign:
+  oauth2:
+    client:
+      username: trusted-client
+      password: trusted-client
+
 management:
   endpoints:
     web:

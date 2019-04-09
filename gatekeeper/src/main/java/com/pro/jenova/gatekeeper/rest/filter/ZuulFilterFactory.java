@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 public class ZuulFilterFactory {
 
     @Bean
-    public BearerHeaderFilter bearerHeaderFilter() {
-        return new BearerHeaderFilter();
+    public AuthorizationHeaderFilter bearerHeaderFilter() {
+        return new AuthorizationHeaderFilter();
     }
 
 }
