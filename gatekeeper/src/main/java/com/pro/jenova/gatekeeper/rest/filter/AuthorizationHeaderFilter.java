@@ -2,12 +2,13 @@ package com.pro.jenova.gatekeeper.rest.filter;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
-import com.pro.jenova.gatekeeper.data.entity.AccessToken;
 import com.pro.jenova.gatekeeper.data.repository.AccessTokenRepository;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import static java.util.regex.Pattern.compile;
@@ -22,12 +23,16 @@ public class AuthorizationHeaderFilter extends ZuulFilter {
 
     private static final String AUTHORIZATION_HEADER = "authorization";
     private static final String BEARER_PREFIX = "Bearer ";
+    private static final String BASIC_PREFIX = "Basic ";
 
     @Autowired
     private AccessTokenRepository accessTokenRepository;
 
     @Autowired
     private AuthorizationFilterSupport authorizationFilterSupport;
+
+    @Value("#{'${feign.oauth2.supported-apis}'.split(',')}")
+    private List<String> supportedApis;
 
     @Override
     public String filterType() {
@@ -63,29 +68,37 @@ public class AuthorizationHeaderFilter extends ZuulFilter {
     }
 
     private void process(RequestContext currentContext, String authorizationHeader) {
-        if (authorizationHeader.toLowerCase().startsWith(BEARER_PREFIX.toLowerCase())) {
-            doProcess(currentContext, authorizationHeader);
+        String uri = currentContext.getRequest().getRequestURI();
+        if (supportedApis.stream().noneMatch(uri::contains)) {
+            return;
+        }
+
+        String lowerAuthorizationHeader = authorizationHeader.toLowerCase();
+        if (lowerAuthorizationHeader.startsWith(BEARER_PREFIX.toLowerCase())) {
+            processBearer(currentContext, authorizationHeader);
+        } else if (lowerAuthorizationHeader.startsWith(BASIC_PREFIX.toLowerCase())) {
+            processBasic(currentContext, authorizationHeader);
         }
     }
 
-    private void doProcess(RequestContext currentContext, String authorizationHeader) {
+    private void processBasic(RequestContext currentContext, String authorizationHeader) {
+        String basic = authorizationHeader.substring(BASIC_PREFIX.length()).trim();
+
+        authorizationFilterSupport.getToken(basic).ifPresent(accessToken -> {
+            logger.debug("Replacing basic auth {} with encoded jwt value.", basic);
+            currentContext.addZuulRequestHeader(AUTHORIZATION_HEADER, BEARER_PREFIX.concat(accessToken));
+        });
+    }
+
+    private void processBearer(RequestContext currentContext, String authorizationHeader) {
         String token = authorizationHeader.substring(BEARER_PREFIX.length()).trim();
 
         if (isUuid(token)) {
-            replaceHeader(currentContext, token);
+            accessTokenRepository.findByJti(token).ifPresent(accessToken -> {
+                logger.debug("Replacing bearer token jti {} with encoded jwt value.", accessToken.getJti());
+                currentContext.addZuulRequestHeader(AUTHORIZATION_HEADER, BEARER_PREFIX.concat(accessToken.getEncoded()));
+            });
         }
-    }
-
-    private void replaceHeader(RequestContext currentContext, String jti) {
-        accessTokenRepository.findByJti(jti)
-                .ifPresent(accessToken -> process(currentContext, accessToken));
-    }
-
-    private void process(RequestContext currentContext, AccessToken accessToken) {
-        logger.debug("Replacing bearer token having jti {} with encoded jwt value.", accessToken.getJti());
-        currentContext.addZuulRequestHeader(AUTHORIZATION_HEADER, BEARER_PREFIX.concat(accessToken.getEncoded()));
-
-        authorizationFilterSupport.getToken("dimitrios", "dimitrios");
     }
 
     private boolean isUuid(String value) {

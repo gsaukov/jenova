@@ -25,6 +25,7 @@ feign:
   oauth2:
     client-id: trusted-client
     client-secret: trusted-client
+    supported-apis: omnidrive-api,exodus-api
 
 management:
   endpoints:
