@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class FeignClientConfigurer {
+public class OAuth2ClientConfigurer {
 
     @Value("${feign.oauth2.client-id}")
     private String clientId;
@@ -30,11 +30,6 @@ public class FeignClientConfigurer {
     @Bean
     public BasicAuthRequestInterceptor basicAuthRequestInterceptor() {
         return new BasicAuthRequestInterceptor(clientId, clientSecret);
-    }
-
-    @Bean
-    public LogCorrelationIdInterceptor logCorrelationIdInterceptor() {
-        return new LogCorrelationIdInterceptor();
     }
 
 }
