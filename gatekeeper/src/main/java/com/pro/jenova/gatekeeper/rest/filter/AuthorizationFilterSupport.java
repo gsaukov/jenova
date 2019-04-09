@@ -1,5 +1,7 @@
 package com.pro.jenova.gatekeeper.rest.filter;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pro.jenova.gatekeeper.rest.client.OAuth2Client;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,7 @@ public class AuthorizationFilterSupport {
 
     private static final Logger logger = getLogger(AuthorizationFilterSupport.class);
 
-    private static final String PASSWORD_GRANT_TYPE = "password";
+    private static final ObjectMapper objectMapper = new ObjectMapper(); // Thread Safe
 
     @Autowired
     private OAuth2Client oAuth2Client;
@@ -28,10 +30,11 @@ public class AuthorizationFilterSupport {
 
     public Optional<String> getToken(String username, String password) {
         try {
-            String result = oAuth2Client.getToken(PASSWORD_GRANT_TYPE, clientId, toFormParams(username, password));
-            logger.warn(result);
+            String json = oAuth2Client.getToken("password", clientId, toFormParams(username, password));
+            JsonNode jsonNode = objectMapper.readTree(json);
+            logger.info("this is the token we got back " + jsonNode.get("access_token"));
         } catch (Exception exc) {
-            logger.error(exc.getMessage());
+            logger.warn("Failed to authenticate user {} due to {}.", username, exc.getMessage());
         }
         return empty();
     }
