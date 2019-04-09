@@ -1,18 +1,13 @@
 package com.pro.jenova.gatekeeper.rest.filter;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.pro.jenova.gatekeeper.data.entity.AccessToken;
 import com.pro.jenova.gatekeeper.data.repository.AccessTokenRepository;
-import com.pro.jenova.gatekeeper.rest.client.OAuth2Client;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import static java.util.regex.Pattern.compile;
@@ -22,7 +17,8 @@ public class AuthorizationHeaderFilter extends ZuulFilter {
 
     private static final Logger logger = getLogger(AuthorizationHeaderFilter.class);
 
-    private static final Pattern UUID_PATTERN = compile("^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$");
+    private static final Pattern UUID_PATTERN =
+            compile("^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$");
 
     private static final String AUTHORIZATION_HEADER = "authorization";
     private static final String BEARER_PREFIX = "Bearer ";
@@ -31,10 +27,7 @@ public class AuthorizationHeaderFilter extends ZuulFilter {
     private AccessTokenRepository accessTokenRepository;
 
     @Autowired
-    private OAuth2Client oAuth2Client;
-
-    @Value("${feign.oauth2.client-id}")
-    private String clientId;
+    private AuthorizationFilterSupport authorizationFilterSupport;
 
     @Override
     public String filterType() {
@@ -92,15 +85,7 @@ public class AuthorizationHeaderFilter extends ZuulFilter {
         logger.debug("Replacing bearer token having jti {} with encoded jwt value.", accessToken.getJti());
         currentContext.addZuulRequestHeader(AUTHORIZATION_HEADER, BEARER_PREFIX.concat(accessToken.getEncoded()));
 
-        try {
-            Map<String, String> formParams = new HashMap<>();
-            formParams.put("username", "dimitrios");
-            formParams.put("password", "dimitrios");
-            JsonNode result = oAuth2Client.getToken("password", clientId, formParams);
-            logger.warn(result.textValue());
-        } catch (Exception exc) {
-            logger.error(exc.getMessage());
-        }
+        authorizationFilterSupport.getToken("dimitrios", "dimitrios");
     }
 
     private boolean isUuid(String value) {

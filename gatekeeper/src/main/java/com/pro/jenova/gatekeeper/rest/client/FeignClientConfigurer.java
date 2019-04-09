@@ -13,18 +13,18 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FeignClientConfigurer {
 
-    @Autowired
-    private ObjectFactory<HttpMessageConverters> messageConverters;
-
     @Value("${feign.oauth2.client-id}")
     private String clientId;
 
     @Value("${feign.oauth2.client-secret}")
     private String clientSecret;
 
+    @Autowired
+    private ObjectFactory<HttpMessageConverters> messageConverters;
+
     @Bean
     public FormEncoder feignFormEncoder() {
-        return new FormEncoder(new SpringEncoder(messageConverters));
+        return new FormEncoder(new SpringEncoder(this.messageConverters));
     }
 
     @Bean
