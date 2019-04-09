@@ -56,7 +56,7 @@ public class AuthorizationFilterSupport {
 
         JsonNode jsonNode = objectMapper.readTree(json);
 
-        return of(jsonNode.get("access_token").toString());
+        return of(jsonNode.get("access_token").textValue());
     }
 
     private Map<String, ?> toFormParams(String username, String password) {
