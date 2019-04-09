@@ -1,6 +1,5 @@
 package com.pro.jenova.gatekeeper.rest.client;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +18,8 @@ public interface OAuth2Client {
     @RequestMapping(method = POST, value = "/oauth/token", produces = APPLICATION_JSON_VALUE,
             consumes = APPLICATION_FORM_URLENCODED_VALUE)
     @Headers("Content-Type: application/x-www-form-urlencoded")
-    JsonNode getToken(@RequestParam("grant_type") String grantType,
-                      @RequestParam("client_id") String clientId,
-                      @RequestBody Map<String, ?> formParams);
+    String getToken(@RequestParam("grant_type") String grantType,
+                    @RequestParam("client_id") String clientId,
+                    @RequestBody Map<String, ?> formParams);
 
 }

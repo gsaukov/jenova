@@ -1,6 +1,5 @@
 package com.pro.jenova.gatekeeper.rest.filter;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.pro.jenova.gatekeeper.rest.client.OAuth2Client;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +28,15 @@ public class AuthorizationFilterSupport {
 
     public Optional<String> getToken(String username, String password) {
         try {
-            JsonNode result = oAuth2Client.getToken(PASSWORD_GRANT_TYPE, clientId, toFormParams(username, password));
-            logger.warn(result.textValue());
+            String result = oAuth2Client.getToken(PASSWORD_GRANT_TYPE, clientId, toFormParams(username, password));
+            logger.warn(result);
         } catch (Exception exc) {
             logger.error(exc.getMessage());
         }
         return empty();
     }
 
-    private Map<String, String> toFormParams(String username, String password) {
+    private Map<String, ?> toFormParams(String username, String password) {
         Map<String, String> formParams = new HashMap<>();
         formParams.put("username", username);
         formParams.put("password", password);
