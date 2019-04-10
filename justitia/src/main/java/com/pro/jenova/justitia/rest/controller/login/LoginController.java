@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import static com.pro.jenova.common.util.IdUtils.uuid;
 import static java.time.LocalDateTime.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
+import static org.springframework.util.Assert.isTrue;
 
 @RestController
 @RequestMapping("/justitia-api/login")
@@ -43,11 +44,11 @@ public class LoginController {
     private UserRepository userRepository;
 
     @PostMapping("/init")
-    public ResponseEntity<RestResponse> init(@RequestBody Map<String, String> requestParams) {
-        Map<String, String> params = new HashMap<>(requestParams);
+    public ResponseEntity<RestResponse> init(HttpServletRequest request) {
+        Map<String, String> params = convert(request.getParameterMap());
 
-        String clientId = params.remove("clientId");
-        String username = params.remove("username");
+        String clientId = params.get("clientId");
+        String username = params.get("username");
 
         if (clientId == null || username == null) {
             return ErrorResponse.badRequest("MISSING_MANDATORY_PARAMS");
@@ -86,6 +87,18 @@ public class LoginController {
 
     private LocalDateTime tenMinutesFromNow() {
         return now().plus(10, MINUTES);
+    }
+
+    private Map<String, String> convert(Map<String, String[]> params) {
+        Map<String, String> convertedParams = new HashMap<>();
+
+        params.entrySet().forEach(entry -> {
+            String[] values = entry.getValue();
+            isTrue(values.length == 1, "single values expected");
+            convertedParams.put(entry.getKey(), values[0]);
+        });
+
+        return convertedParams;
     }
 
 }
