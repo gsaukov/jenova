@@ -20,11 +20,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.pro.jenova.common.util.IdUtils.uuid;
 import static java.time.LocalDateTime.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
+import static java.util.stream.Collectors.toMap;
 import static org.springframework.util.Assert.isTrue;
 
 @RestController
@@ -47,8 +47,8 @@ public class LoginController {
     public ResponseEntity<RestResponse> init(HttpServletRequest request) {
         Map<String, String> params = convert(request.getParameterMap());
 
-        String clientId = params.get("clientId");
-        String username = params.get("username");
+        String clientId = params.remove("clientId");
+        String username = params.remove("username");
 
         if (clientId == null || username == null) {
             return ErrorResponse.badRequest("MISSING_MANDATORY_PARAMS");
@@ -65,7 +65,7 @@ public class LoginController {
         loginRepository.removeByUsernameAndClientId(username, clientId);
 
         Map<String, String> challenges = challengeService.evaluate(clientId, username, params).stream()
-                .collect(Collectors.toMap(Challenge::getKey, Challenge::getValue));
+                .collect(toMap(Challenge::getKey, Challenge::getValue));
 
         String reference = uuid();
 

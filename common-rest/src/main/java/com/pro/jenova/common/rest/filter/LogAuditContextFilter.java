@@ -23,15 +23,17 @@ public class LogAuditContextFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } finally {
-            logAuditContext();
+            logAuditContext(request, response);
             AuditContext.remove();
         }
     }
 
-    private void logAuditContext() {
+    private void logAuditContext(HttpServletRequest request, HttpServletResponse response) {
         AuditContext context = AuditContext.get();
 
-        logger.debug("Audit (web) - dbQueriesCount {}, dbTimeMillis {}",
+        logger.debug("Audit (web) - endpointUri {}, httpStatus {}, dbQueriesCount {}, dbTimeMillis {}",
+                request.getRequestURI(),
+                response.getStatus(),
                 context.getDbQueriesCount(),
                 context.getDbTimeMillis());
     }

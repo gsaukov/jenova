@@ -19,12 +19,12 @@ public class AuditContext {
         return dbQueriesCount;
     }
 
-    public Long getDbTimeMillis() {
-        return dbTimeMillis;
-    }
-
     public void incDbQueriesCount(long count) {
         dbQueriesCount = increase(dbQueriesCount, count);
+    }
+
+    public Long getDbTimeMillis() {
+        return dbTimeMillis;
     }
 
     public void incDbTimeMillis(long millis) {
