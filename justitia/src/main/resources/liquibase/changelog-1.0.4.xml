@@ -45,17 +45,17 @@
             <column name="LOGIN_ID" type="varchar(64)">
                 <constraints nullable="false" foreignKeyName="FK_LGN_PRM_LOGIN" references="LOGIN(ID)"/>
             </column>
-            <column name="KEY" type="varchar(64)">
+            <column name="PARAM_KEY" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
-            <column name="VALUE" type="varchar(64)">
+            <column name="PARAM_VALUE" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
         <createIndex tableName="LOGIN_PARAMS" indexName="IDX_LGN_PRM_LOGIN" unique="false">
             <column name="LOGIN_ID" type="varchar(64)"/>
         </createIndex>
-        <addUniqueConstraint tableName="LOGIN_PARAMS" columnNames="LOGIN_ID,KEY"
+        <addUniqueConstraint tableName="LOGIN_PARAMS" columnNames="LOGIN_ID,PARAM_KEY"
                              constraintName="UDX_LGN_PRM_LOGIN_KEY"/>
     </changeSet>
 

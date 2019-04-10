@@ -28,8 +28,8 @@ public class Login extends BaseEntity {
 
     @ElementCollection
     @CollectionTable(name = "LOGIN_PARAMS", joinColumns = {@JoinColumn(name = "LOGIN_ID")})
-    @MapKeyColumn(name = "KEY")
-    @Column(name = "VALUE")
+    @MapKeyColumn(name = "PARAM_KEY")
+    @Column(name = "PARAM_VALUE")
     private Map<String, String> params;
 
     private Login() {
