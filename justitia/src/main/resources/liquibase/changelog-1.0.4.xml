@@ -29,7 +29,7 @@
             <column name="CLIENT_ID" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
-            <column name="GRANT_TYPE" type="varchar(64)">
+            <column name="USERNAME" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
             <column name="EXPIRES_AT" type="datetime(3)">

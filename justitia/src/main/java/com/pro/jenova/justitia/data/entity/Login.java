@@ -20,8 +20,8 @@ public class Login extends BaseEntity {
     @Column(name = "CLIENT_ID")
     private String clientId;
 
-    @Column(name = "GRANT_TYPE")
-    private String grantType;
+    @Column(name = "USERNAME")
+    private String username;
 
     @Column(name = "EXPIRES_AT")
     private LocalDateTime expiresAt;
@@ -39,7 +39,7 @@ public class Login extends BaseEntity {
     private Login(Builder builder) {
         reference = builder.reference;
         clientId = builder.clientId;
-        grantType = builder.grantType;
+        username = builder.username;
         expiresAt = builder.expiresAt;
         params = builder.params;
     }
@@ -60,12 +60,12 @@ public class Login extends BaseEntity {
         this.clientId = clientId;
     }
 
-    public String getGrantType() {
-        return grantType;
+    public String getUsername() {
+        return username;
     }
 
-    public void setGrantType(String grantType) {
-        this.grantType = grantType;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public LocalDateTime getExpiresAt() {
@@ -104,7 +104,7 @@ public class Login extends BaseEntity {
 
         private String reference;
         private String clientId;
-        private String grantType;
+        private String username;
         private LocalDateTime expiresAt;
         private Map<String, String> params = new HashMap<>();
 
@@ -118,8 +118,8 @@ public class Login extends BaseEntity {
             return this;
         }
 
-        public Builder withGrantType(String grantType) {
-            this.grantType = grantType;
+        public Builder withUsername(String username) {
+            this.username = username;
             return this;
         }
 
