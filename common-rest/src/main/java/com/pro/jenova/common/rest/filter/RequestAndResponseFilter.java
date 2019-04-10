@@ -61,7 +61,7 @@ public class RequestAndResponseFilter extends OncePerRequestFilter {
                                        ContentCachingResponseWrapper responseWrapper) {
         StringBuilder builder = new StringBuilder();
 
-        builder.append("Incoming Request - ")
+        builder.append("Incoming Request")
                 .append(lineSeparator());
 
         logContent(requestWrapper.getContentAsByteArray(), request.getCharacterEncoding(), builder);
