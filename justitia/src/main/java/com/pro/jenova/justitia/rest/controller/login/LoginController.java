@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -43,7 +43,7 @@ public class LoginController {
     private UserRepository userRepository;
 
     @PostMapping("/init")
-    public ResponseEntity<RestResponse> init(@RequestParam Map<String, String> requestParams) {
+    public ResponseEntity<RestResponse> init(@RequestBody Map<String, String> requestParams) {
         Map<String, String> params = new HashMap<>(requestParams);
 
         String clientId = params.remove("clientId");
@@ -66,8 +66,10 @@ public class LoginController {
         Map<String, String> challenges = challengeService.evaluate(clientId, username, params).stream()
                 .collect(Collectors.toMap(Challenge::getKey, Challenge::getValue));
 
+        String reference = uuid();
+
         loginRepository.save(new Login.Builder()
-                .withReference(uuid())
+                .withReference(reference)
                 .withClientId(clientId)
                 .withUsername(username)
                 .withParams(params)
@@ -76,6 +78,7 @@ public class LoginController {
                 .build());
 
         return new ResponseEntity<>(new RestLoginResponse.Builder()
+                .withReference(reference)
                 .withChallenges(challenges.keySet())
                 .withProvidedParams(params)
                 .build(), HttpStatus.OK);
