@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static java.util.Collections.unmodifiableList;
-
 public class RestListApprovalsResponse implements RestResponse {
 
     private List<RestListApprovalDetails> approvals;
@@ -17,7 +15,7 @@ public class RestListApprovalsResponse implements RestResponse {
     }
 
     private RestListApprovalsResponse(Builder builder) {
-        approvals = unmodifiableList(builder.approvals);
+        approvals = builder.approvals;
     }
 
     public List<RestListApprovalDetails> getApprovals() {

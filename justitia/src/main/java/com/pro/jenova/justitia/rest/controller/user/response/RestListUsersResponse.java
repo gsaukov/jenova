@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static java.util.Collections.unmodifiableList;
-
 public class RestListUsersResponse implements RestResponse {
 
     private List<String> usernames;
@@ -17,7 +15,7 @@ public class RestListUsersResponse implements RestResponse {
     }
 
     private RestListUsersResponse(Builder builder) {
-        usernames = unmodifiableList(builder.usernames);
+        usernames = builder.usernames;
     }
 
     public List<String> getUsernames() {

@@ -2,13 +2,15 @@ package com.pro.jenova.justitia.rest.controller.login;
 
 import com.pro.jenova.common.rest.ErrorResponse;
 import com.pro.jenova.common.rest.RestResponse;
-import com.pro.jenova.common.rest.VoidResponse;
 import com.pro.jenova.justitia.data.entity.Login;
 import com.pro.jenova.justitia.data.repository.ClientRepository;
 import com.pro.jenova.justitia.data.repository.LoginRepository;
 import com.pro.jenova.justitia.data.repository.UserRepository;
+import com.pro.jenova.justitia.rest.controller.login.response.RestLoginResponse;
+import com.pro.jenova.justitia.service.challenge.Challenge;
 import com.pro.jenova.justitia.service.challenge.ChallengeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.pro.jenova.common.util.IdUtils.uuid;
 import static java.time.LocalDateTime.now;
@@ -60,19 +63,22 @@ public class LoginController {
     private ResponseEntity<RestResponse> init(String clientId, String username, Map<String, String> params) {
         loginRepository.removeByUsernameAndClientId(username, clientId);
 
-        challengeService.evaluate(clientId, username, params).forEach(challenge -> {
-            params.put(challenge.getKey(), challenge.getValue());
-        });
+        Map<String, String> challenges = challengeService.evaluate(clientId, username, params).stream()
+                .collect(Collectors.toMap(Challenge::getKey, Challenge::getValue));
 
         loginRepository.save(new Login.Builder()
                 .withReference(uuid())
                 .withClientId(clientId)
                 .withUsername(username)
                 .withParams(params)
+                .withParams(challenges)
                 .withExpiresAt(tenMinutesFromNow())
                 .build());
 
-        return VoidResponse.created();
+        return new ResponseEntity<>(new RestLoginResponse.Builder()
+                .withChallenges(challenges.keySet())
+                .withProvidedParams(params)
+                .build(), HttpStatus.OK);
     }
 
     private LocalDateTime tenMinutesFromNow() {

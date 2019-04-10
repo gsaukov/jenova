@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static java.util.Collections.unmodifiableList;
-
 public class RestListAuthoritiesResponse implements RestResponse {
 
     private List<String> authorities;
@@ -17,7 +15,7 @@ public class RestListAuthoritiesResponse implements RestResponse {
     }
 
     private RestListAuthoritiesResponse(Builder builder) {
-        authorities = unmodifiableList(builder.authorities);
+        authorities = builder.authorities;
     }
 
     public List<String> getAuthorities() {
