@@ -133,6 +133,11 @@ public class Login extends BaseEntity {
             return this;
         }
 
+        public Builder withParams(Map<String, String> params) {
+            this.params.putAll(params);
+            return this;
+        }
+
         public Login build() {
             return new Login(this);
         }

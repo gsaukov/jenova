@@ -3,79 +3,80 @@ package com.pro.jenova.justitia.rest.controller.login;
 import com.pro.jenova.common.rest.ErrorResponse;
 import com.pro.jenova.common.rest.RestResponse;
 import com.pro.jenova.common.rest.VoidResponse;
-import com.pro.jenova.justitia.data.entity.Client;
+import com.pro.jenova.justitia.data.entity.Login;
 import com.pro.jenova.justitia.data.repository.ClientRepository;
-import com.pro.jenova.justitia.rest.controller.client.request.RestCreateClientRequest;
-import com.pro.jenova.justitia.rest.controller.client.request.RestRemoveClientRequest;
-import com.pro.jenova.justitia.rest.controller.client.response.RestListClientDetails;
-import com.pro.jenova.justitia.rest.controller.client.response.RestListClientsResponse;
+import com.pro.jenova.justitia.data.repository.LoginRepository;
+import com.pro.jenova.justitia.data.repository.UserRepository;
+import com.pro.jenova.justitia.service.challenge.ChallengeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
-import static java.util.stream.Collectors.toList;
+import static com.pro.jenova.common.util.IdUtils.uuid;
+import static java.time.LocalDateTime.now;
+import static java.time.temporal.ChronoUnit.MINUTES;
 
 @RestController
 @RequestMapping("/justitia-api/login")
 public class LoginController {
 
     @Autowired
+    private ChallengeService challengeService;
+
+    @Autowired
     private ClientRepository clientRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private LoginRepository loginRepository;
 
-    @PostMapping("/create")
-    public ResponseEntity<RestResponse> create(@RequestBody RestCreateClientRequest restCreateClientRequest) {
-        if (clientRepository.existsByClientId(restCreateClientRequest.getClientId())) {
-            return ErrorResponse.badRequest("CLIENT_ID_ALREADY_EXISTS");
+    @Autowired
+    private UserRepository userRepository;
+
+    @PostMapping("/init")
+    public ResponseEntity<RestResponse> init(@RequestParam Map<String, String> requestParams) {
+        Map<String, String> params = new HashMap<>(requestParams);
+
+        String clientId = params.remove("clientId");
+        String username = params.remove("username");
+
+        if (clientId == null || username == null) {
+            return ErrorResponse.badRequest("MISSING_MANDATORY_PARAMS");
         }
 
-        clientRepository.save(new Client.Builder()
-                .withClientId(restCreateClientRequest.getClientId())
-                .withClientSecret(passwordEncoder.encode(restCreateClientRequest.getClientSecret()))
-                .withGrantTypes(restCreateClientRequest.getGrantTypes())
-                .withScopes(restCreateClientRequest.getScopes())
-                .withAccessTokenDuration(restCreateClientRequest.getAccessTokenDuration())
-                .withRefreshTokenDuration(restCreateClientRequest.getRefreshTokenDuration())
-                .withAutoApprove(restCreateClientRequest.getAutoApprove())
-                .withRedirectUri(restCreateClientRequest.getRedirectUri())
+        if (!userRepository.existsByUsername(username) || !clientRepository.existsByClientId(clientId)) {
+            return ErrorResponse.badRequest("MISSING_MANDATORY_PARAMS");
+        }
+
+        return init(clientId, username, params);
+    }
+
+    private ResponseEntity<RestResponse> init(String clientId, String username, Map<String, String> params) {
+        loginRepository.removeByUsernameAndClientId(username, clientId);
+
+        challengeService.evaluate(clientId, username, params).forEach(challenge -> {
+            params.put(challenge.getKey(), challenge.getValue());
+        });
+
+        loginRepository.save(new Login.Builder()
+                .withReference(uuid())
+                .withClientId(clientId)
+                .withUsername(username)
+                .withParams(params)
+                .withExpiresAt(tenMinutesFromNow())
                 .build());
 
         return VoidResponse.created();
     }
 
-    @PostMapping("/remove")
-    public ResponseEntity<RestResponse> remove(@RequestBody RestRemoveClientRequest restRemoveClientRequest) {
-        if (clientRepository.removeByClientId(restRemoveClientRequest.getClientId()) > 0L) {
-            return VoidResponse.ok();
-        }
-
-        return ErrorResponse.badRequest("CLIENT_ID_NOT_FOUND");
-    }
-
-    @GetMapping("/list")
-    public ResponseEntity<RestResponse> list() {
-        List<Client> clients = clientRepository.findAll();
-
-        return new ResponseEntity<>(new RestListClientsResponse.Builder().withClients(clients.stream()
-                .map(this::toRestListClientDetails).collect(toList())).build(), HttpStatus.OK);
-    }
-
-    private RestListClientDetails toRestListClientDetails(Client client) {
-        return new RestListClientDetails.Builder()
-                .withClientId(client.getClientId())
-                .withGrantTypes(client.getGrantTypes())
-                .withScopes(client.getScopes())
-                .withAccessTokenDuration(client.getAccessTokenDuration())
-                .withRefreshTokenDuration(client.getRefreshTokenDuration())
-                .withAutoApprove(client.getAutoApprove())
-                .withRedirectUri(client.getRedirectUri())
-                .build();
+    private LocalDateTime tenMinutesFromNow() {
+        return now().plus(10, MINUTES);
     }
 
 }
