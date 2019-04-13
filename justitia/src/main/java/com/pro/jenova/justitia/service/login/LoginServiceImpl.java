@@ -34,7 +34,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public LoginResult init(String clientId, String username, String scopes, Map<String, String> params) {
-        loginRepository.removeByClientIdAndUsernameAndScopes(clientId, username, scopes);
+        invalidateExistingIfAny(clientId, username, scopes);
 
         String reference = uuid();
 
@@ -52,6 +52,13 @@ public class LoginServiceImpl implements LoginService {
         challenges.forEach(challenge -> challengeRepository.save(challenge));
 
         return new LoginResult(login, challenges);
+    }
+
+    private void invalidateExistingIfAny(String clientId, String username, String scopes) {
+        loginRepository.findByClientIdAndUsernameAndScopes(clientId, username, scopes).forEach(login -> {
+            challengeRepository.findByLogin(login).forEach(challenge -> challengeRepository.delete(challenge));
+            loginRepository.delete(login);
+        });
     }
 
     private List<Challenge> getChallenges(Login login) {
