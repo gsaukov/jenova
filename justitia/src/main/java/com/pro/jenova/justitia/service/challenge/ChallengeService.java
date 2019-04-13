@@ -1,10 +1,9 @@
 package com.pro.jenova.justitia.service.challenge;
 
-import java.util.List;
-import java.util.Map;
+import com.pro.jenova.justitia.data.entity.Challenge.Type;
 
 public interface ChallengeService {
 
-    List<Challenge> evaluate(String clientId, String username, Map<String, String> params);
+    boolean complete(String reference, Type type);
 
 }

@@ -20,11 +20,17 @@ public class Login extends BaseEntity {
     @Column(name = "CLIENT_ID")
     private String clientId;
 
+    @Column(name = "SCOPES")
+    private String scopes;
+
     @Column(name = "USERNAME")
     private String username;
 
     @Column(name = "EXPIRES_AT")
     private LocalDateTime expiresAt;
+
+    @Column(name = "COMPLETED")
+    private Boolean completed;
 
     @ElementCollection
     @CollectionTable(name = "LOGIN_PARAMS", joinColumns = {@JoinColumn(name = "LOGIN_ID")})
@@ -39,8 +45,10 @@ public class Login extends BaseEntity {
     private Login(Builder builder) {
         reference = builder.reference;
         clientId = builder.clientId;
+        scopes = builder.scopes;
         username = builder.username;
         expiresAt = builder.expiresAt;
+        completed = builder.completed;
         params = builder.params;
     }
 
@@ -60,6 +68,14 @@ public class Login extends BaseEntity {
         this.clientId = clientId;
     }
 
+    public String getScopes() {
+        return scopes;
+    }
+
+    public void setScopes(String scopes) {
+        this.scopes = scopes;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -74,6 +90,14 @@ public class Login extends BaseEntity {
 
     public void setExpiresAt(LocalDateTime expiresAt) {
         this.expiresAt = expiresAt;
+    }
+
+    public Boolean getCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
     }
 
     public Map<String, String> getParams() {
@@ -104,8 +128,10 @@ public class Login extends BaseEntity {
 
         private String reference;
         private String clientId;
+        private String scopes;
         private String username;
         private LocalDateTime expiresAt;
+        private Boolean completed;
         private Map<String, String> params = new HashMap<>();
 
         public Builder withReference(String reference) {
@@ -115,6 +141,11 @@ public class Login extends BaseEntity {
 
         public Builder withClientId(String clientId) {
             this.clientId = clientId;
+            return this;
+        }
+
+        public Builder withScopes(String scopes) {
+            this.scopes = scopes;
             return this;
         }
 
@@ -128,8 +159,8 @@ public class Login extends BaseEntity {
             return this;
         }
 
-        public Builder withParam(String key, String value) {
-            this.params.put(key, value);
+        public Builder withCompleted(Boolean completed) {
+            this.completed = completed;
             return this;
         }
 

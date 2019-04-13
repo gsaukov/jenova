@@ -2,13 +2,9 @@ package com.pro.jenova.justitia.rest.controller.login;
 
 import com.pro.jenova.common.rest.ErrorResponse;
 import com.pro.jenova.common.rest.RestResponse;
-import com.pro.jenova.justitia.data.entity.Login;
-import com.pro.jenova.justitia.data.repository.ClientRepository;
-import com.pro.jenova.justitia.data.repository.LoginRepository;
-import com.pro.jenova.justitia.data.repository.UserRepository;
 import com.pro.jenova.justitia.rest.controller.login.response.RestLoginResponse;
-import com.pro.jenova.justitia.service.challenge.Challenge;
-import com.pro.jenova.justitia.service.challenge.ChallengeService;
+import com.pro.jenova.justitia.service.login.LoginResult;
+import com.pro.jenova.justitia.service.login.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
-import static com.pro.jenova.common.util.IdUtils.uuid;
-import static java.time.LocalDateTime.now;
-import static java.time.temporal.ChronoUnit.MINUTES;
-import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 import static org.springframework.util.Assert.isTrue;
 
 @RestController
@@ -32,16 +25,7 @@ import static org.springframework.util.Assert.isTrue;
 public class LoginController {
 
     @Autowired
-    private ChallengeService challengeService;
-
-    @Autowired
-    private ClientRepository clientRepository;
-
-    @Autowired
-    private LoginRepository loginRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+    private LoginService loginService;
 
     @PostMapping("/init")
     public ResponseEntity<RestResponse> init(HttpServletRequest request) {
@@ -49,44 +33,27 @@ public class LoginController {
 
         String clientId = params.remove("clientId");
         String username = params.remove("username");
+        String scopes = params.remove("scopes");
 
-        if (clientId == null || username == null) {
+        if (clientId == null || username == null || scopes == null) {
             return ErrorResponse.badRequest("MISSING_MANDATORY_PARAMS");
         }
 
-        if (!userRepository.existsByUsername(username) || !clientRepository.existsByClientId(clientId)) {
-            return ErrorResponse.badRequest("MISSING_MANDATORY_PARAMS");
-        }
-
-        return init(clientId, username, params);
+        return init(clientId, username, scopes, params);
     }
 
-    private ResponseEntity<RestResponse> init(String clientId, String username, Map<String, String> params) {
-        loginRepository.removeByUsernameAndClientId(username, clientId);
+    private ResponseEntity<RestResponse> init(String clientId, String username, String scopes,
+                                              Map<String, String> params) {
+        LoginResult result = loginService.init(clientId, username, scopes, params);
 
-        Map<String, String> challenges = challengeService.evaluate(clientId, username, params).stream()
-                .collect(toMap(Challenge::getKey, Challenge::getValue));
-
-        String reference = uuid();
-
-        loginRepository.save(new Login.Builder()
-                .withReference(reference)
-                .withClientId(clientId)
-                .withUsername(username)
-                .withParams(params)
-                .withParams(challenges)
-                .withExpiresAt(tenMinutesFromNow())
-                .build());
+        Set<String> challenges = result.getChallenges().stream()
+                .map(challenge -> challenge.getType().name())
+                .collect(toSet());
 
         return new ResponseEntity<>(new RestLoginResponse.Builder()
-                .withReference(reference)
-                .withChallenges(challenges.keySet())
-                .withProvidedParams(params)
+                .withReference(result.getLogin().getReference())
+                .withChallenges(challenges)
                 .build(), HttpStatus.OK);
-    }
-
-    private LocalDateTime tenMinutesFromNow() {
-        return now().plus(10, MINUTES);
     }
 
     private Map<String, String> convert(Map<String, String[]> params) {

@@ -11,6 +11,6 @@ public interface LoginRepository extends JpaRepository<Login, String> {
 
     Optional<Login> findByReference(String reference);
 
-    long removeByUsernameAndClientId(String username, String clientId);
+    long removeByClientIdAndUsernameAndScopes(String clientId, String username, String scopes);
 
 }
