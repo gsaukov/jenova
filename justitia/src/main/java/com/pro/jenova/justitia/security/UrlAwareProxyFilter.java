@@ -36,6 +36,7 @@ public class UrlAwareProxyFilter extends OncePerRequestFilter {
             return;
         }
 
+        logger.debug("Delegating to target filter {}.", target.getClass());
         target.doFilter(request, response, chain);
     }
 
