@@ -52,6 +52,7 @@ public class StrongCustomerAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        logger.debug("Proceeding with filter StrongCustomerAuthenticationFilter.");
         String reference = request.getHeader(SCA_HEADER);
 
         if (isEmpty(reference)) {
