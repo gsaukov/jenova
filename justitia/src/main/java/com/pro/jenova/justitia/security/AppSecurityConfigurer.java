@@ -40,38 +40,33 @@ public class AppSecurityConfigurer extends WebSecurityConfigurerAdapter {
         // No JSESSIONID Cookie
         http.sessionManagement().sessionCreationPolicy(STATELESS);
 
-        http.cors().and().csrf().disable()
-                // Actuator
-                .antMatcher("/actuator/**").authorizeRequests()
+        http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/actuator/**").permitAll()
-                .anyRequest().authenticated()
-                // Local API
-                .and()
-                .antMatcher("/justitia-api/**").authorizeRequests()
                 .antMatchers("/justitia-api/login/**").permitAll()
                 .antMatchers("/justitia-api/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
-                // Default (Block All)
                 .and()
-                .antMatcher("/**").authorizeRequests()
-                .anyRequest().authenticated()
-                // Security Filters
-                .and().httpBasic()
-                .and().addFilterBefore(strongCustomerAuthenticationFilter(), BasicAuthenticationFilter.class);
+                .addFilterAt(new UrlAwareProxyFilter("/justitia-api/**",
+                        newBasicAuthenticationFilter()), BasicAuthenticationFilter.class)
+                .addFilterBefore(new UrlAwareProxyFilter("/oauth/**",
+                        newStrongCustomerAuthenticationFilter()), BasicAuthenticationFilter.class);
+    }
+
+    private BasicAuthenticationFilter newBasicAuthenticationFilter() throws Exception {
+        return new BasicAuthenticationFilter(authenticationManagerBean());
+    }
+
+    private StrongCustomerAuthenticationFilter newStrongCustomerAuthenticationFilter() throws Exception {
+        StrongCustomerAuthenticationFilter strongCustomerAuthenticationFilter = new StrongCustomerAuthenticationFilter();
+        strongCustomerAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
+        strongCustomerAuthenticationFilter.setLoginRepository(loginRepository);
+        return strongCustomerAuthenticationFilter;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(daoAuthenticationProvider())
                 .authenticationProvider(strongCustomerAuthenticationProvider());
-    }
-
-    @Bean
-    public StrongCustomerAuthenticationFilter strongCustomerAuthenticationFilter() throws Exception {
-        StrongCustomerAuthenticationFilter strongCustomerAuthenticationFilter = new StrongCustomerAuthenticationFilter();
-        strongCustomerAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
-        strongCustomerAuthenticationFilter.setLoginRepository(loginRepository);
-        return strongCustomerAuthenticationFilter;
     }
 
     @Bean
