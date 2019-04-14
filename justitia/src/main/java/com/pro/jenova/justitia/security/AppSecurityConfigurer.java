@@ -46,18 +46,17 @@ public class AppSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers("/justitia-api/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .addFilterAt(new UrlAwareProxyFilter("/justitia-api/**",
-                        newBasicAuthenticationFilter()), BasicAuthenticationFilter.class)
-                .addFilterBefore(new UrlAwareProxyFilter("/oauth/authorize",
-                        newStrongCustomerAuthenticationFilter()), BasicAuthenticationFilter.class);
+                .addFilterAt(newUrlAwareBasicAuthenticationFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(newStrongCustomerAuthenticationFilter(), BasicAuthenticationFilter.class);
     }
 
-    private BasicAuthenticationFilter newBasicAuthenticationFilter() throws Exception {
-        return new BasicAuthenticationFilter(authenticationManagerBean());
+    private UrlAwareBasicAuthenticationFilter newUrlAwareBasicAuthenticationFilter() throws Exception {
+        return new UrlAwareBasicAuthenticationFilter(authenticationManagerBean(), "/justitia-api/**");
     }
 
     private StrongCustomerAuthenticationFilter newStrongCustomerAuthenticationFilter() throws Exception {
         StrongCustomerAuthenticationFilter strongCustomerAuthenticationFilter = new StrongCustomerAuthenticationFilter();
+        strongCustomerAuthenticationFilter.setRequestMatcher("/oauth/authorize");
         strongCustomerAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
         strongCustomerAuthenticationFilter.setLoginRepository(loginRepository);
         return strongCustomerAuthenticationFilter;

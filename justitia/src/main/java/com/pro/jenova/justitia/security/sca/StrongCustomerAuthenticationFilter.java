@@ -1,6 +1,5 @@
 package com.pro.jenova.justitia.security.sca;
 
-import com.pro.jenova.common.data.audit.DatabaseMetricsCollector;
 import com.pro.jenova.justitia.data.entity.Login;
 import com.pro.jenova.justitia.data.repository.LoginRepository;
 import org.slf4j.Logger;
@@ -12,6 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -38,12 +39,19 @@ public class StrongCustomerAuthenticationFilter extends OncePerRequestFilter {
 
     private AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource = new WebAuthenticationDetailsSource();
 
+    private RequestMatcher requestMatcher;
     private AuthenticationManager authenticationManager;
     private LoginRepository loginRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+        if (!requestMatcher.matches(request)) {
+            logger.debug("Skipping filter StrongCustomerAuthenticationFilter.");
+            chain.doFilter(request, response);
+            return;
+        }
+
         String reference = request.getHeader(SCA_HEADER);
 
         if (isEmpty(reference)) {
@@ -134,6 +142,10 @@ public class StrongCustomerAuthenticationFilter extends OncePerRequestFilter {
         }
 
         return false;
+    }
+
+    public void setRequestMatcher(String filterProcessesUrl) {
+        this.requestMatcher = new AntPathRequestMatcher(filterProcessesUrl);
     }
 
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
