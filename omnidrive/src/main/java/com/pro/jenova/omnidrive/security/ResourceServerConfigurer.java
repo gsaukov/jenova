@@ -28,7 +28,7 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
         // No JSESSIONID Cookie
         http.sessionManagement().sessionCreationPolicy(STATELESS);
 
-        http.cors().and().csrf().disable().authorizeRequests()
+        http.cors().and().csrf().and().authorizeRequests()
                 .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/omnidrive-api/**").hasAuthority("USER")
                 .anyRequest().authenticated();
