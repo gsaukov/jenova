@@ -1,7 +1,9 @@
 package com.pro.jenova.justitia.security.sca;
 
+import com.pro.jenova.common.data.audit.DatabaseMetricsCollector;
 import com.pro.jenova.justitia.data.entity.Login;
 import com.pro.jenova.justitia.data.repository.LoginRepository;
+import org.slf4j.Logger;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,9 +24,12 @@ import java.util.Optional;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Base64.getDecoder;
 import static org.apache.commons.lang.Validate.notNull;
+import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.util.StringUtils.isEmpty;
 
 public class StrongCustomerAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final Logger logger = getLogger(StrongCustomerAuthenticationFilter.class);
 
     private static final String AUTHORIZATION_HEADER = "authorization";
     private static final String SCA_HEADER = "sca";
@@ -42,6 +47,7 @@ public class StrongCustomerAuthenticationFilter extends OncePerRequestFilter {
         String reference = request.getHeader(SCA_HEADER);
 
         if (isEmpty(reference)) {
+            logger.debug("No SCA header found so skipping.");
             chain.doFilter(request, response);
             return;
         }

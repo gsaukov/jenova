@@ -48,7 +48,7 @@ public class AppSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterAt(new UrlAwareProxyFilter("/justitia-api/**",
                         newBasicAuthenticationFilter()), BasicAuthenticationFilter.class)
-                .addFilterBefore(new UrlAwareProxyFilter("/oauth/**",
+                .addFilterBefore(new UrlAwareProxyFilter("/oauth/authorize",
                         newStrongCustomerAuthenticationFilter()), BasicAuthenticationFilter.class);
     }
 
