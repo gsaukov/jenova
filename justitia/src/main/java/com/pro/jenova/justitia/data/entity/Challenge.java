@@ -53,6 +53,10 @@ public class Challenge extends BaseEntity {
         this.status = status;
     }
 
+    public boolean isCompleted() {
+        return Status.COMPLETED.equals(status);
+    }
+
     public Type getType() {
         return type;
     }

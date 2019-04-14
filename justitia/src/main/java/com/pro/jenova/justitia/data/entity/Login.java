@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static java.time.LocalDateTime.now;
+
 @Entity
 @Table(name = "LOGIN")
 public class Login extends BaseEntity {
@@ -92,7 +94,11 @@ public class Login extends BaseEntity {
         this.expiresAt = expiresAt;
     }
 
-    public Boolean getCompleted() {
+    public boolean isExpired() {
+        return now().isAfter(expiresAt);
+    }
+
+    public Boolean isCompleted() {
         return completed;
     }
 

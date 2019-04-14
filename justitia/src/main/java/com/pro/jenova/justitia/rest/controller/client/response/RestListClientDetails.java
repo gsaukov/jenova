@@ -64,7 +64,7 @@ public class RestListClientDetails {
         this.refreshTokenDuration = refreshTokenDuration;
     }
 
-    public Boolean getAutoApprove() {
+    public Boolean isAutoApprove() {
         return autoApprove;
     }
 

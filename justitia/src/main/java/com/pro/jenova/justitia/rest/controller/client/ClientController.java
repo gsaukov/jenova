@@ -42,7 +42,7 @@ public class ClientController {
                 .withScopes(restCreateClientRequest.getScopes())
                 .withAccessTokenDuration(restCreateClientRequest.getAccessTokenDuration())
                 .withRefreshTokenDuration(restCreateClientRequest.getRefreshTokenDuration())
-                .withAutoApprove(restCreateClientRequest.getAutoApprove())
+                .withAutoApprove(restCreateClientRequest.isAutoApprove())
                 .withRedirectUri(restCreateClientRequest.getRedirectUri())
                 .build());
 
@@ -73,7 +73,7 @@ public class ClientController {
                 .withScopes(client.getScopes())
                 .withAccessTokenDuration(client.getAccessTokenDuration())
                 .withRefreshTokenDuration(client.getRefreshTokenDuration())
-                .withAutoApprove(client.getAutoApprove())
+                .withAutoApprove(client.isAutoApprove())
                 .withRedirectUri(client.getRedirectUri())
                 .build();
     }

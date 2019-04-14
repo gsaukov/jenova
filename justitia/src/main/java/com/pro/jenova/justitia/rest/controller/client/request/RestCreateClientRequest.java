@@ -74,7 +74,7 @@ public class RestCreateClientRequest {
         this.refreshTokenDuration = refreshTokenDuration;
     }
 
-    public Boolean getAutoApprove() {
+    public Boolean isAutoApprove() {
         return autoApprove;
     }
 

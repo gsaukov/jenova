@@ -100,7 +100,7 @@ public class Client extends BaseEntity {
         this.refreshTokenDuration = refreshTokenDuration;
     }
 
-    public Boolean getAutoApprove() {
+    public Boolean isAutoApprove() {
         return autoApprove;
     }
 

@@ -38,7 +38,7 @@ public class AppClientDetailsService implements ClientDetailsService {
                 .withScopes(client.getScopes())
                 .withAccessTokenDuration(client.getAccessTokenDuration())
                 .withRefreshTokenDuration(client.getRefreshTokenDuration())
-                .withAutoApprove(client.getAutoApprove())
+                .withAutoApprove(client.isAutoApprove())
                 .withRedirectUri(client.getRedirectUri())
                 .build();
     }
