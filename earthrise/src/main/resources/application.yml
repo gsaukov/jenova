@@ -24,3 +24,11 @@ eureka:
     enableSelfPreservation: false
     evictionIntervalTimerInMs: 4000
     responseCacheUpdateIntervalMs: 3000
+
+---
+spring.profiles: local
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

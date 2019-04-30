@@ -79,3 +79,15 @@ ribbon:
   MaxAutoRetries: 3
   MaxAutoRetriesNextServer: 1
   OkToRetryOnAllOperations: true
+
+---
+spring.profiles: local
+
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/justitia
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

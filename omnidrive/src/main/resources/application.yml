@@ -54,3 +54,15 @@ eureka:
     shouldDisableDelta: true
     serviceUrl:
       defaultZone: http://deepwater:8761/eureka/
+
+---
+spring.profiles: local
+
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/omnidrive
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
