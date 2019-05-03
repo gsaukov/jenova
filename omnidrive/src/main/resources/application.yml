@@ -62,6 +62,9 @@ spring:
   datasource:
     url: jdbc:mariadb://localhost:3306/omnidrive
 
+  rabbitmq:
+    host: localhost
+
 eureka:
   client:
     serviceUrl:
