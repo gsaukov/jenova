@@ -60,6 +60,7 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.tokenStore(tokenStore())
+                .requestValidator(appOAuth2RequestValidator()) // validation for authorize endpoint
                 .accessTokenConverter(accessTokenConverter())
                 .approvalStore(approvalStore())
                 .userDetailsService(userDetailsService) // for refresh-token grant
@@ -92,6 +93,11 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         converter.setSigningKey(signingKey);
         return converter;
+    }
+
+    @Bean
+    public AppOAuth2RequestValidator appOAuth2RequestValidator() {
+        return new AppOAuth2RequestValidator();
     }
 
 }
