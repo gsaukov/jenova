@@ -4,6 +4,7 @@ import com.pro.jenova.justitia.data.entity.Challenge;
 import com.pro.jenova.justitia.data.entity.Login;
 import com.pro.jenova.justitia.data.repository.ChallengeRepository;
 import com.pro.jenova.justitia.data.repository.LoginRepository;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +20,13 @@ import static com.pro.jenova.justitia.data.entity.Challenge.Type.*;
 import static java.time.LocalDateTime.now;
 import static java.util.Arrays.stream;
 import static org.apache.commons.lang.RandomStringUtils.random;
+import static org.slf4j.LoggerFactory.getLogger;
 
 @Service
 @Transactional
 public class LoginServiceImpl implements LoginService {
+
+    private static final Logger logger = getLogger(LoginServiceImpl.class);
 
     private static final String PISP = "pisp";
 
@@ -78,12 +82,16 @@ public class LoginServiceImpl implements LoginService {
     }
 
     private void addOneTimePassword(Login login, List<Challenge> challenges) {
+        String oneTimePassword = randomOneTimePassword();
+
         challenges.add(new Challenge.Builder()
                 .withLogin(login)
                 .withType(ONE_TIME_PASSWORD)
                 .withStatus(NOT_APPLICABLE)
-                .withOneTimePassword(randomOneTimePassword())
+                .withOneTimePassword(oneTimePassword)
                 .build());
+
+        logger.debug("One time password created [{}] for login [{}].", oneTimePassword, login.getReference());
     }
 
     private void addCredentials(Login login, List<Challenge> challenges) {
