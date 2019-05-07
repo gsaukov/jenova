@@ -17,7 +17,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import javax.sql.DataSource;
 
@@ -60,7 +59,7 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.tokenStore(tokenStore())
-                .requestValidator(appOAuth2RequestValidator()) // validation for authorize endpoint
+                .requestValidator(requestValidator()) // validation for authorize endpoint
                 .accessTokenConverter(accessTokenConverter())
                 .approvalStore(approvalStore())
                 .userDetailsService(userDetailsService) // for refresh-token grant
@@ -72,7 +71,7 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
     public DefaultTokenServices defaultTokenServices() {
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(tokenStore());
-        defaultTokenServices.setSupportRefreshToken(true);
+        defaultTokenServices.setSupportRefreshToken(false); // disabled temporarily
         return defaultTokenServices;
     }
 
@@ -89,14 +88,14 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
     }
 
     @Bean
-    public JwtAccessTokenConverter accessTokenConverter() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+    public AppJwtAccessTokenConverter accessTokenConverter() {
+        AppJwtAccessTokenConverter converter = new AppJwtAccessTokenConverter();
         converter.setSigningKey(signingKey);
         return converter;
     }
 
     @Bean
-    public AppOAuth2RequestValidator appOAuth2RequestValidator() {
+    public AppOAuth2RequestValidator requestValidator() {
         return new AppOAuth2RequestValidator();
     }
 

@@ -31,7 +31,7 @@ public class AppOAuth2RequestValidator implements OAuth2RequestValidator {
     }
 
     public void validateScope(TokenRequest tokenRequest, ClientDetails client) throws InvalidScopeException {
-        validateRequest(tokenRequest.getScope(), client);
+        // NOOP
     }
 
     private void validateRequest(Set<String> requestScopes, ClientDetails client) {
