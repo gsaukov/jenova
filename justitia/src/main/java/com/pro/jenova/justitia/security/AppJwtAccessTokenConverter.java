@@ -12,6 +12,7 @@
  */
 package com.pro.jenova.justitia.security;
 
+import com.pro.jenova.justitia.data.entity.Scope;
 import com.pro.jenova.justitia.data.repository.LoginRepository;
 import com.pro.jenova.justitia.data.repository.ScopeRepository;
 import com.pro.jenova.justitia.security.sca.StrongCustomerAuthenticationToken;
@@ -23,11 +24,9 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+import static java.util.Comparator.comparing;
 import static org.apache.commons.lang.StringUtils.splitPreserveAllTokens;
 
 public class AppJwtAccessTokenConverter extends JwtAccessTokenConverter {
@@ -49,7 +48,7 @@ public class AppJwtAccessTokenConverter extends JwtAccessTokenConverter {
     private Map<String, Object> getAdditionalInfo(OAuth2Authentication authentication) {
         Map<String, Object> additionalInfo = new HashMap<>();
 
-        enhanceWithPermissions(authentication, additionalInfo);
+        enhanceWithScopeInfo(authentication, additionalInfo);
         enhanceWithCustomParams(authentication.getUserAuthentication(), additionalInfo);
 
         return additionalInfo;
@@ -68,23 +67,39 @@ public class AppJwtAccessTokenConverter extends JwtAccessTokenConverter {
         loginRepository.findWithParamsByReference(reference).ifPresent(login -> additionalInfo.putAll(login.getParams()));
     }
 
-    private void enhanceWithPermissions(OAuth2Authentication authentication, Map<String, Object> additionalInfo) {
+    private void enhanceWithScopeInfo(OAuth2Authentication authentication, Map<String, Object> additionalInfo) {
         additionalInfo.put("permissions", getPermissions(authentication));
+        additionalInfo.put("maxUsages", getMaxUsages(authentication));
+    }
+
+    private Integer getMaxUsages(OAuth2Authentication authentication) {
+        OAuth2Request request = authentication.getOAuth2Request();
+        String clientId = request.getClientId();
+
+        return request.getScope().stream()
+                .map(scope -> getMaxUsages(clientId, scope))
+                .filter(Objects::nonNull)
+                .filter(maxUsages -> maxUsages > 0)
+                .min(comparing(Integer::valueOf))
+                .orElse(null);
+    }
+
+    private Integer getMaxUsages(String clientId, String scopeName) {
+        return scopeRepository.findByClientIdAndName(clientId, scopeName).map(Scope::getMaxUsages).orElse(null);
     }
 
     private Set<String> getPermissions(OAuth2Authentication authentication) {
         Set<String> permissions = new HashSet<>();
 
         OAuth2Request request = authentication.getOAuth2Request();
-
         String clientId = request.getClientId();
 
-        request.getScope().forEach(scope -> enhanceWithPermissions(clientId, scope, permissions));
+        request.getScope().forEach(scope -> enhanceWithScopePermissions(clientId, scope, permissions));
 
         return permissions;
     }
 
-    private void enhanceWithPermissions(String clientId, String scopeName, Set<String> permissions) {
+    private void enhanceWithScopePermissions(String clientId, String scopeName, Set<String> permissions) {
         scopeRepository.findByClientIdAndName(clientId, scopeName).ifPresent(scope -> {
             appendPermissions(permissions, splitPreserveAllTokens(scope.getPermissions(), ","));
         });
