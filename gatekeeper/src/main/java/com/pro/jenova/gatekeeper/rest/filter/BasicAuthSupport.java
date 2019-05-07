@@ -19,9 +19,9 @@ import static java.util.Optional.of;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @Component
-public class AuthorizationFilterSupport {
+public class BasicAuthSupport {
 
-    private static final Logger logger = getLogger(AuthorizationFilterSupport.class);
+    private static final Logger logger = getLogger(BasicAuthSupport.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper(); // Thread Safe
 

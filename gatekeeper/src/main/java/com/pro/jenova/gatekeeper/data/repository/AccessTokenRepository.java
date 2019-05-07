@@ -11,4 +11,6 @@ public interface AccessTokenRepository extends JpaRepository<AccessToken, String
 
     Optional<AccessToken> findByJti(String jti);
 
+    Optional<AccessToken> findByEncoded(String encoded);
+
 }
