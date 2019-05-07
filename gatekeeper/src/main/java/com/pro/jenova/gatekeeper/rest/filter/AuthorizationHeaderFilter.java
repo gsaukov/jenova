@@ -93,7 +93,6 @@ public class AuthorizationHeaderFilter extends ZuulFilter {
             doProcessBearer(currentContext, providedToken);
         } catch (IllegalArgumentException exc) {
             currentContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
-            currentContext.setResponseBody("Access Token - Max Usages Reached");
             currentContext.setSendZuulResponse(false);
         }
     }

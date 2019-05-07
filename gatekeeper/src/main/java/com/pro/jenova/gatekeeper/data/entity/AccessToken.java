@@ -4,11 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "ACCESS_TOKEN")
-public class AccessToken {
+public class AccessToken implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -16,12 +17,11 @@ public class AccessToken {
     @Column(name = "ID")
     private String id;
 
-    @Column(name = "MAX_USAGES")
-    private Integer maxUsages;
-
-    @Id
     @Column(name = "USAGE_COUNT")
     private Integer usageCount;
+
+    @Column(name = "MAX_USAGES")
+    private Integer maxUsages;
 
     @Column(name = "JTI")
     private String jti;

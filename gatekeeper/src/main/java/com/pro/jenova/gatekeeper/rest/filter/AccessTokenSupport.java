@@ -1,9 +1,7 @@
 package com.pro.jenova.gatekeeper.rest.filter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pro.jenova.gatekeeper.data.entity.AccessToken;
 import com.pro.jenova.gatekeeper.data.repository.AccessTokenRepository;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,15 +11,9 @@ import java.util.regex.Pattern;
 
 import static java.util.Optional.empty;
 import static java.util.regex.Pattern.compile;
-import static org.slf4j.LoggerFactory.getLogger;
 
 @Component
-@Transactional(noRollbackFor = IllegalArgumentException.class)
 public class AccessTokenSupport {
-
-    private static final Logger logger = getLogger(AccessTokenSupport.class);
-
-    private static final ObjectMapper objectMapper = new ObjectMapper(); // Thread Safe
 
     private static final Pattern UUID_PATTERN =
             compile("^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$");
@@ -29,6 +21,7 @@ public class AccessTokenSupport {
     @Autowired
     private AccessTokenRepository accessTokenRepository;
 
+    @Transactional(noRollbackFor = IllegalArgumentException.class)
     public Optional<String> processBearer(String token) {
         boolean isUuid = isUuid(token);
 
