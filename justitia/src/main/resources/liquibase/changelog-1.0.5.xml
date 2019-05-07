@@ -3,7 +3,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet id="create_access_token" author="d.konstantopoulos">
+    <changeSet id="create_scope" author="d.konstantopoulos">
         <createTable tableName="SCOPE">
             <column name="ID" type="varchar(64)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -27,6 +27,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="NAME" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MAX_USAGES" type="integer">
                 <constraints nullable="false"/>
             </column>
             <column name="PERMISSIONS" type="varchar(512)">

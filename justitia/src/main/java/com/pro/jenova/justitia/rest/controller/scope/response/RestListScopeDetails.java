@@ -4,6 +4,7 @@ public class RestListScopeDetails {
 
     private String clientId;
     private String name;
+    private Integer maxUsages;
     private String permissions;
 
     private RestListScopeDetails() {
@@ -13,6 +14,7 @@ public class RestListScopeDetails {
     private RestListScopeDetails(Builder builder) {
         clientId = builder.clientId;
         name = builder.name;
+        maxUsages = builder.maxUsages;
         permissions = builder.permissions;
     }
 
@@ -32,6 +34,14 @@ public class RestListScopeDetails {
         this.name = name;
     }
 
+    public Integer getMaxUsages() {
+        return maxUsages;
+    }
+
+    public void setMaxUsages(Integer maxUsages) {
+        this.maxUsages = maxUsages;
+    }
+
     public String getPermissions() {
         return permissions;
     }
@@ -44,6 +54,7 @@ public class RestListScopeDetails {
 
         private String clientId;
         private String name;
+        private Integer maxUsages;
         private String permissions;
 
         public Builder withClientId(String clientId) {
@@ -53,6 +64,11 @@ public class RestListScopeDetails {
 
         public Builder withName(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder withMaxUsages(Integer maxUsages) {
+            this.maxUsages = maxUsages;
             return this;
         }
 

@@ -19,6 +19,9 @@ public class Scope extends BaseEntity {
     @Column(name = "NAME")
     private String name;
 
+    @Column(name = "MAX_USAGES")
+    private Integer maxUsages;
+
     @Column(name = "PERMISSIONS")
     private String permissions;
 
@@ -29,6 +32,7 @@ public class Scope extends BaseEntity {
     private Scope(Builder builder) {
         clientId = builder.clientId;
         name = builder.name;
+        maxUsages = builder.maxUsages;
         permissions = builder.permissions;
     }
 
@@ -46,6 +50,14 @@ public class Scope extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getMaxUsages() {
+        return maxUsages;
+    }
+
+    public void setMaxUsages(Integer maxUsages) {
+        this.maxUsages = maxUsages;
     }
 
     public String getPermissions() {
@@ -76,6 +88,7 @@ public class Scope extends BaseEntity {
 
         private String clientId;
         private String name;
+        private Integer maxUsages;
         private String permissions;
 
         public Builder withClientId(String clientId) {
@@ -85,6 +98,11 @@ public class Scope extends BaseEntity {
 
         public Builder withName(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder withMaxUsages(Integer maxUsages) {
+            this.maxUsages = maxUsages;
             return this;
         }
 

@@ -39,6 +39,7 @@ public class ScopeController {
         scopeRepository.save(new Scope.Builder()
                 .withClientId(restCreateScopeRequest.getClientId())
                 .withName(restCreateScopeRequest.getName())
+                .withMaxUsages(restCreateScopeRequest.getMaxUsages())
                 .withPermissions(restCreateScopeRequest.getPermissions())
                 .build());
 
@@ -67,6 +68,7 @@ public class ScopeController {
         return new RestListScopeDetails.Builder()
                 .withClientId(scope.getClientId())
                 .withName(scope.getName())
+                .withMaxUsages(scope.getMaxUsages())
                 .withPermissions(scope.getPermissions())
                 .build();
     }
