@@ -23,6 +23,9 @@
             <column name="UPDATED_BY" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
+            <column name="USAGE_COUNT" type="integer">
+                <constraints nullable="false"/>
+            </column>
             <column name="JTI" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>

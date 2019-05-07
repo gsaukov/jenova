@@ -25,6 +25,7 @@ public class CustomJwtTokenStore extends JwtTokenStore {
         Map<String, Object> info = token.getAdditionalInformation();
 
         accessTokenRepository.save(new AccessToken.Builder()
+                .withUsageCount(0)
                 .withJti(info.get("jti").toString())
                 .withEncoded(token.getValue())
                 .build());

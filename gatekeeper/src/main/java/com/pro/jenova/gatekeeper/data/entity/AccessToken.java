@@ -16,6 +16,10 @@ public class AccessToken {
     @Column(name = "ID")
     private String id;
 
+    @Id
+    @Column(name = "USAGE_COUNT")
+    private Integer usageCount;
+
     @Column(name = "JTI")
     private String jti;
 
@@ -32,6 +36,14 @@ public class AccessToken {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Integer getUsageCount() {
+        return usageCount;
+    }
+
+    public void setUsageCount(Integer usageCount) {
+        this.usageCount = usageCount;
     }
 
     public String getJti() {

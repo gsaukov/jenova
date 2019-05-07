@@ -13,6 +13,9 @@ public class AccessToken extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
+    @Column(name = "USAGE_COUNT")
+    private Integer usageCount;
+
     @Column(name = "JTI")
     private String jti;
 
@@ -24,8 +27,17 @@ public class AccessToken extends BaseEntity {
     }
 
     private AccessToken(Builder builder) {
+        usageCount = builder.usageCount;
         jti = builder.jti;
         encoded = builder.encoded;
+    }
+
+    public Integer getUsageCount() {
+        return usageCount;
+    }
+
+    public void setUsageCount(Integer usageCount) {
+        this.usageCount = usageCount;
     }
 
     public String getJti() {
@@ -62,8 +74,14 @@ public class AccessToken extends BaseEntity {
 
     public static final class Builder {
 
+        private Integer usageCount;
         private String jti;
         private String encoded;
+
+        public Builder withUsageCount(Integer usageCount) {
+            this.usageCount = usageCount;
+            return this;
+        }
 
         public Builder withJti(String jti) {
             this.jti = jti;
