@@ -16,6 +16,9 @@ public class AccessToken {
     @Column(name = "ID")
     private String id;
 
+    @Column(name = "MAX_USAGES")
+    private Integer maxUsages;
+
     @Id
     @Column(name = "USAGE_COUNT")
     private Integer usageCount;
@@ -44,6 +47,14 @@ public class AccessToken {
 
     public void setUsageCount(Integer usageCount) {
         this.usageCount = usageCount;
+    }
+
+    public Integer getMaxUsages() {
+        return maxUsages;
+    }
+
+    public void setMaxUsages(Integer maxUsages) {
+        this.maxUsages = maxUsages;
     }
 
     public String getJti() {

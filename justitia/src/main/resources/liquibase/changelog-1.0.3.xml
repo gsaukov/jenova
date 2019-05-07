@@ -26,6 +26,9 @@
             <column name="USAGE_COUNT" type="integer">
                 <constraints nullable="false"/>
             </column>
+            <column name="MAX_USAGES" type="integer">
+                <constraints nullable="false"/>
+            </column>
             <column name="JTI" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
@@ -35,6 +38,8 @@
         </createTable>
         <addUniqueConstraint tableName="ACCESS_TOKEN" columnNames="JTI"
                              constraintName="UDX_ATK_JTI"/>
+        <addUniqueConstraint tableName="ACCESS_TOKEN" columnNames="ENCODED"
+                             constraintName="UDX_ATK_ENC"/>
     </changeSet>
 
 </databaseChangeLog>

@@ -11,6 +11,8 @@ import java.util.Map;
 
 public class CustomJwtTokenStore extends JwtTokenStore {
 
+    private static final int INFINITE = -1;
+
     private AccessTokenRepository accessTokenRepository;
 
     public CustomJwtTokenStore(JwtAccessTokenConverter jwtTokenEnhancer, AccessTokenRepository accessTokenRepository) {
@@ -26,9 +28,26 @@ public class CustomJwtTokenStore extends JwtTokenStore {
 
         accessTokenRepository.save(new AccessToken.Builder()
                 .withUsageCount(0)
+                .withMaxUsages(getMaxUsages(token))
                 .withJti(info.get("jti").toString())
                 .withEncoded(token.getValue())
                 .build());
+    }
+
+    private Integer getMaxUsages(OAuth2AccessToken token) {
+        Map<String, Object> additionalInformation = token.getAdditionalInformation();
+
+        if (additionalInformation == null) {
+            return INFINITE;
+        }
+
+        Object maxUsages = additionalInformation.get("maxUsages");
+
+        if (!(maxUsages instanceof Integer)) {
+            return INFINITE;
+        }
+
+        return (Integer) maxUsages;
     }
 
 }
