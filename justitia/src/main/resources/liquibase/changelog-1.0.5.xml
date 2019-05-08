@@ -30,10 +30,10 @@
                 <constraints nullable="false"/>
             </column>
             <column name="MAX_USAGES" type="integer">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="PERMISSIONS" type="varchar(512)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </createTable>
         <addUniqueConstraint tableName="SCOPE" columnNames="CLIENT_ID,NAME"

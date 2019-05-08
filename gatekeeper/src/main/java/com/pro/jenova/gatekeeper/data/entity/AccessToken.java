@@ -23,6 +23,9 @@ public class AccessToken implements Serializable {
     @Column(name = "MAX_USAGES")
     private Integer maxUsages;
 
+    @Column(name = "PERMISSIONS")
+    private String permissions;
+
     @Column(name = "JTI")
     private String jti;
 
@@ -55,6 +58,14 @@ public class AccessToken implements Serializable {
 
     public void setMaxUsages(Integer maxUsages) {
         this.maxUsages = maxUsages;
+    }
+
+    public String getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
     }
 
     public String getJti() {

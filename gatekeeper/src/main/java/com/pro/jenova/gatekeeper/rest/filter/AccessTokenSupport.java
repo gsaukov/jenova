@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+import static java.util.Arrays.stream;
 import static java.util.Optional.empty;
 import static java.util.regex.Pattern.compile;
+import static org.apache.commons.lang.StringUtils.splitPreserveAllTokens;
 
 @Component
 public class AccessTokenSupport {
@@ -22,7 +24,7 @@ public class AccessTokenSupport {
     private AccessTokenRepository accessTokenRepository;
 
     @Transactional(noRollbackFor = IllegalArgumentException.class)
-    public Optional<String> processBearer(String token) {
+    public Optional<String> processBearer(String requestURI, String token) {
         boolean isUuid = isUuid(token);
 
         Optional<AccessToken> accessToken;
@@ -37,15 +39,36 @@ public class AccessTokenSupport {
             return empty();
         }
 
-        verifyAccessToken(accessToken.get());
+        verifyAccessToken(requestURI, accessToken.get());
 
         return isUuid ? accessToken.map(AccessToken::getEncoded) : empty();
     }
 
-    private void verifyAccessToken(AccessToken accessToken) {
+    private void verifyAccessToken(String requestURI, AccessToken accessToken) {
+        verifyTokenPermissions(requestURI, accessToken);
+        verifyTokenUsages(accessToken);
+    }
+
+    private void verifyTokenPermissions(String requestURI, AccessToken accessToken) {
+        String permissions = accessToken.getPermissions();
+
+        if (permissions == null) {
+            return;
+        }
+
+        if (stream(splitPreserveAllTokens(permissions)).anyMatch(
+                permission -> requestURI.endsWith(permission.trim()))) {
+            return;
+        }
+
+        throw new IllegalArgumentException("Token permissions do not allow invoked service.");
+    }
+
+    private void verifyTokenUsages(AccessToken accessToken) {
+        Integer maxUsages = accessToken.getMaxUsages();
         Integer usageCount = accessToken.getUsageCount();
 
-        if (usageCount >= accessToken.getMaxUsages()) {
+        if (maxUsages != null && usageCount != null && usageCount >= maxUsages) {
             throw new IllegalArgumentException("Token usage count has reached max value.");
         }
 

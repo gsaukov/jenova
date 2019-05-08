@@ -93,12 +93,16 @@ public class AuthorizationHeaderFilter extends ZuulFilter {
             doProcessBearer(currentContext, providedToken);
         } catch (IllegalArgumentException exc) {
             currentContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
+            currentContext.setResponseBody(exc.getMessage());
+            currentContext.getResponse().setContentType("text/plain");
             currentContext.setSendZuulResponse(false);
         }
     }
 
     private void doProcessBearer(RequestContext currentContext, String providedToken) {
-        Optional<String> replacementToken = accessTokenSupport.processBearer(providedToken);
+        String requestURI = currentContext.getRequest().getRequestURI();
+
+        Optional<String> replacementToken = accessTokenSupport.processBearer(requestURI, providedToken);
 
         replacementToken.ifPresent(encodedToken -> {
             logger.debug("Replacing bearer token jti {} with encoded jwt value {}.", providedToken, encodedToken);

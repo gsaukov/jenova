@@ -19,6 +19,9 @@ public class AccessToken extends BaseEntity {
     @Column(name = "MAX_USAGES")
     private Integer maxUsages;
 
+    @Column(name = "PERMISSIONS")
+    private String permissions;
+
     @Column(name = "JTI")
     private String jti;
 
@@ -32,6 +35,7 @@ public class AccessToken extends BaseEntity {
     private AccessToken(Builder builder) {
         usageCount = builder.usageCount;
         maxUsages = builder.maxUsages;
+        permissions = builder.permissions;
         jti = builder.jti;
         encoded = builder.encoded;
     }
@@ -50,6 +54,14 @@ public class AccessToken extends BaseEntity {
 
     public void setMaxUsages(Integer maxUsages) {
         this.maxUsages = maxUsages;
+    }
+
+    public String getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
     }
 
     public String getJti() {
@@ -88,6 +100,7 @@ public class AccessToken extends BaseEntity {
 
         private Integer usageCount;
         private Integer maxUsages;
+        private String permissions;
         private String jti;
         private String encoded;
 
@@ -98,6 +111,11 @@ public class AccessToken extends BaseEntity {
 
         public Builder withMaxUsages(Integer maxUsages) {
             this.maxUsages = maxUsages;
+            return this;
+        }
+
+        public Builder withPermissions(String permissions) {
+            this.permissions = permissions;
             return this;
         }
 
