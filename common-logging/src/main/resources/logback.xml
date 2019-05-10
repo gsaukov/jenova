@@ -4,6 +4,12 @@
     <!-- Used to load property "application.name". -->
     <property resource="logging.properties"/>
 
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{ISO8601} [%thread] %-5level %mdc{logCorrelationId:-} %logger{36} - %msg %n</pattern>
+        </encoder>
+    </appender>
+
     <appender name="HUMAN_OUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>/var/log/jenova/${application.name}/${application.name}.human.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -29,8 +35,9 @@
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="HUMAN_OUT"/>
-        <appender-ref ref="ELK_OUT"/>
+        <appender-ref ref="STDOUT"/>
+        <!--<appender-ref ref="HUMAN_OUT"/>-->
+        <!--<appender-ref ref="ELK_OUT"/>-->
     </root>
 
     <logger name="com.pro.jenova" level="DEBUG"/>

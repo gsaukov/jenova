@@ -72,6 +72,8 @@ public class LoginServiceImpl implements LoginService {
         List<Challenge> challenges = new ArrayList<>();
 
         if (requiresElevated) {
+
+            addCredentials(login, challenges);
             addOutOfBand(login, challenges);
             return challenges;
         }
