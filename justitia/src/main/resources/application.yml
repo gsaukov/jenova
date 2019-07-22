@@ -3,10 +3,10 @@ spring:
     name: justitia
 
   datasource:
-    url: jdbc:mariadb://cronos:3306/justitia
-    username: dimitrios
+    url: jdbc:mysql://localhost:55555/justitia
+    username: justitia
     password: password
-    driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name: com.mysql.jdbc.Driver
 
     hikari:
       minimumIdle: 5
@@ -17,7 +17,7 @@ spring:
 
   jpa:
     open-in-view: false
-    database-platform: org.hibernate.dialect.MariaDBDialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: none
 
@@ -48,4 +48,7 @@ eureka:
     registryFetchIntervalSeconds: 3
     shouldDisableDelta: true
     serviceUrl:
-      defaultZone: http://deepwater:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
+
+logging.level.org.springframework: DEBUG
+

@@ -19,7 +19,7 @@ eureka:
     registryFetchIntervalSeconds: 3
     shouldDisableDelta: true
     serviceUrl:
-      defaultZone: http://deepwater:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
   server:
     enableSelfPreservation: false
     evictionIntervalTimerInMs: 4000

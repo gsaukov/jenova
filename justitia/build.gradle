@@ -43,6 +43,7 @@ dependencies {
 
     runtime "net.logstash.logback:logstash-logback-encoder:${logstashEncoderVersion}"
     runtime "org.mariadb.jdbc:mariadb-java-client:${mariadbVersion}"
+    runtime "mysql:mysql-connector-java:${mySqlVersion}"
     runtime "org.liquibase:liquibase-core:${liquibaseVersion}"
     runtime "com.h2database:h2:${h2Version}"
 }
